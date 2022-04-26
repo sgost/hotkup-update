@@ -1,0 +1,34 @@
+1. uniqueComponentId && embeddingViewName usage (task-inbox.vue)
+-----------------------------------------------------------------------------------------------------------------------
+
+
+        <taskview embeddingViewName="task_inbox" uniqueComponentId="viewTaskFormFromTaskInbox"..
+        <taskview embeddingViewName="view_subtask_modal" uniqueComponentId="viewSubTaskFormFromTaskInbox"..
+
+
+
+-----------------------------------------------------------------------------------------------------------------------
+2. Inner Scrollbars without the usage of a static height value, by using plain display:flex, flex-grow:1 values. (task-activity-tab.vue)
+-----------------------------------------------------------------------------------------------------------------------
+    <div v-if="isActivityTabInitialized" style="...display: flex;flex-grow: 1;height: 100%;overflow-y: hidden;...">
+      <div style="display: flex;flex-direction: column;flex-grow: 1;">
+
+          <div style="padding: 5px 0px;margin-right:20px;margin-bottom: 10px;display: grid;grid-template-rows: 1fr;place-items: flex-start;border-bottom: 1px solid #d0d0d0;">
+            HEADER
+          </div>
+
+          <div class="first_column_scrollable custom-scroll-bar activities_list" style="position:relative;flex-grow: 1;" >
+            SCROLLING_CONTAINER
+          </div>
+
+      </div>
+    </div>
+
+-----------------------------------------------------------------------------------------------------------------------
+3. Rubberband Scroll (task-inbox.vue)
+-----------------------------------------------------------------------------------------------------------------------
+    <div class="adk_grid_list_content custom-scroll-bar elastic_scroll_container" >
+      <div class="task_inbox_list elastic_scroll_list" >
+          // list-items
+      </div>
+    </div>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>RSocket Lab</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <script type="text/javascript" src="resources/js/plugins/rsocket_lab/chunk-vendors.min.js"></script>
+
+        <style type="text/css">
+            .box{
+              position: relative;
+              width:400px;
+              height:400px;
+              display:inline-block;
+              vertical-align:middle;
+              background-color:whitesmoke;
+              border:1px solid #d3d3d3;
+              transform-origin: center;
+              transition: 2s linear;
+              perspective: 200px;
+              perspective-origin: right;
+              z-index:2;
+            }
+
+            .left{
+              position: absolute;
+              left: 100%;
+              top: -1px;
+              bottom: 0px;
+              width: 100%;
+              height: 100%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              background-color: #d3d3d3;
+              border: 1px solid #d3d3d3;
+              color:#333;
+              transform-origin: left;
+              transition: 0.25s linear;
+              transform:rotateY(90deg);
+              z-index:1;
+            }
+
+            .box:hover .left{
+              transform:rotateY(00deg);
+            }
+
+            .material_button{
+                display: inline-block;
+                background: #4285f4;
+                color: #fff;
+                text-transform: uppercase;
+                padding: 20px 30px;
+                border-radius: 3px;
+                cursor:pointer;;
+                transition: all ease-in-out 100ms;
+                box-shadow: 0px 7px 10px 0px rgba(0,0,0,0.4);
+                outline:0px;
+                user-select: none;
+                xborder-bottom: 10px solid #427cde;
+                position: relative;;
+            }
+
+            .material_button:active{
+              box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.4) !important;
+              transform:translateY(1px) !important;
+            }
+
+            .material_button:hover{
+              box-shadow: 0px 7px 10px 0px rgba(0,0,0,0.4);
+              transform:scale(1.025);
+              transition: all ease-in-out 300ms;
+            }
+        </style>
+    </head>
+  	<body id="body" style="" >
+        <div id="app"></div>
+        <br><hr><br>
+        <div id="3dboxes" style="display: flex;column-gap: 10px;align-items: center;justify-content: center;">
+            <div class="box">
+                <div class="left">123</div>
+            </div>
+        </div>
+        <br><br>
+        <div style="display: flex;column-gap: 10px;align-items: center;justify-content: center;padding-bottom:100px">
+          <div class="material_button" >Click Me
+              <div class="side"></div>
+          </div>
+        </div>
+
+  	</body>
+
+    <script type="text/javascript" src="resources/js/plugins/rsocket_lab/af705.min.js"></script>
+
+
+</html>

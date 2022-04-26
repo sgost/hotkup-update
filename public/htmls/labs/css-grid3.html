@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" nest_2="width=device-width, initial-scale=1.0">
+
+        <style type="text/css">
+            html,body{
+              margin:0px;
+            }
+
+            .container{
+              height:100vh;
+              display:grid;
+              grid-template-rows: 30px 1fr 30px;
+            }
+
+            .nest_1{
+              overflow-y: hidden;
+              display:grid;
+              grid-template-rows : 30px 1fr 30px;
+              padding:20px;
+            }
+
+            .nest_2{
+              overflow-y: hidden;
+              border:1px solid red;
+              display:grid;
+              grid-template-rows : 30px 1fr 30px;
+              padding:20px;
+            }
+
+            .nest_2_content{
+              overflow-y:scroll;
+              border:1px solid orange;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div style="background-color:aliceblue;">Nav</div>
+            <div class="nest_1">
+                <div style="background-color:red;">Nest 1 header</div>
+                <div class="nest_2">
+                    <div style="background-color:orange;">Nest 2 header</div>
+                    <div class="nest_2_content">
+                      <p>
+                        nest_2_content <br>
+                        Whichever div-container is overflowing, from the div that has the scrollbar until its parent div which is overflowing must be given the style <b>'over-flow:hidden'</b>.
+                        Try removing the <b>overflow-y:hidden</b> of <b>.nest_1</b>
+                      </p>
+                      <p id="b2d0" class="go hc ap ce gq b gr gs hd gt gu he gv gw hf gx gy hg gz ha hh hb cw" data-selectable-paragraph="">As you can see, there are four main sections: header, footer, sidebar, and nest_2. The header, footer, and sidebar are sticky. Meaning, while the nest_2 might overflow the bounds of the page and require scrolling, these element will remain on screen at all times. Only the nest_2 will scroll as it overflows.</p>
+                      <p id="8dd4" class="go hc ap ce gq b gr gs hd gt gu he gv gw hf gx gy hg gz ha hh hb cw" data-selectable-paragraph="">Next, let’s create the grid container element and give it a classname of <code class="gh ib ic id ie b">.container</code>.</p>
+                      <p>
+                        Unless you are supporting Internet Explorer 10 and earlier, there really is no excuse to be sleeping on CSS Grid these days. It makes web layouts much more intuitive and flexible. Let’s take a look at a basic layout to get started.
+                      </p>
+                      <p id="b2d0" class="go hc ap ce gq b gr gs hd gt gu he gv gw hf gx gy hg gz ha hh hb cw" data-selectable-paragraph="">As you can see, there are four main sections: header, footer, sidebar, and nest_2. The header, footer, and sidebar are sticky. Meaning, while the nest_2 might overflow the bounds of the page and require scrolling, these element will remain on screen at all times. Only the nest_2 will scroll as it overflows.</p>
+                      <p id="8dd4" class="go hc ap ce gq b gr gs hd gt gu he gv gw hf gx gy hg gz ha hh hb cw" data-selectable-paragraph="">Next, let’s create the grid container element and give it a classname of <code class="gh ib ic id ie b">.container</code>.</p><p>
+                        Unless you are supporting Internet Explorer 10 and earlier, there really is no excuse to be sleeping on CSS Grid these days. It makes web layouts much more intuitive and flexible. Let’s take a look at a basic layout to get started.
+                      </p>
+                      <p id="b2d0" class="go hc ap ce gq b gr gs hd gt gu he gv gw hf gx gy hg gz ha hh hb cw" data-selectable-paragraph="">As you can see, there are four main sections: header, footer, sidebar, and nest_2. The header, footer, and sidebar are sticky. Meaning, while the nest_2 might overflow the bounds of the page and require scrolling, these element will remain on screen at all times. Only the nest_2 will scroll as it overflows.</p>
+                      <p id="8dd4" class="go hc ap ce gq b gr gs hd gt gu he gv gw hf gx gy hg gz ha hh hb cw" data-selectable-paragraph="">Next, let’s create the grid container element and give it a classname of <code class="gh ib ic id ie b">.container</code>.</p><p>
+                        Unless you are supporting Internet Explorer 10 and earlier, there really is no excuse to be sleeping on CSS Grid these days. It makes web layouts much more intuitive and flexible. Let’s take a look at a basic layout to get started.
+                      </p>
+                      <p id="b2d0" class="go hc ap ce gq b gr gs hd gt gu he gv gw hf gx gy hg gz ha hh hb cw" data-selectable-paragraph="">As you can see, there are four main sections: header, footer, sidebar, and nest_2. The header, footer, and sidebar are sticky. Meaning, while the nest_2 might overflow the bounds of the page and require scrolling, these element will remain on screen at all times. Only the nest_2 will scroll as it overflows.</p>
+                      <p id="8dd4" class="go hc ap ce gq b gr gs hd gt gu he gv gw hf gx gy hg gz ha hh hb cw" data-selectable-paragraph="">Next, let’s create the grid container element and give it a classname of <code class="gh ib ic id ie b">.container</code>.</p><p>
+                        Unless you are supporting Internet Explorer 10 and earlier, there really is no excuse to be sleeping on CSS Grid these days. It makes web layouts much more intuitive and flexible. Let’s take a look at a basic layout to get started.
+                      </p>
+                      <p id="b2d0" class="go hc ap ce gq b gr gs hd gt gu he gv gw hf gx gy hg gz ha hh hb cw" data-selectable-paragraph="">As you can see, there are four main sections: header, footer, sidebar, and nest_2. The header, footer, and sidebar are sticky. Meaning, while the nest_2 might overflow the bounds of the page and require scrolling, these element will remain on screen at all times. Only the nest_2 will scroll as it overflows.</p>
+                      <p id="8dd4" class="go hc ap ce gq b gr gs hd gt gu he gv gw hf gx gy hg gz ha hh hb cw" data-selectable-paragraph="">Next, let’s create the grid container element and give it a classname of <code class="gh ib ic id ie b">.container</code>.</p><p>
+                        Unless you are supporting Internet Explorer 10 and earlier, there really is no excuse to be sleeping on CSS Grid these days. It makes web layouts much more intuitive and flexible. Let’s take a look at a basic layout to get started.
+                      </p>
+                      <p id="b2d0" class="go hc ap ce gq b gr gs hd gt gu he gv gw hf gx gy hg gz ha hh hb cw" data-selectable-paragraph="">As you can see, there are four main sections: header, footer, sidebar, and nest_2. The header, footer, and sidebar are sticky. Meaning, while the nest_2 might overflow the bounds of the page and require scrolling, these element will remain on screen at all times. Only the nest_2 will scroll as it overflows.</p>
+                      <p id="8dd4" class="go hc ap ce gq b gr gs hd gt gu he gv gw hf gx gy hg gz ha hh hb cw" data-selectable-paragraph="">Next, let’s create the grid container element and give it a classname of <code class="gh ib ic id ie b">.container</code>.</p><p>
+                        Unless you are supporting Internet Explorer 10 and earlier, there really is no excuse to be sleeping on CSS Grid these days. It makes web layouts much more intuitive and flexible. Let’s take a look at a basic layout to get started.
+                      </p>
+                      <p id="b2d0" class="go hc ap ce gq b gr gs hd gt gu he gv gw hf gx gy hg gz ha hh hb cw" data-selectable-paragraph="">As you can see, there are four main sections: header, footer, sidebar, and nest_2. The header, footer, and sidebar are sticky. Meaning, while the nest_2 might overflow the bounds of the page and require scrolling, these element will remain on screen at all times. Only the nest_2 will scroll as it overflows.</p>
+                      <p id="8dd4" class="go hc ap ce gq b gr gs hd gt gu he gv gw hf gx gy hg gz ha hh hb cw" data-selectable-paragraph="">Next, let’s create the grid container element and give it a classname of <code class="gh ib ic id ie b">.container</code>.</p>
+                    </div>
+                    <div style="background-color:orange;">Nest 2 footer</div>
+                </div>
+                <div style="background-color:red;">Nest 1 footer</div>
+            </div>
+            <div style="background-color:aliceblue;">Footer</div>
+        </div>
+    </body>
+</html>

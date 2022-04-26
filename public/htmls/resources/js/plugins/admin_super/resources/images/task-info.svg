@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g id="Task_info" data-name="Task info" transform="translate(-11026 1943)">
+    <g id="information" transform="translate(11029 -1940)">
+      <path id="Path_2561" data-name="Path 2561" d="M9,0a9,9,0,1,0,9,9A9.01,9.01,0,0,0,9,0ZM9,16.364A7.364,7.364,0,1,1,16.364,9,7.372,7.372,0,0,1,9,16.364Z" fill="#686868"/>
+      <path id="Path_2562" data-name="Path 2562" d="M146.093,70a1.091,1.091,0,1,0,1.091,1.091A1.092,1.092,0,0,0,146.093,70Z" transform="translate(-137.093 -66.182)" fill="#686868"/>
+      <path id="Path_2563" data-name="Path 2563" d="M150.818,140a.818.818,0,0,0-.818.818v4.909a.818.818,0,1,0,1.636,0v-4.909A.818.818,0,0,0,150.818,140Z" transform="translate(-141.818 -132.364)" fill="#686868"/>
+    </g>
+    <rect id="Rectangle_1452" data-name="Rectangle 1452" width="24" height="24" transform="translate(11026 -1943)" fill="none"/>
+  </g>
+</svg>

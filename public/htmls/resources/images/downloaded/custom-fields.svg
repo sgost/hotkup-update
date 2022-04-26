@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g id="Custom_fields" data-name="Custom fields" transform="translate(-19674 -18487)">
+    <rect id="Rectangle_1491" data-name="Rectangle 1491" width="24" height="24" transform="translate(19674 18487)" fill="none"/>
+    <g id="Group_1593" data-name="Group 1593" transform="translate(3 -42.999)">
+      <rect id="Rectangle_1498" data-name="Rectangle 1498" width="22" height="19.13" rx="1" transform="translate(19672 18532)" fill="#3799ff"/>
+      <rect id="Rectangle_1499" data-name="Rectangle 1499" width="20.174" height="17" rx="1" transform="translate(19672.912 18532.998)" fill="#fff"/>
+      <g id="Rectangle_1500" data-name="Rectangle 1500" transform="translate(19674.869 18539.695)" fill="none" stroke="#3799ff" stroke-width="0.5">
+        <rect width="4.783" height="1.913" rx="0.957" stroke="none"/>
+        <rect x="0.25" y="0.25" width="4.283" height="1.413" rx="0.707" fill="none"/>
+      </g>
+      <g id="Path_3039" data-name="Path 3039" transform="translate(19681.699 18539.695)" fill="#3799ff">
+        <path d="M 10.2296838760376 1.863381505012512 L 0.2000037431716919 1.863381505012512 C 0.1172937527298927 1.863381505012512 0.05000374838709831 1.796091556549072 0.05000374838709831 1.71338152885437 L 0.05000374838709831 0.2000015676021576 C 0.05000374838709831 0.1172915622591972 0.1172937527298927 0.05000156164169312 0.2000037431716919 0.05000156164169312 L 10.2296838760376 0.05000156164169312 C 10.31239414215088 0.05000156164169312 10.37968349456787 0.1172915622591972 10.37968349456787 0.2000015676021576 L 10.37968349456787 1.71338152885437 C 10.37968349456787 1.796091556549072 10.31239414215088 1.863381505012512 10.2296838760376 1.863381505012512 Z" stroke="none"/>
+        <path d="M 0.2000036239624023 0.1000015735626221 C 0.1448640823364258 0.1000015735626221 0.1000041961669922 0.1448615789413452 0.1000041961669922 0.20000159740448 L 0.1000041961669922 1.71338152885437 C 0.1000041961669922 1.768521547317505 0.1448640823364258 1.813381552696228 0.2000036239624023 1.813381552696228 L 10.2296838760376 1.813381552696228 C 10.28482341766357 1.813381552696228 10.32968330383301 1.768521547317505 10.32968330383301 1.71338152885437 L 10.32968330383301 0.20000159740448 C 10.32968330383301 0.1448615789413452 10.28482341766357 0.1000015735626221 10.2296838760376 0.1000015735626221 L 0.2000036239624023 0.1000015735626221 M 0.2000036239624023 1.549720764160156e-06 L 10.2296838760376 1.549720764160156e-06 C 10.34014415740967 1.549720764160156e-06 10.42968368530273 0.08954155445098877 10.42968368530273 0.20000159740448 L 10.42968368530273 1.71338152885437 C 10.42968368530273 1.823841571807861 10.34014415740967 1.913381576538086 10.2296838760376 1.913381576538086 L 0.2000036239624023 1.913381576538086 C 0.08954334259033203 1.913381576538086 3.814697265625e-06 1.823841571807861 3.814697265625e-06 1.71338152885437 L 3.814697265625e-06 0.20000159740448 C 3.814697265625e-06 0.08954155445098877 0.08954334259033203 1.549720764160156e-06 0.2000036239624023 1.549720764160156e-06 Z" stroke="none" fill="#3799ff"/>
+      </g>
+      <g id="Rectangle_1501" data-name="Rectangle 1501" transform="translate(19674.869 18543.521)" fill="none" stroke="#3799ff" stroke-width="0.5">
+        <rect width="4.783" height="1.913" rx="0.957" stroke="none"/>
+        <rect x="0.25" y="0.25" width="4.283" height="1.413" rx="0.707" fill="none"/>
+      </g>
+      <g id="Rectangle_1502" data-name="Rectangle 1502" transform="translate(19681.699 18543.521)" fill="#3799ff" stroke="#3799ff" stroke-width="0.1">
+        <rect width="10.43" height="1.913" rx="0.2" stroke="none"/>
+        <rect x="0.05" y="0.05" width="10.33" height="1.813" rx="0.15" fill="none"/>
+      </g>
+      <g id="Group_1592" data-name="Group 1592" transform="translate(19689.754 18546.391)">
+        <rect id="Rectangle_814" data-name="Rectangle 814" width="2.079" height="2.063" transform="translate(0 0.321)" fill="#3799ff"/>
+        <text id="_" data-name="+" transform="translate(0.463 2)" fill="#fff" font-size="2" font-family="Muli-Regular, Muli"><tspan x="0" y="0">+</tspan></text>
+      </g>
+      <g id="Rectangle_1506" data-name="Rectangle 1506" transform="translate(19685 18534)" fill="none" stroke="#3799ff" stroke-width="1">
+        <rect width="7" height="1" rx="0.5" stroke="none"/>
+        <rect x="0.5" y="0.5" width="6" fill="none"/>
+      </g>
+    </g>
+    <g id="Rectangle_1505" data-name="Rectangle 1505" transform="translate(19675 18493)" fill="#3799ff" stroke="#3799ff" stroke-width="1">
+      <rect width="22" height="1" stroke="none"/>
+      <rect x="0.5" y="0.5" width="21" fill="none"/>
+    </g>
+  </g>
+</svg>

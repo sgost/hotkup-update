@@ -1,0 +1,19 @@
+{
+  "name": "Hotkup Task Management App",
+  "short_name": "Hotkup",
+  "start_url": "/home",
+  "display": "standalone",
+  "description": "The Email Alternative App",
+  "orientation": "landscape",
+  "lang": "en-US",
+  "dir": "ltr",
+  "theme_color": "blue",
+  "background_color": "whitesmoke",
+  "scope": ".",
+  "icons": [{
+        "src": "/resources/images/icons/logo144res2.png",
+        "type": "image/png",
+        "sizes": "144x144"
+      }]
+
+}

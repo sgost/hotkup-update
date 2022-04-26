@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Login Page - HotKup</title>
+        <meta charset="UTF-8">
+        <link href="/resources/images/favicon7.ico" rel='shortcut icon' >
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- <link rel="stylesheet" type="text/css" async href="https://fonts.googleapis.com/css?family=Nunito&display=swap"> -->
+      <link rel="preload stylesheet" href="https://fonts.googleapis.com/css?family=Nunito&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+      <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito&display=swap"></noscript>
+
+        <link rel="stylesheet" type="text/css" href="resources/css/uikit.min.css">
+        <link rel="stylesheet" type="text/css" href="resources/themes/app.css">
+
+        <link href="https://fonts.googleapis.com/css?family=Lato|Raleway:200&display=swap" rel="stylesheet">
+
+        <style type="text/css">
+
+
+            .body_section{
+                grid-template-columns:1fr;
+            }
+
+            .banner_section{
+            	display:none;
+            }
+
+		    /* Custom, iPhone Retina */
+		    @media only screen and (min-width : 320px) {
+
+		    }
+
+		    /* Extra Small Devices, Phones */
+		    @media only screen and (min-width : 480px) {
+
+		    }
+
+
+		    /* Small Devices, Tablets */
+		    @media only screen and (min-width : 768px) {
+				.body_section{
+	                grid-template-columns:2fr 1fr;
+	            }
+	            .banner_section{
+	            	display:grid;
+	            }
+		    }
+
+		    /* Medium Devices, Desktops */
+		    @media only screen and (min-width : 992px) {
+				.body_section{
+	                grid-template-columns:2fr 1fr;
+	            }
+
+    	        .banner_section{
+	            	display:grid;
+	            }
+		    }
+
+		    /* Large Devices, Wide Screens */
+		    @media only screen and (min-width : 1200px) {
+				.body_section{
+	                grid-template-columns:2fr 1fr;
+	            }
+
+        	    .banner_section{
+	            	display:grid;
+	            }
+		    }
+
+          @keyframes animateScaleDown
+          {
+            0% {
+                opacity: 0;
+                transform: scale(2.2);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+          }
+
+          html .box, html .box {
+              animation: animateScaleDown 1s cubic-bezier(.1,.82,.25,1);
+          }
+
+          .hide_display{
+            display: none;
+          }
+        </style>
+
+
+    </head>
+    <body id="body" class="body_section dsd" style="background-color:#f6f6f6!important;background-size: cover;display: flex;align-items: center;justify-content: center;">
+
+
+        <div class="uk-box-shadow-small uk-box-shadow-hover-large uk-padding box" style="width:75%;display:flex;box-shadow: 0 14px 25px rgba(0,0,0,.16);max-width: 50%;padding:0px;background: #ffffff08;border-radius: 2px;">
+          <div class="uk-background-default uk-padding-large" style="flex-grow: 1;flex-basis: 50%;box-sizing: border-box;background-color: #333!important;border-radius: 10px;padding: 50px;display: flex;align-items: flex-end;justify-content: center;">
+            <div style="display: flex;align-items: center;justify-content: center;column-gap:10px;padding:5px 10px 5px 0px;border-radius:3px;">
+                <div class="section_label" style="color:#fff !important;font-family:Nunito;font-weight:bold;display: flex;align-items: center;column-gap: 0px;justify-content: center;font-size: 2.4rem;">
+                  <div style="color: #dcdcdc;padding: 0px 0px 0px 5px;border-radius:2px;font-weight: bold;">Hot</div>
+                  <div style="color: #1080ff;padding: 0px 0px 0px 5px;border-radius:2px;font-weight: bold;">Kup</div>
+                </div>
+            </div>
+          </div>
+          <div class="uk-background-default uk-padding-large" style="display:flex;box-sizing: border-box;flex-grow: 1;flex-basis: 50%;background-color: white!important;border-top-right-radius: 10px;border-bottom-right-radius: 10px;;padding: 50px;">
+                <form method="POST" action="login_process" class="uk-form-stacked" onsubmit="event.preventDefault();">
+
+
+
+                    <div class="uk-margin">
+                        <label class="uk-form-label" >Email</label>
+                        <div class="uk-inline" style="width: 100%;">
+                            <span class="uk-form-icon" uk-icon="icon: mail"></span>
+                            <input id="username" class="uk-input" style="height: 35px;border: 0px;border-bottom: 0.5px solid #c1c1c1;background: white !important;"  name="username" type="text" class="form-control" placeholder="Email"
+                                   autofocus="true">
+                        </div>
+                    </div>
+                    <div class="uk-margin">
+                        <label class="uk-form-label" >Password</label>
+                        <div class="uk-inline" style="width: 100%;">
+                            <span class="uk-form-icon" uk-icon="icon: lock"></span>
+                            <input id="password" class="uk-input" style="height: 35px;border: 0px;border-bottom: 0.5px solid #c1c1c1;background: white !important;" name="password" type="password" placeholder="Password">
+                        </div>
+                    </div>
+
+                    <div class="uk-margin">
+                        <div class="">
+                            <button onclick="processLogin()" class="uk-button uk-button-danger uk-button-small uk-width-1-1" type="submit" style="transition: 0.25s linear;padding: 5px;color: white;background: #4D81FC;border-radius: 20px;">Login</button>
+                        </div>
+                    </div>
+
+                    <div class="uk-margin hide_display" style="text-align: center;" id="error_div">
+                        <div class="uk-inline" style="color:red;background-color: white;font-size: 12px;padding: 10px;border-radius: 5px;">
+                            <span id="error"></span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <button onclick="testAjaxCall();">Test</button>
+    </div>
+
+    <script>
+
+    </script>
+
+</body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js" integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script type="text/javascript" src="resources/js/jquery/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="resources/js/uikit.min.js"></script>
+<script type="text/javascript" src="resources/js/uikit-icons.min.js"></script>
+
+	<script type="text/javascript">
+
+		$(document).ready(function() {
+
+			console.log( "ready!" );
+			$('#body').fadeIn(500).css("display","flex");
+		});
+
+
+		var getUrlParameter = function getUrlParameter(sParam) {
+		    var sPageURL = window.location.search.substring(1),
+		        sURLVariables = sPageURL.split('&'),
+		        sParameterName,
+		        i;
+
+		    for (i = 0; i < sURLVariables.length; i++) {
+		        sParameterName = sURLVariables[i].split('=');
+
+		        if (sParameterName[0] === sParam) {
+		            return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+		        }
+		    }
+		};
+
+		if(getUrlParameter('error')==="invalid-password")
+		{
+			document.getElementById("error").innerHTML = "Wrong Password !!";
+			$("#error_div").css("display",	"block");
+		}
+		else
+		{
+
+		}
+
+
+    function processLogin()
+    {
+      document.querySelector("#error_div").classList.add("hide_display");
+      const username = document.querySelector("#username").value;
+      const password = document.querySelector("#password").value;
+      console.log(username);
+
+      var formData = new FormData();
+          formData.append('username', username);
+          formData.append('password', password);
+
+      // POST request using fetch()
+      fetch("http://localhost:9090/login_process", {
+          method: "POST",
+          body: formData, // Adding body or contents to send
+      })
+      .then(response => response.json())      // Converting to JSON
+      .then(json => {
+
+
+
+          localStorage.clear();
+
+          if(json.error!=="Bad Credentials"){
+              localStorage.setItem("authToken", json.authToken);
+              localStorage.setItem("id", json.id);
+              localStorage.setItem("tid", json.tenantId);
+              localStorage.setItem("firstName", json.firstName);
+              localStorage.setItem("lastName", json.lastName);
+
+              window.location="index.html";
+              // alert("Login success");
+          }
+          else{
+            document.querySelector("#error_div").classList.remove("hide_display");
+            document.querySelector("#error").innerHTML = json.error;
+          }
+
+      });// Displaying results to console
+
+
+
+      return false;
+    }
+
+    function testAjaxCall(){
+
+      console.log(axios);
+
+      try {
+          axios.get("https://app.lazygenes.com/tasks/tasks-count-by-filters")
+            .then((dataResponse) => {
+              console.log('My Task Counts: ', dataResponse);
+
+            })
+            .catch((error) => {
+              console.error('Error while fetching my-categories-taskcounts : ', error);
+            });
+        } catch (error) {
+          console.error('Unpaginated List data fetch error : ', error);
+        }
+
+    }
+
+	</script>
+</html>

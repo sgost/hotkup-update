@@ -1,0 +1,583 @@
+<!--om-->
+
+<!DOCTYPE html>
+	<html dir="ltr" lang="en-US">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Comment Mentions</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="../../../uikit-3.2.4/css/uikit.min.css" />
+		<script src="../../../uikit-3.2.4/js/uikit.min.js"></script>
+		<script src="../../../uikit-3.2.4/js/uikit-icons.min.js"></script>
+		<style type="text/css">
+			html,body{
+				margin: auto;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				place-content: center;
+				column-gap: 50px;
+				width: 100%;
+				font-family: 'Nunito', sans-serif;
+				font-size:10px;
+			}
+
+			.hide_me{
+				display: none;
+			}
+		</style>
+
+
+		 <link href="https://fonts.googleapis.com/css?family=Allura|Dancing+Script|Great+Vibes|Niconne|Redressed|Rochester&display=swap" rel="stylesheet">
+		 <link href="https://fonts.googleapis.com/css?family=Comfortaa&display=swap" rel="stylesheet">
+
+		 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;700&display=swap" rel="stylesheet">
+
+		 <style>
+		 		#editor div {
+					border:0px solid red;
+				}
+
+				*:cfocus {
+					background: red;
+					border:10px solid black;
+				}
+
+				*:cactive {
+					background: skyblue;
+				}
+		 </style>
+
+	</head>
+	<body id="body">
+			<div >
+					Comment Mentions
+			</div>
+			<br>
+			<div style="position:relative">
+				<div contenteditable="true" id="editor" style="border:1px solid red;height:100px;width:500px;padding:20px;"></div>
+				<div style="position:absolute;" class="hide_me" id="mentionList" onclick="addMention()">Click me to insert a name</div>
+			</div>
+			<button onclick="addMention()" style="user-select:none">Add Yoyo</button>
+			<button onclick="formatContent()" style="user-select:none">formatContent</button>
+
+			<ol id="history">
+
+			</ol>
+			<div id="formattedContent" style="display:none"></div>
+			<br>
+			<div id="formattedContentText"></div>
+	</body>
+	<script type="text/javascript">
+
+				 const mentionList = document.getElementById("mentionList");
+				 const editor = document.getElementById("editor");
+
+				 function onMenuClick(){
+						 document.getElementById("menu_slider").style.left="-100%";
+				 }
+
+				 function onSubmenuClick(){
+						 document.getElementById("menu_slider").style.left="0%";
+				 }
+
+				 document.getElementById("editor").addEventListener('keydown', e => {
+
+
+
+					 if (e.key === "Shift") return false;
+
+					 // console.log(e);
+
+					 if (e.key === "@") {
+
+
+						 lastFocusNode = window.getSelection().getRangeAt(0).startContainer;
+						 console.log("lastFocusNode = ", lastFocusNode);
+						 console.log("window.getSelection() ", window.getSelection());
+						 console.log("window.getSelection().getRangeAt(0) ", window.getSelection().getRangeAt(0));
+						 lastFocusOffset = window.getSelection().getRangeAt(0).startOffset;
+						 mentionList.classList.remove("hide_me");
+						 // addMention();
+					 }
+					 else if (e.key === "Enter") {
+
+						 e.preventDefault();
+						 e.stopPropagation();
+
+						 console.log("Mention was selected by keyboard : ");//, e);
+						 addMention();
+						 // handleMentionSelection(e);
+					 }
+					 // Handle "backspace" keys to delete mentioned data
+		       else if (e.key === 'Backspace') {
+
+		         const sel = window.getSelection();
+		         const range = sel.getRangeAt(0);
+		         console.log(range); // .previousSibling.remove();
+		         // This code removes the previous "@" text [we are adding the blue colored @ along with the mentioned value]
+		         // This code below removes the last character '@' and puts the text back into the node.
+		         console.log(range);
+
+		         // Delete the mentioned node only if the range's startContainer has a 'mention-node' class.
+		         if (range.startContainer.parentElement && range.startContainer.parentElement.classList && range.startContainer.parentElement.classList.contains("mention-node")) {
+
+		             // range.startContainer.remove();
+		             console.log("element to delete is ", range.startContainer.parentElement);
+		             // range.startContainer.parentElement.remove();
+		             range.startContainer.parentElement.outerHTML = "&nbsp;";
+
+			           // reset mention search keyword.
+			           this.mentionSearchKeyword = "";
+
+			           setTimeout(() => {
+			             this.mentionedPeople = Array.from(document.querySelectorAll(".mention-node")).map(mNode => mNode.getAttribute("data-user-id"));
+			             // Since a mentioned person is removed, update the array.
+			             this.updateMentionedPeople();
+			           }, 100);
+
+
+		         }
+
+
+ 					 		formatContent();
+		         return false;
+		       }
+					 else {
+						 mentionList.classList.add("hide_me");
+					 }
+
+					 formatContent();
+
+				 });
+
+				 mentionList.addEventListener('click', e => {
+					 console.log("Mention was selected by mouseclick : ");//, e);
+					 //handleMentionSelection(e);
+				 });
+
+				 let lastFocusNode = null;
+				 let lastFocusOffset = -1;
+				 function handleMentionSelection(e){
+					 // console.log("--- mention selection will be handled here.");
+					 mentionList.classList.add("hide_me");
+					 const sel = window.getSelection();
+					 lastFocusNode = sel.focusNode;
+					 console.log(sel);
+					 console.log(lastFocusNode);
+
+					 if(sel.focusNode) {
+
+						 	if(sel.focusNode.style) {
+						 		sel.focusNode.style.border = "1px solid red";
+								console.log("focusNode is " + sel.focusNode.outerHTML);
+
+							}
+							console.log("sel " + JSON.stringify(sel));
+
+							const mentionedNodeHTML = document.createElement('span');
+			            mentionedNodeHTML.style.color = "#2196f3";
+			            mentionedNodeHTML.classList.add("mentioned");
+			            mentionedNodeHTML.classList.add("mention-node");
+			            mentionedNodeHTML.setAttribute("data-user-id", "yoyo");
+			            mentionedNodeHTML.innerHTML = "@yoyo";
+
+							let nextTextNodeAfterMentionNode = document.createElement('span');
+									nextTextNodeAfterMentionNode.classList.add('space');
+									nextTextNodeAfterMentionNode.classList.add('text-node');
+									nextTextNodeAfterMentionNode.innerHTML = "&nbsp;";
+
+									let range = sel.getRangeAt(0);
+									console.log("range : ", range);
+
+									range.collapse(false);
+
+
+		                  // If its a textnode, then insert it adjacent to the text, otherwise insert it as a siblingElement
+		                  if (range.startContainer.nodeName === "#text" && !range.startContainer.parentElement.classList.contains("space")) {
+		                    range.insertNode(nextTextNodeAfterMentionNode);
+		                    range.insertNode(mentionedNodeHTML);
+		                  }
+		                  else {
+												if(range.startContainer.nodeName !== "#text" && range.startContainer.closest("#editor") ) {
+			                    range.startContainer.parentElement.insertAdjacentElement('afterend', nextTextNodeAfterMentionNode);
+			                    range.startContainer.parentElement.insertAdjacentElement('afterend', mentionedNodeHTML);
+		                  	}
+											}
+
+									range = range.cloneRange();
+                  range.selectNodeContents(mentionedNodeHTML);
+                  range.collapse(false);
+                sel.removeAllRanges();
+                sel.addRange(range);
+					 }
+					 else {
+						 console.log("focusNode is null");
+					 }
+
+				 }
+
+
+				 function saddYoyo(){
+
+					 const mentionedNodeHTML = document.createElement('span');
+							 mentionedNodeHTML.style.color = "#2196f3";
+							 mentionedNodeHTML.classList.add("mentioned");
+							 mentionedNodeHTML.classList.add("mention-node");
+							 mentionedNodeHTML.setAttribute("data-user-id", "yoyo");
+							 mentionedNodeHTML.innerHTML = "@yoyo" + new Date().getTime();
+
+				 	 let nextTextNodeAfterMentionNode = document.createElement('span');
+								nextTextNodeAfterMentionNode.classList.add('space');
+								nextTextNodeAfterMentionNode.classList.add('text-node');
+								nextTextNodeAfterMentionNode.innerHTML = "&nbsp;";
+
+						// console.log(window.getSelection());
+						// console.log(window.getSelection().rangeCount);
+
+						if (true) { //(window.getSelection().rangeCount > 0 ) {
+
+
+							let lastChildInsideEditor = !editor.hasChildNodes()?
+																														editor :
+																														(editor.lastElementChild !== null) ? editor.lastElementChild : editor.lastChild;
+
+							// This is to find the node where the current cursor is placed while keying in the '@' key.
+							if (lastFocusNode !== null) {
+								lastChildInsideEditor = lastFocusNode;
+								console.log("using the lastFocusNode : ", lastFocusNode);
+							}
+
+							let range = document.createRange(); //window.getSelection().getRangeAt(0);
+							console.log("editor.hasChildNodes()", editor.hasChildNodes());
+							console.log("editor.lastElementChild", editor.lastElementChild);
+							console.log("editor.lastChild", editor.lastChild);
+							console.log("lastChildInsideEditor", lastChildInsideEditor);
+
+
+							if(lastFocusNode !== null && lastFocusOffset > -1) {
+								range.setStart(lastChildInsideEditor, lastFocusOffset);
+								range.setEnd(lastChildInsideEditor, lastFocusOffset);
+								console.log("range using offset", range);
+								console.log(" window.getSelection().getRangeAt(0).startOffset = ",  window.getSelection().getRangeAt(0).startOffset);
+							}
+							else if(window.getSelection().rangeCount > 0 && window.getSelection().getRangeAt(0).startOffset > 0) {
+								console.log("lastChildInsideEditor", lastChildInsideEditor);
+								console.log("window.getSelection().getRangeAt(0) = ", window.getSelection().getRangeAt(0));
+								console.log("window.getSelection().getRangeAt(0).startOffset = ", window.getSelection().getRangeAt(0).startOffset);
+								range.setStart(lastChildInsideEditor, window.getSelection().getRangeAt(0).startOffset-2);
+								range.setEnd(lastChildInsideEditor, window.getSelection().getRangeAt(0).startOffset-2);
+								console.log("range using current window.getSelection().getRangeAt(0).startOffset ", range);
+								console.log(" window.getSelection().getRangeAt(0).startOffset = ",  window.getSelection().getRangeAt(0).startOffset);
+							}
+							else {
+								console.log("range with 0 offset ", range);
+								range.setStart(lastChildInsideEditor, 0);
+								range.setEnd(lastChildInsideEditor, 0);
+							}
+
+							console.log("range.startContainer.nodeName" , range.startContainer.nodeName);
+							console.log("range.startContainer.nodeName === '#text' and 'SPAN'", (range.startContainer.nodeName === "#text" || range.startContainer.nodeName === "SPAN"));
+							console.log("!range.startContainer.parentElement.classList.contains('space')", !range.startContainer.parentElement.classList.contains("space"));
+							console.log("range.startContainer.parentElement.classList.contains('space')", range.startContainer.parentElement.classList.contains("space"));
+
+							// if (range.startContainer && range.startContainer.parentElement.closest("#editor") !== null) {
+							// 		range.insertNode(nextTextNodeAfterMentionNode);
+							// 		range.collapse(false);
+							// }
+
+							// If its a textnode, then insert it adjacent to the text, otherwise insert it as a siblingElement
+							if ( (range.startContainer.nodeName === "#text" || range.startContainer.nodeName === "SPAN") && !range.startContainer.parentElement.classList.contains("space")) {
+								// range.startContainer.parentElement.style.border = "1px solid blue";
+								// range.insertNode(nextTextNodeAfterMentionNode);
+								// range.insertNode(mentionedNodeHTML);
+								// range.startContainer.insertAdjacentElement('afterend', nextTextNodeAfterMentionNode);
+								// range.startContainer.insertAdjacentElement('afterend', mentionedNodeHTML);
+
+								range.setStartAfter(lastChildInsideEditor);
+								range.insertNode(nextTextNodeAfterMentionNode);
+								range.insertNode(mentionedNodeHTML);
+
+								console.log("IF 1");
+							}
+							else if ( (range.startContainer.nodeName === "#text" || range.startContainer.nodeName === "SPAN") && range.startContainer.parentElement.classList.contains("space")) {
+								range.startContainer.parentElement.style.border = "1px solid green";
+								range.startContainer.parentElement.insertAdjacentElement('afterend', nextTextNodeAfterMentionNode);
+								range.startContainer.parentElement.insertAdjacentElement('afterend', mentionedNodeHTML);
+								console.log("IF 2");
+							}
+							else {
+								editor.appendChild(mentionedNodeHTML);
+								editor.appendChild(nextTextNodeAfterMentionNode);
+								console.log("IF 3");
+							}
+
+							// range.collapse(false);
+							// console.log(range.endContainer.nextElementSibling);
+							console.log(editor.lastElementChild);
+							nextTextNodeAfterMentionNode = editor.lastElementChild; // range.endContainer.nextElementSibling;
+							const nextRange = document.createRange();
+								nextRange.setStart(nextTextNodeAfterMentionNode, 1);
+								nextRange.setEnd(nextTextNodeAfterMentionNode, 1);
+
+							window.getSelection().removeAllRanges();
+							window.getSelection().addRange(nextRange);
+							lastFocusNode = null;
+						}
+
+				 }
+
+				 function addMention(){
+
+				 	const mentionedNodeHTML = document.createElement('span');
+				 			mentionedNodeHTML.style.color = "#2196f3";
+				 			mentionedNodeHTML.classList.add("mentioned");
+				 			mentionedNodeHTML.classList.add("mention-node");
+				 			mentionedNodeHTML.setAttribute("data-user-id", + new Date().getTime());
+				 			mentionedNodeHTML.innerHTML = "Vignesh" + new Date().getTime() + "";
+
+				 	let nextTextNodeAfterMentionNode = document.createElement('span');
+				 			 nextTextNodeAfterMentionNode.classList.add('space');
+				 			 nextTextNodeAfterMentionNode.classList.add('text-node');
+				 			 nextTextNodeAfterMentionNode.innerHTML = "&nbsp;";
+
+					 let nextTextNodeAfterMentionNode2 = document.createElement('span');
+ 				 			 nextTextNodeAfterMentionNode2.classList.add('space');
+ 				 			 nextTextNodeAfterMentionNode2.classList.add('text-node');
+ 				 			 nextTextNodeAfterMentionNode2.innerHTML = "";
+
+				 	 // console.log(window.getSelection());
+				 	 // console.log(window.getSelection().rangeCount);
+
+				 	 if (true) { //(window.getSelection().rangeCount > 0 ) {
+
+
+						 let hasChildNodes = editor.hasChildNodes();
+				 		 let lastChildInsideEditor = !editor.hasChildNodes()?
+				 																									 editor :
+				 																									 (editor.lastElementChild !== null) ? editor.lastElementChild : editor.lastChild;
+
+				 		 // This is to find the node where the current cursor is placed while keying in the '@' key.
+				 		 if (lastFocusNode !== null) {
+				 			 lastChildInsideEditor = lastFocusNode;
+				 			 console.log("using the lastFocusNode : ", lastFocusNode);
+				 		 }
+
+
+						 // Handle the case when there is no children inside editor  (CASE 1)
+						 if(!hasChildNodes) {
+							 editor.appendChild(mentionedNodeHTML);
+							 editor.appendChild(nextTextNodeAfterMentionNode);
+							 console.log("Appended as the first child to editor.");
+							 const action = document.createElement('li');
+							 		   action.innerHTML = "CASE 1 - appended as the first child to editor";
+							 document.getElementById("history").appendChild(action);
+
+						 }
+						 else if(hasChildNodes) { // CASE 2 - If there are child nodes inside the editor.
+
+							 		// Case 2A - If there is a lastFocusNode indicating the location where '@' key was pressed.
+									// Case 2B -
+
+									if(lastFocusNode !== null && lastFocusOffset > -1) {
+
+										lastChildInsideEditor = lastFocusNode;
+										console.log("Inserting at location " + lastFocusOffset + " in the node ", lastChildInsideEditor);
+										let range = document.createRange();
+												range.setStart(lastChildInsideEditor, lastFocusOffset);
+				 				 			  range.setEnd(lastChildInsideEditor, lastFocusOffset);
+												console.log("range at which to insert new nodes : ", range);
+
+												// editor.appendChild(mentionedNodeHTML);
+				 							  // editor.appendChild(nextTextNodeAfterMentionNode);
+
+												range.insertNode(nextTextNodeAfterMentionNode2);
+												range.insertNode(nextTextNodeAfterMentionNode);
+				 				 			 	range.insertNode(mentionedNodeHTML);
+
+
+												// range.startContainer.textContent = range.startContainer.textContent.substring(1, (range.startContainer.textContent.length - 1 - 1));
+												// range.startContainer.previousSibling.textContent = range.startContainer.previousSibling.textContent.substring(0, (range.startContainer.previousSibling.textContent.length - 1 - 1));
+
+
+										lastFocusNode = null;
+										lastFocusOffset = -1;
+
+										nextTextNodeAfterMentionNode = mentionedNodeHTML.nextSibling; // range.endContainer.nextElementSibling;
+										console.log("nextTextNodeAfterMentionNode.previousSibling ", nextTextNodeAfterMentionNode.previousSibling.previousSibling);
+										console.log("nextTextNodeAfterMentionNode.previousSibling.textContent = '" + nextTextNodeAfterMentionNode.previousSibling.previousSibling.textContent + "'");
+										console.log("nextTextNodeAfterMentionNode.previousSibling.textContent after removing @ = '" + nextTextNodeAfterMentionNode.previousSibling.previousSibling.textContent.substring(0, (nextTextNodeAfterMentionNode.previousSibling.previousSibling.textContent.length - 0 - 1)) + "'");
+										// nextTextNodeAfterMentionNode.previousSibling.previousSibling.textContent = nextTextNodeAfterMentionNode.previousSibling.previousSibling.textContent.substring(0, (nextTextNodeAfterMentionNode.previousSibling.previousSibling.textContent.length - 0 - 1));
+
+										console.log("nextTextNodeAfterMentionNode.nextSibling ", nextTextNodeAfterMentionNode.nextSibling);
+										console.log("nextTextNodeAfterMentionNode.nextSibling.textContent = '" + nextTextNodeAfterMentionNode.nextSibling.textContent + "'");
+										console.log("nextTextNodeAfterMentionNode.nextSibling.textContent after removing @ = '" + nextTextNodeAfterMentionNode.nextSibling.textContent.substring(1, (nextTextNodeAfterMentionNode.nextSibling.textContent.length - 0 - 1)) + "'");
+										nextTextNodeAfterMentionNode.nextSibling.nextSibling.nextSibling.nextSibling.textContent = nextTextNodeAfterMentionNode.nextSibling.textContent.substring(1, (nextTextNodeAfterMentionNode.nextSibling.textContent.length - 0 - 1));
+										// nextTextNodeAfterMentionNode.nextSibling.nextSibling.textContent = "abc";
+										// alert(nextTextNodeAfterMentionNode.nextSibling.nextSibling.nextSibling.nextSibling.textContent);
+
+										const nextRange = document.createRange();
+				 				 			 nextRange.setStartAfter(nextTextNodeAfterMentionNode2);
+											 console.log("nextRange : ", nextRange);
+											 // nextRange.startContainer.textContent = nextRange.startContainer.textContent.substring(0, (nextRange.startContainer.textContent.length - 1 - 1));
+
+					 				 		 window.getSelection().removeAllRanges();
+					 				 		 window.getSelection().addRange(nextRange);
+
+
+											 const action = document.createElement('li');
+											 		   action.innerHTML = "CASE2A";
+											 document.getElementById("history").appendChild(action);
+
+									}
+									else {
+										console.log("No range data to insert.");
+									}
+
+						 }
+
+						 return false;
+
+
+				 		 let range = document.createRange(); //window.getSelection().getRangeAt(0);
+				 		 console.log("editor.hasChildNodes()", editor.hasChildNodes());
+				 		 console.log("editor.lastElementChild", editor.lastElementChild);
+				 		 console.log("editor.lastChild", editor.lastChild);
+				 		 console.log("lastChildInsideEditor", lastChildInsideEditor);
+
+
+				 		 if(lastFocusNode !== null && lastFocusOffset > -1) {
+				 			 range.setStart(lastChildInsideEditor, lastFocusOffset);
+				 			 range.setEnd(lastChildInsideEditor, lastFocusOffset);
+				 			 console.log("range using offset", range);
+				 			 console.log(" window.getSelection().getRangeAt(0).startOffset = ",  window.getSelection().getRangeAt(0).startOffset);
+				 		 }
+				 		 else if(window.getSelection().rangeCount > 0 && window.getSelection().getRangeAt(0).startOffset > 0) {
+				 			 console.log("lastChildInsideEditor", lastChildInsideEditor);
+				 			 console.log("window.getSelection().getRangeAt(0) = ", window.getSelection().getRangeAt(0));
+				 			 console.log("window.getSelection().getRangeAt(0).startOffset = ", window.getSelection().getRangeAt(0).startOffset);
+				 			 range.setStart(lastChildInsideEditor, window.getSelection().getRangeAt(0).startOffset-2);
+				 			 range.setEnd(lastChildInsideEditor, window.getSelection().getRangeAt(0).startOffset-2);
+				 			 console.log("range using current window.getSelection().getRangeAt(0).startOffset ", range);
+				 			 console.log(" window.getSelection().getRangeAt(0).startOffset = ",  window.getSelection().getRangeAt(0).startOffset);
+				 		 }
+				 		 else {
+				 			 console.log("range with 0 offset ", range);
+				 			 range.setStart(lastChildInsideEditor, 0);
+				 			 range.setEnd(lastChildInsideEditor, 0);
+				 		 }
+
+				 		 console.log("range.startContainer.nodeName" , range.startContainer.nodeName);
+				 		 console.log("range.startContainer.nodeName === '#text' and 'SPAN'", (range.startContainer.nodeName === "#text" || range.startContainer.nodeName === "SPAN"));
+				 		 console.log("!range.startContainer.parentElement.classList.contains('space')", !range.startContainer.parentElement.classList.contains("space"));
+				 		 console.log("range.startContainer.parentElement.classList.contains('space')", range.startContainer.parentElement.classList.contains("space"));
+
+				 		 // if (range.startContainer && range.startContainer.parentElement.closest("#editor") !== null) {
+				 		 // 		range.insertNode(nextTextNodeAfterMentionNode);
+				 		 // 		range.collapse(false);
+				 		 // }
+
+				 		 // If its a textnode, then insert it adjacent to the text, otherwise insert it as a siblingElement
+				 		 if ( (range.startContainer.nodeName === "#text" || range.startContainer.nodeName === "SPAN") && !range.startContainer.parentElement.classList.contains("space")) {
+				 			 // range.startContainer.parentElement.style.border = "1px solid blue";
+				 			 // range.insertNode(nextTextNodeAfterMentionNode);
+				 			 // range.insertNode(mentionedNodeHTML);
+				 			 // range.startContainer.insertAdjacentElement('afterend', nextTextNodeAfterMentionNode);
+				 			 // range.startContainer.insertAdjacentElement('afterend', mentionedNodeHTML);
+
+				 			 range.setStartAfter(lastChildInsideEditor);
+				 			 range.insertNode(nextTextNodeAfterMentionNode);
+				 			 range.insertNode(mentionedNodeHTML);
+
+				 			 console.log("IF 1");
+				 		 }
+				 		 else if ( (range.startContainer.nodeName === "#text" || range.startContainer.nodeName === "SPAN") && range.startContainer.parentElement.classList.contains("space")) {
+				 			 range.startContainer.parentElement.style.border = "1px solid green";
+				 			 range.startContainer.parentElement.insertAdjacentElement('afterend', nextTextNodeAfterMentionNode);
+				 			 range.startContainer.parentElement.insertAdjacentElement('afterend', mentionedNodeHTML);
+				 			 console.log("IF 2");
+				 		 }
+				 		 else {
+				 			 editor.appendChild(mentionedNodeHTML);
+				 			 editor.appendChild(nextTextNodeAfterMentionNode);
+				 			 console.log("IF 3");
+				 		 }
+
+				 		 // range.collapse(false);
+				 		 // console.log(range.endContainer.nextElementSibling);
+				 		 console.log(editor.lastElementChild);
+				 		 nextTextNodeAfterMentionNode = editor.lastElementChild; // range.endContainer.nextElementSibling;
+				 		 const nextRange = document.createRange();
+				 			 nextRange.setStart(nextTextNodeAfterMentionNode, 1);
+				 			 nextRange.setEnd(nextTextNodeAfterMentionNode, 1);
+
+				 		 window.getSelection().removeAllRanges();
+				 		 window.getSelection().addRange(nextRange);
+				 		 lastFocusNode = null;
+				 	 }
+
+				 }
+
+
+				 function formatContent(){
+
+					 let editorHTML = editor.innerHTML;
+					 let formattedContent = document.getElementById("formattedContent");
+					 let formattedContentText = document.getElementById("formattedContentText");
+
+					 formattedContent.innerHTML = editor.innerHTML;
+
+					 formattedContent.querySelectorAll(".mention-node")
+									         .forEach(mentionedNode => {
+									            console.log(mentionedNode);
+									            mentionedNode.innerText = "<mention>" + mentionedNode.innerText + "</mention>";
+									         });
+					 formattedContentText.innerText = formattedContent.innerText;
+					 return false;
+
+
+					 let stringBuilder = "";
+
+					 console.log("editorHTML = " + editorHTML);
+
+					 let nextMentionIndex = editorHTML.indexOf('<span class="mentioned mention-node"');
+					 let iterationNumber = 1;
+
+					 if(nextMentionIndex > -1) {
+
+						 mentionedNodeHTMLPrefix = editorHTML.substring(0, nextMentionIndex);
+						 console.log("mentionedNodeHTMLPrefix = " + mentionedNodeHTMLPrefix);
+
+						 // Add the prefix strings before mention-span-node.
+						 stringBuilder = stringBuilder + mentionedNodeHTMLPrefix;
+					 }
+
+					 while(nextMentionIndex > -1) {
+
+						 console.log("\n" + "iterationNumber = " + iterationNumber + "\n");
+ 						 let mentionedNodeHTML = editorHTML.substring(nextMentionIndex + 1);
+						 console.log("mentionedNodeHTML = " + mentionedNodeHTML);
+
+						 let mentionBeginTagEndsAtIndex = mentionedNodeHTML.indexOf('>');
+						 let mentionEndTagBeginsAtIndex = mentionedNodeHTML.indexOf('</span>');
+
+						 let mentionedPersonLabel = mentionedNodeHTML.substring(mentionBeginTagEndsAtIndex + 1, mentionEndTagBeginsAtIndex);
+ 						 console.log("mentionedPersonLabel = ", mentionedPersonLabel);
+						 stringBuilder = stringBuilder + mentionedPersonLabel;
+
+						 editorHTML = mentionedNodeHTML.substring(mentionEndTagBeginsAtIndex + 7);  // 7 = length of string '</span>' that needs to be ignored for next fragment.
+						 nextMentionIndex = mentionedNodeHTML.indexOf('<span class="mentioned mention-node"');
+						 console.log(stringBuilder);
+						 console.log("\n");
+						 ++iterationNumber;
+					 }
+
+
+					 formattedContent.innerHTML = stringBuilder;
+				 }
+
+	 </script>
+</html>

@@ -1,0 +1,230 @@
+<!--om-->
+
+<!DOCTYPE html>
+	<html dir="ltr" lang="en-US">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Context Menu navigation</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="../../../uikit-3.2.4/css/uikit.min.css" />
+		<script src="../../../uikit-3.2.4/js/uikit.min.js"></script>
+		<script src="../../../uikit-3.2.4/js/uikit-icons.min.js"></script>
+		<style type="text/css">
+			html,body{
+				margin: auto;
+				display: flex;
+				align-items: center;
+				place-content: center;
+				height: 100vh;
+				column-gap: 50px;
+				width: 100%;
+				font-family: 'Nunito', sans-serif;
+				font-size:20px;
+			}
+
+			.main{
+				display:grid;
+				grid-template-columns:1fr 1fr 1fr;
+				align-items:center;
+				justify-items:center;
+				/*font-family: 'Comfortaa', cursive;*/
+				font-family: 'Nunito', sans-serif;
+				font-size:20px;
+				padding: 50px;
+			}
+
+			.categories > div{
+				grid-template-rows: 50px auto;
+			}
+
+			.menu_container{
+				position: relative;
+				width:300px;
+				height:400px;
+				background: #f0f0f0;
+				color:#333;
+				box-sizing: border-box;
+				overflow-x: hidden;
+			}
+
+			.menu_slider{
+				position: absolute;
+				display: flex;
+				flex-direction: row;
+				left : 0px;
+				transition: 0.25s linear;
+				width: 100%;
+				box-sizing: border-box;
+			}
+
+			.menu{
+				background: yellow;
+				display: flex;
+				flex-direction: column;
+				min-width: 100%;
+				border:0px solid red;
+				box-sizing: border-box;
+			}
+
+			.submenu{
+				background: greenyellow;
+				display: flex;
+				flex-direction: column;
+				min-width: 100%;
+				border:0px solid black;
+				box-sizing: border-box;
+			}
+
+			.menu_fixed_height{
+				height:300px;
+				overflow-y: overlay;
+			}
+
+			ol > li > a{
+				cursor: pointer;
+				padding:5px;
+				line-height: 30px;
+			}
+
+			.moveUp{
+				transform: translateY(-75px);
+			}
+			.moveDown{
+				transform: translateY(75px);
+			}
+
+
+			/* Custom scrollbar style - To be moved to style.css */
+			.custom-scroll-bar::-webkit-scrollbar {
+			    width: 10px;
+			    background-color: transparent;
+			    scroll-behavior: smooth;
+			    cursor: pointer;
+			}
+
+			.custom-scroll-bar::-webkit-scrollbar {
+			    width: 5px;
+			    background-color: transparent;
+			}
+
+			.custom-scroll-bar::-webkit-scrollbar-thumb {
+			    background-color: #a8a8a8;
+					border-radius: 2px;
+			    background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%, transparent 75%, transparent);
+			}
+
+			.custom-scroll-bar::-webkit-scrollbar-track {
+			    /* -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); */
+			    background-color: #f3f3f3;
+			}
+
+			#innerListContainer{
+				list-style-type: none;
+			}
+
+			#innerListContainer li{
+					border-bottom:1px solid #f0f0f0;
+					min-height: 75px;
+					display: flex;
+					align-items: center;
+					justify-content: flex-start;
+					padding-left: 20px;
+					transition: 0.125s ease-out;
+			}
+
+			#innerListContainer li:active{
+					background-color: #f1f1f1 !important;
+					transform: scale(0.995);
+			}
+
+			#innerListContainer li:nth-child(even) {background: #f9f9f9}
+			#innerListContainer li:nth-child(odd) {background: #FFF}
+		</style>
+
+
+		 <link href="https://fonts.googleapis.com/css?family=Allura|Dancing+Script|Great+Vibes|Niconne|Redressed|Rochester&display=swap" rel="stylesheet">
+		 <link href="https://fonts.googleapis.com/css?family=Comfortaa&display=swap" rel="stylesheet">
+
+		 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;700&display=swap" rel="stylesheet">
+
+		 <style>
+
+		 </style>
+		 <script type="text/javascript">
+
+
+		 				function onMenuClick(){
+								document.getElementById("menu_slider").style.left="-100%";
+						}
+
+						function onSubmenuClick(){
+								document.getElementById("menu_slider").style.left="0%";
+						}
+
+ 			</script>
+	</head>
+	<body id="body">
+			<div style="display:flex;width:100%;height: 100%;overflow-y: hidden;">
+					<div id="elastic_scroll" class="menu_fixed_height custom-scroll-bar" style="border: 2px solid #dedede;min-width:200px;width: 100%;height: 100%;padding: 0px 0px;overflow-y:scroll;">
+							<ul id="innerListContainer" style="transition: 0.25s ease-out;margin: 0px;left: 0px;padding: 0px;width: 100%;">
+									<li><a onclick="onSubmenuClick()">Submenu 1</a></li>
+									<li><a onclick="onSubmenuClick()">Submenu 2</a></li>
+									<li><a onclick="onSubmenuClick()">Submenu 3</a></li>
+									<li><a onclick="onSubmenuClick()">Submenu 4</a></li>
+									<li><a onclick="onSubmenuClick()">Submenu 2</a></li>
+									<li><a onclick="onSubmenuClick()">Submenu 3</a></li>
+									<li><a onclick="onSubmenuClick()">Submenu 4</a></li>
+									<li><a onclick="onSubmenuClick()">Submenu 2</a></li>
+									<li><a onclick="onSubmenuClick()">Submenu 3</a></li>
+									<li><a onclick="onSubmenuClick()">Submenu 4</a></li>
+									<li><a onclick="onSubmenuClick()">Submenu 2</a></li>
+									<li><a onclick="onSubmenuClick()">Submenu 3</a></li>
+									<li><a onclick="onSubmenuClick()">Submenu 4</a></li>
+									<li><a onclick="onSubmenuClick()">Submenu 2</a></li>
+									<li><a onclick="onSubmenuClick()">Submenu 3</a></li>
+									<li><a onclick="onSubmenuClick()">Submenu 4</a></li>
+									<li><a onclick="onSubmenuClick()">Submenu 2</a></li>
+									<li><a onclick="onSubmenuClick()">Submenu 3</a></li>
+									<li><a onclick="onSubmenuClick()">Submenu 4</a></li>
+									<li><a onclick="onSubmenuClick()">Submenu 2</a></li>
+									<li><a onclick="onSubmenuClick()">Submenu 3</a></li>
+									<li><a onclick="onSubmenuClick()">Submenu 500</a></li>
+							</ul>
+					</div>
+			</div>
+
+	</body>
+
+	<script type="text/javascript">
+
+			let list = document.querySelector("#innerListContainer");
+
+			let handleScroll = (e) => {
+						// console.log(e);
+						// console.log(e.target.scrollTop , e.target.clientHeight, e.target.scrollHeight);
+
+						if ((e.target.scrollTop + e.target.clientHeight) >= e.target.scrollHeight) {
+							console.log("\t Scroll reached the end formula : (e.target.scrollTop + e.target.clientHeight) >= e.target.scrollHeight");
+							console.log("\t Scroll reached the end : ", e.target.scrollTop , e.target.clientHeight, e.target.scrollHeight);
+							list.classList.add("moveUp");
+							setTimeout(() => list.classList.remove("moveUp"), 150);
+						}
+
+						if (e.target.scrollTop === 0) {
+							console.log("\t Scroll reached the top : ", e.target.scrollTop , e.target.clientHeight, e.target.scrollHeight);
+							list.classList.add("moveDown");
+							setTimeout(() => list.classList.remove("moveDown"), 150);
+						}
+			};
+
+
+			document.getElementById("elastic_scroll")
+							.addEventListener('scroll', handleScroll);
+
+
+
+	</script>
+</html>

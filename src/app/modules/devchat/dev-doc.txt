@@ -1,0 +1,165 @@
+// IMPORTS
+
+import {
+  RSocketClient,
+  JsonSerializer,
+  IdentitySerializer,
+  JsonSerializers,
+  BufferEncoders,
+  encodeAndAddCustomMetadata,
+  encodeAndAddWellKnownMetadata,
+  TEXT_PLAIN,
+  MESSAGE_RSOCKET_COMPOSITE_METADATA,
+  MESSAGE_RSOCKET_ROUTING
+} from 'rsocket-core';
+import RSocketWebSocketClient from 'rsocket-websocket-client';
+
+// VARIABLES
+
+sender: null,
+rsocket: {},
+msgs: []
+
+// FUNCTIONS
+
+connectToSocket () {
+    // connect-to-chat-channel
+    // get-number-of-connected-clients  --> number-of-connected-clients
+    // send-message-to-chat-channel   --> new-msg-update
+
+    // private String message;
+    // private String status;
+    // private String name;
+
+    const _this = this;
+    let socketAddress = 'ws://' + window.location.hostname + ':9000/rsocket';
+
+    if (window.location.hostname.includes('lazygenes.com')) {
+      socketAddress = 'wss://rt.lazygenes.com/rsocket';
+    }
+
+    const addr = document.querySelector("#socketAddress").value;
+    if (addr.trim() !== "") {
+      socketAddress = addr;
+    }
+
+    console.log('connecting rocket...' + socketAddress);
+
+    const client = new RSocketClient({
+      transport: new RSocketWebSocketClient({
+        url: socketAddress
+      }),
+      serializers: { // send/receive JSON objects instead of strings/buffers
+        data: JsonSerializer,
+        metadata: IdentitySerializer
+      },
+      setup: {
+        dataMimeType: 'application/json',
+        keepAlive: 3600000, // 3600000 = 8hrs  // When this time elapses without any data, then server throws this exception :: io.rsocket.exceptions.ConnectionErrorException: No keep-alive acks for 100000 ms
+        lifetime: 3600000,
+        metadataMimeType: 'message/x.rsocket.routing.v0'
+      },
+      responder: {
+        fireAndForget: (payload) => {
+
+          if (payload.metadata == 'new-msg-update') {
+            this.processMessageFromServer(payload);
+          }
+          else if (payload.metadata === 'number-of-connected-clients')
+          {
+            // update the connected clients count.
+            this.handleNumberOfConnectedClientsResponse();
+          }
+          else {
+            console.log("Unknown type returned from server");
+            this.handleUnknownResponse();
+          }
+        }
+      }
+    });
+
+    return new Promise((resolve, reject) => {
+      client.connect().subscribe({
+        onComplete: socket => {
+          console.log('connected socket : ', socket);
+          console.log('connected socket : ', socket.connectionStatus());
+          this.socket = socket;
+          resolve('rsocket-connected.');
+        },
+        onError: error => {
+          console.log('got connection error');
+          console.error(error);
+          reject('rsocket-connection error');
+        },
+        onSubscribe: subscription => {
+          // call subscription.cancel() to abort
+          console.log("client.connect().subscribe's onSubscribe : ", subscription);
+        }
+      });
+    });
+},
+
+
+connectToChatChannel () {
+
+  const socket = this.socket;
+  const route = 'connect-to-chat-channel';
+
+  console.log('socket availability : ' + socket.availability());
+  console.log('socket connectionStatus : ' + socket.connectionStatus());
+
+  const requestResponseData = {
+    metadata: String.fromCharCode(route.length) + route,
+    data: { userId: this.loggedInUser.userId }
+  };
+
+  const handleRSocketResponse = (response) => {
+    console.log("RSocket's notification socket sent complete response : ", response);
+    document.querySelector("#chatbox").classList.remove("hidden");
+  };
+
+  socket.requestResponse(requestResponseData)
+    .subscribe({
+      onSubscribe: sub => {
+        console.log('Chat-channel subscription successful ', sub);
+      },
+      onComplete: response => handleRSocketResponse(response), // This will be called when the data upstream is all sent.
+      onError: error => console.error(error) //
+    });
+},
+sendMessageToChatChannel () {
+
+  const msg = document.querySelector("#msg").value;
+
+  const socket = this.socket;
+  const route = 'send-message-to-chat-channel';
+
+  console.log('socket availability : ' + socket.availability());
+  console.log('socket connectionStatus : ' + socket.connectionStatus());
+
+  const requestResponseData = {
+    metadata: String.fromCharCode(route.length) + route,
+    data: {
+      message: this.sender + " : " + msg,
+      name: this.sender
+    }
+  };
+
+  const handleRSocketResponse = (response) => {
+    console.log("RSocket's chat-channel-send complete response : ", response);
+    document.querySelector("#msg").value = "";
+  };
+
+  socket.requestResponse(requestResponseData)
+    .subscribe({
+      onSubscribe: sub => {
+        console.log('Chat-channel msg sent ', sub);
+      },
+      onComplete: response => handleRSocketResponse(response), // This will be called when the data upstream is all sent.
+      onError: error => console.error(error) //
+    });
+},
+processMessageFromServer (payload) {
+  console.log("Payload from server : ", payload);
+  this.msgs.push(payload.data.title);
+}

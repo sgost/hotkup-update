@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en-US" prefix="og: https://ogp.me/ns#">
+  <head>Play with HTML selection</head>
+  <body>
+    <div id="root" style="display:grid;place-items:center;height:100vh;">
+        <div contenteditable="true" id="mytext" style="padding:5px;outline:none;border:1px solid red; width:400px;height:100px">
+          select the texts within <span style="color:red">input1</span> and <span style="color:red">input2</span> element
+        </div>
+        <button onclick="selectText()">Select</button>
+        <button onclick="goToEnd()">goToEnd</button>
+        <button onclick="focusLast()">focusLast</button>
+        <button onclick="selectByRange()">selectByRange</button>
+        <button onclick="insertRedNode()">insertRedNode</button>
+        <button onclick="clearSelectedText()">Clear</button>
+    </div>
+
+    <script type="text/javascript">
+
+        var myText = document.querySelector("#mytext");
+
+        function selectText(){
+          let selection = window.getSelection();
+          console.log("selection : ", selection);
+          myText.select();
+        }
+
+        function clearSelectedText(){
+          let selection = window.getSelection();
+              selection.removeAllRanges();
+        }
+
+        function goToEnd(){
+
+          let node = document.createElement('span');
+              node.innerHTML = "insertedText";
+              node.style.color = "red";
+
+            var sel = window.getSelection();
+
+            if (sel.rangeCount) {
+              var range = sel.getRangeAt(0);
+              console.log("sel : ", sel.toString());
+              console.log("range : ", range );
+              range.collapse(false);
+              range.insertNode(node);
+              range = range.cloneRange();
+              range.selectNodeContents(node);
+              range.collapse(false);
+              sel.removeAllRanges();
+              sel.addRange(range);
+          }
+        }
+
+        function focusLast(){
+
+          console.log("myText.hasChildNodes() : ", myText.hasChildNodes());
+
+          if (myText.hasChildNodes()) { // if the element is not empty
+
+            const s = window.getSelection(); console.log("window.getSelection() : ", window.getSelection());
+            const r = document.createRange();
+
+            console.log("myText.childElementCount : ", myText.childElementCount);
+            console.log("myText.lastChild : ", myText.lastChild);
+            console.log("myText : ", myText);
+            const e = myText.childElementCount > 0 ? myText.lastChild : myText;
+            console.log("e : ", e);
+
+            r.setStart(e, 1);
+            r.setEnd(e, 1);
+            s.removeAllRanges();
+            s.addRange(r);
+            myText.focus();
+          }
+        }
+
+
+        function selectByRange(){
+
+          console.log("myText.childNodes : ", myText.childNodes);
+
+          let sel = window.getSelection();
+          let r = document.createRange();
+          r.setStart(myText, 0);  // start from the 3rd childNode   (2 is index of the 3rd childNode)
+          r.setEnd(myText, 0);    // end before the 4th childNode
+          sel.addRange(r);
+        }
+
+        function insertRedNode(){
+
+          let sel = window.getSelection();
+          if(sel.rangeCount)
+          {
+             let range = sel.getRangeAt(0);
+             console.log("range : ", range);
+
+             let redNode = document.createElement('span');
+              redNode.style.color = "red";
+              redNode.style.fontStyle = "italic";
+              redNode.innerHTML = "newRedNode";
+
+              let normalTextNode1 = document.createElement('span');
+                normalTextNode1.classList.add('space');
+                normalTextNode1.innerHTML = "&nbsp;";
+
+              range.collapse(false);
+
+              // If its a textnode, then insert it adjacent to the text, otherwise insert it as a siblingElement
+              if(range.startContainer.nodeName === "#text" && !range.startContainer.parentElement.classList.contains("space")){
+                range.insertNode(normalTextNode1);
+                range.insertNode(redNode);
+              }
+              else{
+                range.startContainer.parentElement.insertAdjacentElement('afterend', normalTextNode1);
+                range.startContainer.parentElement.insertAdjacentElement('afterend', redNode);
+              }
+
+              range = range.cloneRange();
+              range.selectNodeContents(redNode);
+              range.collapse(false);
+
+              sel.removeAllRanges();
+              sel.addRange(range);
+
+              normalTextNode1 = range.endContainer.nextElementSibling;
+                let r2 = document.createRange();
+                r2.setStart(normalTextNode1, 1);
+                r2.setEnd(normalTextNode1, 1);
+
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(r2);
+          }
+
+        }
+    </script>
+  </body>
+</html>

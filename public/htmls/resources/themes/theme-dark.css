@@ -1,0 +1,21 @@
+
+/************* DARK THEME **************/
+
+
+.activity_background_dark{
+  position: absolute;
+  inset: 0px;
+  /*
+  background-image: url('https://images.pexels.com/photos/317356/pexels-photo-317356.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260');
+  background-image: url('https://i2.wp.com/files.123freevectors.com/wp-content/original/131382-abstract-grey-and-white-polygon-pattern-background-illustration.jpg?w=800&q=95');
+  background-image: url('https://image.freepik.com/free-vector/white-abstract-background_23-2148810113.jpg');
+  background-image: url('https://images.pexels.com/photos/317356/pexels-photo-317356.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260');
+  */
+  background-image: url('/resources/images/pexels-lukas-317356.jpg');
+  background-size: cover;
+  /* filter: blur(0px) opacity(0.5) brightness(0.95);
+  filter: blur(3px) opacity(0.25) brightness(1);
+  filter: blur(0px) opacity(0.25) brightness(1); */
+  filter: blur(0px) opacity(0.35) brightness(0.95);
+  z-index: 0;
+}

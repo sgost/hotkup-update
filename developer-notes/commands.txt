@@ -1,0 +1,3 @@
+npm run serve
+
+npm run build && cp -r ./dist/* ./public/resources/js/plugins/app/ && notify-send "TaskOne App Compiled.." "Vue files compiled and Updated in TaskOne app"

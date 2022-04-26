@@ -1,0 +1,49 @@
+cd /adk_java/TaskOne Projects/SpringWorkspace/HotKup-Apps/hotkup-ui
+
+$ clear && npm run serve
+$ clear && npm run lint --fix
+
+VUE COMPILATION FOR PRODUCTION
+------------------------------
+Step 1. Rename vue.config.js.prod -> vue.config.js
+
+Step 2.
+	npm run build && cp -r ./dist/* ./public/resources/js/plugins/app/ && notify-send "TaskOne App Compiled.." "Vue files compiled and Updated in TaskOne app"
+
+Step 3.
+	Copy the compiled vue-files from local to production. (Manually)
+		From : /adk_java/TaskOne Projects/SpringWorkspace/HotKup-Apps/hotkup-ui/public/resources/js/plugins/app
+		To   : /adk_java/TaskOne Projects/AWS Documents/vue_compiled_files/app
+
+Step 4.
+	Copy the files from dev-machine to production-machine
+
+		scp -r -i taskone-aws-keypair-dec10-2020.pem vue_compiled_files/app/  ubuntu@3.97.28.205:/home/ubuntu/webapp-ui/htmls/resources/js/plugins/
+		scp -r -i taskone-aws-keypair-dec10-2020.pem vue_compiled_files/admin/  ubuntu@3.97.28.205:/home/ubuntu/webapp-ui/htmls/resources/js/plugins/
+		scp -r -i taskone-aws-keypair-dec10-2020.pem vue_compiled_files/businessbench/  ubuntu@3.97.28.205:/home/ubuntu/webapp-ui/htmls/resources/js/plugins/
+
+
+		scp -r -i taskone-aws-keypair-dec10-2020.pem htmls/resources/themes/   ubuntu@3.97.28.205:/home/ubuntu/webapp-ui/htmls/resources
+		scp -r -i taskone-aws-keypair-dec10-2020.pem htmls/resources/images/glyph.png   ubuntu@3.97.28.205:/home/ubuntu/webapp-ui/htmls/resources/images/
+		scp -r -i taskone-aws-keypair-dec10-2020.pem htmls/resources/audio/   ubuntu@3.97.28.205:/home/ubuntu/webapp-ui/htmls/resources
+		scp -r -i taskone-aws-keypair-dec10-2020.pem htmls/resources/js/fullcalendar/  ubuntu@3.97.28.205:/home/ubuntu/webapp-ui/htmls/resources/js/
+
+
+		scp -i taskone-aws-keypair-dec10-2020.pem taskone-0.0.1-SNAPSHOT.jar ubuntu@3.97.28.205:.
+		scp -i taskone-aws-keypair-dec10-2020.pem taskone-mobile-0.0.1-SNAPSHOT.jar  ubuntu@3.97.28.205:.
+		scp -i taskone-aws-keypair-dec10-2020.pem taskone_scheduler-0.0.1-SNAPSHOT.jar   ubuntu@3.97.28.205:.
+
+		scp -r -i taskone-aws-keypair-dec10-2020.pem htmls/login.html    ubuntu@3.97.28.205:/home/ubuntu/webapp-ui/htmls/
+		scp -r -i taskone-aws-keypair-dec10-2020.pem htmls/secured/app.html   ubuntu@3.97.28.205:/home/ubuntu/webapp-ui/htmls/secured/
+		scp -r -i taskone-aws-keypair-dec10-2020.pem htmls/secured/businessbench.html   ubuntu@3.97.28.205:/home/ubuntu/webapp-ui/htmls/secured
+
+		Copy backups from production to dev-machine(like bash history of production)
+		scp -r -i taskone-aws-keypair-dec10-2020.pem ubuntu@3.97.28.205:/home/ubuntu/for_developers AWS_Server_Files/
+
+
+
+UPDATE JDK-11  AND SWITCHING VERSIONS
+-------------------------------------
+sudo apt-get install openjdk-11-jdk
+java -version
+sudo update-alternatives --config java

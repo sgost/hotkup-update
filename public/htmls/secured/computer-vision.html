@@ -1,0 +1,108 @@
+<!--om-->
+
+<!DOCTYPE html>
+	<html dir="ltr" lang="en-US">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Computer Vision - Detecting red color pixel location in camera.</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="../../../uikit-3.2.4/css/uikit.min.css" />
+		<script src="../../../uikit-3.2.4/js/uikit.min.js"></script>
+		<script src="../../../uikit-3.2.4/js/uikit-icons.min.js"></script>
+		<style type="text/css">
+			html,body{
+				margin:0px;
+			}
+
+			.main{
+				display:grid;
+				grid-template-columns:1fr 1fr 1fr;
+				align-items:center;
+				justify-items:center;
+				/*font-family: 'Comfortaa', cursive;*/
+				font-family: 'Nunito', sans-serif;
+				font-size:15px;
+				padding: 50px;
+			}
+
+			.categories > div{
+				grid-template-rows: 50px auto;
+			}
+
+		</style>
+
+
+			<link href="https://fonts.googleapis.com/css?family=Allura|Dancing+Script|Great+Vibes|Niconne|Redressed|Rochester&display=swap" rel="stylesheet">
+		 <link href="https://fonts.googleapis.com/css?family=Comfortaa&display=swap" rel="stylesheet">
+
+		 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;700&display=swap" rel="stylesheet">
+
+		 <style>
+				#video_player {
+				    width: 450px;
+				    height: 300px;
+				    background-color: #666;
+						transform: rotateX(180deg) rotateY(180deg);
+				}
+				#canvas, #canvas2, #canvas3  {
+			    width: 450px;
+			    height: 300px;
+				  background-color: #666;
+					transform: rotateX(180deg) rotateY(180deg);
+				}
+
+				#canvas3  {
+			    width: 450px;
+			    height: 300px;
+				  background-color: #f0f0f0;
+					transform: rotateX(180deg) rotateY(180deg);
+				}
+		 </style>
+	</head>
+	<body id="body">
+
+		<div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; bottom: #transparent-sticky-navbar">
+			<nav class="uk-navbar-container uk-margin navbar-custom" uk-navbar>
+				    <div class="uk-navbar-left">
+							<a class="uk-navbar-item uk-logo logo" href="#">
+								<span style="position:relative">
+									<span style="border-bottom: 1px solid #666;top: 37px;position: absolute;width: 100%;"></span>
+									Computer Vision
+								</span>
+							</a>
+				    </div>
+			</nav>
+		</div>
+		<div class="container">
+
+
+					<button id="close" onclick="stop()">stop socket</button>
+
+		</div>
+		<script type="text/javascript">
+
+					var websocket = null;
+					document
+						.getElementById('close')
+						.addEventListener('click', function (evt) {
+								evt.preventDefault();
+								websocket.close();
+								return false;
+						});
+
+					window.addEventListener('load', function (e) {
+						websocket = new WebSocket('ws://localhost:8080/ws/echo');
+						websocket.addEventListener('message', function (e) {
+								var msg = e.data;
+								console.log("websocket msg : ", msg);
+								websocket.send(msg + ' reply');
+						});
+					});
+
+		</script>
+		 <script src="https://kit.fontawesome.com/a95b866379.js" crossorigin="anonymous"></script>
+	</body>
+</html>

@@ -1,0 +1,155 @@
+
+/* Custom, iPhone Retina */
+
+/* Extra Small Devices, Phones */
+@media only screen and (min-width : 480px) {
+  body{
+    font-size: 13px;
+  }
+  .desktop_container{
+    width:100%;display:grid;grid-template-columns:1fr;grid-gap:20px;overflow-y: hidden;
+  }
+  .recent_conferences_list{
+    display:none;
+  }
+  .work_feed{
+    padding: 0px;width: 100%;display: grid;grid-template-columns: 1fr;gap: 0px;overflow-y: hidden;
+  }
+  .work_feed > div{
+    padding: 20px;display: grid;grid-template-rows: 40px 1fr;overflow-y: hidden;
+  }
+  .uk-card-title{
+    font-size: 11px;
+  }
+  .uk-text-meta {
+    font-size: 10px;
+  }
+  .section_label {
+    font-size: 12px;
+  }
+  .ui_grid_header{
+    font-size: 9px;
+  }
+  .ui_grid_row {
+    transition: all 0.2s linear;
+    font-size: 10px;
+  }
+  .uk-form-small {
+    font-size: 13px;
+  }
+  .search_box{
+    height: 25px !important;
+  }
+  .ui_button_status_update{
+    line-height: 24px !important;
+    font-size: 9px !important;
+  }
+}
+
+/* Small Devices, Tablets */
+@media only screen and (min-width : 768px) {
+  	body{
+      font-size: 13px;
+    }
+    .desktop_container{
+      width:100%;display:grid;grid-template-columns:1fr 1fr;grid-gap:20px;overflow-y: hidden;
+    }
+    .recent_conferences_list{
+      padding:0px 0px;width: 100%;display:grid;grid-template-columns:1fr;grid-gap:0px;overflow-y: hidden;
+    }
+    .recent_conferences_list > div{
+      padding: 20px 0px 20px 50px;display: grid;grid-template-rows: 40px 1fr;overflow-y: hidden;
+    }
+    .work_feed{
+      background: #fafafa;
+      padding: 0px;width: 100%;display: grid;grid-template-columns: 1fr;gap: 0px;overflow-y: hidden;
+    }
+    .work_feed > div{
+      padding: 20px 50px 20px 20px;display: grid;grid-template-rows: 40px 1fr;overflow-y: hidden;
+    }
+    .uk-card-title{
+      font-size: 11px;
+    }
+    .uk-text-meta {
+      font-size: 10px;
+    }
+    .section_label {
+      font-size: 12px;
+    }
+    .ui_grid_header{
+      font-size: 9px;
+    }
+    .ui_grid_row {
+      transition: all 0.2s linear;
+      font-size: 10px;
+    }
+    .uk-form-small {
+      font-size: 11px;
+    }
+    .search_box{
+      height: 25px !important;
+    }
+    .ui_button_status_update{
+      line-height: 24px !important;
+      font-size: 9px !important;
+    }
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (min-width : 992px) {
+  body{
+    font-size: 13px;
+  }
+  .desktop_container{
+    width:100%;display:grid;grid-template-columns:1fr 1fr;grid-gap:20px;overflow-y: hidden;
+  }
+  .recent_conferences_list{
+    padding:0px 0px;width: 100%;display:grid;grid-template-columns:1fr;grid-gap:0px;overflow-y: hidden;
+  }
+  .recent_conferences_list > div{
+    padding: 20px 0px 20px 50px;display: grid;grid-template-rows: 40px 1fr;overflow-y: hidden;
+  }
+  .work_feed{
+    background: #fafafa;
+    padding: 0px;width: 100%;display: grid;grid-template-columns: 1fr;gap: 0px;overflow-y: hidden;
+  }
+  .work_feed > div{
+    padding: 20px 50px 20px 20px;display: grid;grid-template-rows: 40px 1fr;overflow-y: hidden;
+  }
+  .uk-card-title{
+    font-size: 11px;
+  }
+  .uk-text-meta {
+    font-size: 10px;
+  }
+  .section_label {
+    font-size: 12px;
+  }
+  .ui_grid_header{
+    font-size: 9px;
+  }
+  .ui_grid_row {
+    transition: all 0.2s linear;
+    font-size: 10px;
+  }
+  .uk-form-small {
+    font-size: 11px;
+  }
+  .search_box{
+    height: 25px !important;
+  }
+  .ui_button_status_update{
+    line-height: 24px !important;
+    font-size: 9px !important;
+  }
+}
+
+/* Large Devices, Wide Screens */
+@media only screen and (min-width : 1200px) {
+  body{
+
+  }
+  
+}
+
+

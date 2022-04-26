@@ -1,0 +1,20 @@
+getTaskList
+
+
+        let url = `./tasks/list/${pageNumber}/${searchQuery}`;
+
+        if (this.isCategoryFilterOn) {
+          url = `./tasks/list-by-category/${this.filterByCategoryId}/${pageNumber}/${searchQuery}`;
+        } else if (this.isTaskFilterOn) {
+          url = `./tasks/list/${pageNumber}/${searchQuery}/${this.taskFilter}`;
+        } else {
+          url = `./tasks/list/${pageNumber}/${searchQuery}`;
+        }
+
+        this.taskList.list.push(task);
+
+        if (!this.taskList.isIntersectionObserverFired) {
+          this.initLoadMoreIntersectionObserverForTaskList();
+        }
+
+        

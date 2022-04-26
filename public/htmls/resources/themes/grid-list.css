@@ -1,0 +1,31 @@
+
+.adk_grid_toolbar{
+    padding:5px 0px;display:grid;grid-template-columns:auto auto auto 1fr;
+    background:transparent !important;color: #3d3d3d !important;
+    text-transform:none;font-size: .875rem;font-weight: 400;;border-radius: 0px;
+}
+
+.adk_grid_list{
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 36px 1fr;
+  background-color: #fff;
+  xbox-shadow: 0 5px 15px rgba(0,0,0,0.08);
+  border: 0.01em solid #dadada;
+  overflow-y: hidden;
+  border-radius: 3px;
+}
+
+.adk_grid_list_header{
+    display:grid;
+}
+
+.adk_grid_list_content{
+  overflow-y: hidden;
+  transition: 0.25s linear;
+}
+
+.adk_grid_list_content:hover{
+  overflow-y: auto;       /* For firefox */
+  overflow-y: overlay;
+}

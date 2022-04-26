@@ -1,0 +1,219 @@
+<!--om-->
+
+<!DOCTYPE html>
+	<html dir="ltr" lang="en-US">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Context Menu navigation</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="../../../uikit-3.2.4/css/uikit.min.css" />
+		<script src="../../../uikit-3.2.4/js/uikit.min.js"></script>
+		<script src="../../../uikit-3.2.4/js/uikit-icons.min.js"></script>
+		<style type="text/css">
+			html,body{
+				margin:auto;
+				display: flex;
+				align-items: center;
+				place-content:center;
+				height:100vh;
+			}
+
+			.main{
+				display:grid;
+				grid-template-columns:1fr 1fr 1fr;
+				align-items:center;
+				justify-items:center;
+				/*font-family: 'Comfortaa', cursive;*/
+				font-family: 'Nunito', sans-serif;
+				font-size:15px;
+				padding: 50px;
+			}
+
+			.categories > div{
+				grid-template-rows: 50px auto;
+			}
+
+			.menu_container{
+				position: relative;
+				width:300px;
+				height:400px;
+				background: #f0f0f0;
+				color:#333;
+				box-sizing: border-box;
+				overflow-x: hidden;
+			}
+
+			.menu_slider{
+				position: absolute;
+				display: flex;
+				flex-direction: row;
+				left : 0px;
+				transition: 0.25s linear;
+				width: 100%;
+				box-sizing: border-box;
+			}
+
+			.menu{
+				background: yellow;
+				display: flex;
+				flex-direction: column;
+				min-width: 100%;
+				border:0px solid red;
+				box-sizing: border-box;
+			}
+
+			.submenu{
+				background: greenyellow;
+				display: flex;
+				flex-direction: column;
+				min-width: 100%;
+				border:0px solid black;
+				box-sizing: border-box;
+			}
+
+			.menu_fixed_height{
+				height:300px;
+				overflow-y: overlay;
+			}
+
+			ol > li > a{
+				cursor: pointer;
+				padding:5px;
+				line-height: 30px;
+				user-select: none;
+			}
+
+			ol > li{
+				transition: 0.15s ease-in;
+			}
+
+			ol > li:hover{
+				background-color:#f0f0f0;
+				cursor: pointer;
+			}
+
+			.progress-10 {
+			  width:120px;
+			  height:60px;
+			  border-radius:200px 200px 0 0;
+			  -webkit-mask:repeating-radial-gradient(farthest-side at bottom ,#0000 0,#000 1px 12%,#0000 calc(12% + 1px) 20%);
+			  background:
+			   radial-gradient(farthest-side at bottom,#514b82 0 95%,#0000 0) bottom/0% 0% no-repeat
+			   #ddd;
+			  animation:p10 2s infinite steps(6);
+			}
+			@keyframes p10 {
+			    100% {background-size:120% 120%}
+			}
+
+
+			.progress-9 {    
+			  --r1: 154%;
+			  --r2: 68.5%;
+			  width:60px;
+			  height:60px;
+			  border-radius: 50%;
+			  background:
+			    radial-gradient(var(--r1) var(--r2) at top   ,#0000 79.5%,#269af2 80%) center left,
+			    radial-gradient(var(--r1) var(--r2) at bottom,#269af2 79.5%,#0000 80%) center center,
+			    radial-gradient(var(--r1) var(--r2) at top   ,#0000 79.5%,#269af2 80%) center right,
+			    #ccc;
+			  background-size: 50.5% 220%;
+			  background-position: -100% 0%,0% 0%,100% 0%;
+			  background-repeat:no-repeat;
+			  animation:p9 2s infinite linear;
+			}
+			@keyframes p9 {
+			    33%  {background-position:    0% 33% ,100% 33% ,200% 33% }
+			    66%  {background-position: -100%  66%,0%   66% ,100% 66% }
+			    100% {background-position:    0% 100%,100% 100%,200% 100%}
+			}
+		</style>
+
+
+		 <link href="https://fonts.googleapis.com/css?family=Allura|Dancing+Script|Great+Vibes|Niconne|Redressed|Rochester&display=swap" rel="stylesheet">
+		 <link href="https://fonts.googleapis.com/css?family=Comfortaa&display=swap" rel="stylesheet">
+
+		 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;700&display=swap" rel="stylesheet">
+
+		 <style>
+
+		 </style>
+	</head>
+	<body id="body">
+
+			<div class="progress-9"></div>
+
+			<div id="menu_container" class="menu_container">
+
+					<div id="menu_slider" class="menu_slider">
+						<div id="menu" class="menu menu_fixed_height">
+								<ol>
+										<li><a >Menu 1</a></li>
+										<li><a >Menu 2</a></li>
+										<li><a >Menu 3</a></li>
+								</ol>
+						</div>
+						<div id="submenu" class="submenu menu_fixed_height">
+								<ol>
+										<li><a onclick="onSubmenuClick()">Submenu 1</a></li>
+										<li><a onclick="onSubmenuClick()">Submenu 2</a></li>
+										<li><a onclick="onSubmenuClick()">Submenu 3</a></li>
+										<li><a onclick="onSubmenuClick()">Submenu 4</a></li>
+										<li><a onclick="onSubmenuClick()">Submenu 2</a></li>
+										<li><a onclick="onSubmenuClick()">Submenu 3</a></li>
+										<li><a onclick="onSubmenuClick()">Submenu 4</a></li>
+										<li><a onclick="onSubmenuClick()">Submenu 2</a></li>
+										<li><a onclick="onSubmenuClick()">Submenu 3</a></li>
+										<li><a onclick="onSubmenuClick()">Submenu 4</a></li>
+								</ol>
+						</div>
+					</div>
+
+
+			</div>
+
+
+			<script type="text/javascript">
+
+
+						 // function onMenuClick(){
+							// 	 document.getElementById("menu_slider").style.left="-100%";
+						 // }
+						 //
+						 // function onSubmenuClick(){
+							// 	 document.getElementById("menu_slider").style.left="0%";
+						 // }
+
+						 let mousedownFunction = (e) => {
+
+							 let target = e.target;
+							 const clickStartedAtPositionX = e.clientX;
+
+							 let swipe = (e) => {
+								 let currentPositionX = e.clientX;
+								 let val = currentPositionX - clickStartedAtPositionX;
+									 console.log("swiping.." + currentPositionX + " from " + clickStartedAtPositionX);
+								 e.target.parentElement.setAttribute("style", `transform:translateX(${val}px)`)
+							 };
+
+								console.log("mousedown " + clickStartedAtPositionX);
+								target.addEventListener("mousemove", swipe);
+								target.addEventListener("mouseup", (e) => {
+										target.removeEventListener("mousemove", swipe);
+										target.parentElement.removeAttribute("style");
+								});
+						 };
+
+						 Array.from(document.querySelectorAll(".menu li"))
+									.forEach((item, i) => {
+										 item.addEventListener("mousedown", (e) => mousedownFunction(e));
+									});
+
+
+			 </script>
+	</body>
+</html>

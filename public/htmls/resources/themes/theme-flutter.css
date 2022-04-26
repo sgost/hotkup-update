@@ -1,0 +1,395 @@
+
+/************* DEFAULT THEME **************/
+
+/* The Glass UI Theme */
+.app-container[data-theme="flutter"]{
+  --main-bg-color: white;
+  --navbar-color: #fbfbfbb8;
+  --sidebar-color: #ffffffa6;
+
+  --sidebar-category-dropdown-bg-color: #ffffff;
+  --sidebar-category-dropdown-border: 1px solid #dedede;
+
+  --taskview-container-bg-color: rgb(249 249 249); /* rgb(255, 255, 255, 0.4); */
+
+  --activity-description-bg-color: #ffffff;
+  --activity-description-shadow: rgb(0 0 0 / 14%) 5px 7px 10px 0px;
+  --chat-detail-container-bg-color: rgb(255, 255, 255, 0);
+}
+
+.app-container-modal[data-theme="flutter"] {
+    --main-bg-color: white;
+    --navbar-color: #fbfbfbb8;
+    --sidebar-color: #ffffffa6;
+    --sidebar-category-dropdown-bg-color: #ffffff;
+    --sidebar-category-dropdown-border: 1px solid #dedede;
+    --taskview-container-bg-color: rgb(249 249 249);
+    --activity-description-bg-color: #ffffff;
+    --activity-description-shadow: rgb(0 0 0 / 14%) 5px 7px 10px 0px;
+    --chat-detail-container-bg-color: rgb(255, 255, 255, 0);
+}
+
+.activity_background_flutter{
+  position: absolute;
+  inset: 0px;
+  /*
+  background-image: url('https://images.pexels.com/photos/317356/pexels-photo-317356.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260');
+  background-image: url('https://i2.wp.com/files.123freevectors.com/wp-content/original/131382-abstract-grey-and-white-polygon-pattern-background-illustration.jpg?w=800&q=95');
+  background-image: url('https://image.freepik.com/free-vector/white-abstract-background_23-2148810113.jpg');
+  background-image: url('https://images.pexels.com/photos/317356/pexels-photo-317356.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260');
+  */
+  /* background-image: url('https://image.freepik.com/free-vector/white-abstract-background_23-2148810113.jpg'); */
+  background-size: cover;
+  filter: blur(0px) opacity(0.75) brightness(0.95);
+  z-index: 0;
+}
+
+
+/* Sidebar theme starts here */
+
+
+.app-container[data-theme="flutter"] .app-side-menu{
+  flex-grow: 1;
+  box-sizing: border-box;
+  height: 100%;
+  display: flex;
+  transition: all 0.3s linear;
+  background-color: #f0f0f0;
+}
+
+.app-container[data-theme="flutter"] .side-bar-light{
+  /*background: #f9faff;*/
+  background: rgb(255, 255, 255, 0.65);
+  color: #484848;
+  font-size: .5rem;
+  border-right: 0.5px solid rgb(204 204 204 / 38%);
+  xbox-shadow: rgb(0 0 0 / 19%) 0px 0px 4px, rgb(0 0 0 / 10%) 5px 5px 8px 0px;
+  border-top: 0px solid #ccc;
+  margin-top: 0px;
+  top: 50px;
+  border-top-right-radius: 0px;
+  width: 175px!important;
+  padding: 10px 10px;
+  overflow-y: hidden;
+  z-index: 9;
+}
+
+.app-container[data-theme="flutter"] .side-bar-light:hover{
+  overflow-y:overlay;
+}
+
+.app-container[data-theme="flutter"] .side-bar-light ul > li{
+  padding: 0px 5px;
+}
+
+.app-container[data-theme="flutter"] .side-bar-light ul > li:not(.uk-parent):hover{
+  background-color:#f3f3f3;
+}
+
+.app-container[data-theme="flutter"] .side-bar-light ul > li > a{
+  color: #333 !important;
+  font-weight: normal !important;
+  font-size: 0.70rem;
+  display: flex !important;
+  align-items: center;
+}
+
+.app-container[data-theme="flutter"] .side-bar-light ul > .uk-active > a{
+  color: #333 !important;
+  font-weight: bold !important;
+  font-size: 0.70rem;
+}
+
+.app-container[data-theme="flutter"] .side-bar-light ul > .uk-nav-header > a{
+  color: #333 !important;
+  font-weight: bold !important;
+  font-size: 0.85rem;
+}
+
+.app-container[data-theme="flutter"] .side-bar-light .uk-nav-sub > li > a{
+  color: #333 !important;
+  font-weight: normal !important;
+  font-size: 0.70rem;
+}
+
+/* Sidebar theme ends here */
+
+
+/* My-Categories Label starts here */
+
+
+.app-container[data-theme="flutter"] .sidebar-category-dropdown {
+  padding: 5px !important;
+  text-transform: uppercase;
+  font-size: .50rem;
+  font-weight: normal;
+  letter-spacing: 1px;
+  background: transparent;
+  padding: 5px!important;
+  padding-left: 14px !important;
+  padding-right: 10px !important;
+  text-transform: none;
+  font-size: .5rem;
+  font-weight: 400;
+  text-align: center;
+  letter-spacing: 1px;
+  border-radius: 0px;
+  border: 0px solid gray;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.app-container[data-theme="flutter"] .sidebar-category-dropdown a {
+  font-size: .75rem !important;
+}
+
+/*  My-Categories Label ends here */
+
+
+.app-container[data-theme="flutter"] .task-detail-container {
+  position: relative;
+  margin-top: 0px;
+  margin-left: 0px;
+  border-left: 1px solid rgb(204 204 204 / 38%);
+  /* box-shadow: rgb(0 0 0 / 19%) 0px 0px 4px, rgb(0 0 0 / 10%) 5px 5px 8px 0px; */
+  border-top: 0px solid rgb(204, 204, 204);
+  border-top-left-radius: 0px;
+  overflow-y: hidden;
+  display: flex;
+  flex-grow: 1;
+  flex-basis: 70%;
+  box-sizing: border-box;
+}
+
+.app-container[data-theme="flutter"] .list-of-tasks-container {
+
+  border-right: 0px solid rgb(204, 204, 204);
+  box-shadow: rgb(0 0 0 / 22%) 0px 1px 0px 0px, rgb(0 0 0 / 17%) 2px 3px 8px 0px;
+  box-shadow: rgb(0 0 0 / 22%) 0px 1px 0px 0px, rgb(0 0 0 / 5%) 2px 3px 8px 0px;
+  z-index: 5;
+  position: relative;
+  padding: 0px;
+  overflow-y: hidden;
+  display: flex;
+  flex-direction: column;
+  flex-basis: 30%;
+  background: rgba(255, 255, 255, 0);
+  color: rgb(51, 51, 51);
+}
+
+.app-container[data-theme="flutter"] .list-row {
+
+  padding: 5px 2px 5px 15px;
+  border: 0em solid #e5e5e5;
+  border-top: 0.005em solid #e5e5e5;
+
+  /* border-left: 5px solid rgb(37 139 255 / 10%);*/
+  /* border-left: .05em solid #e5e5e5; */
+  /* border-left: .05em solid transparent; */
+  /* border-right: .05em solid transparent;*/
+  background:#fcfcfc;
+  background: white;
+  border-radius: 0px;
+  transition: all 0.2s linear;
+  display: flex;
+  column-gap: 10px;
+  user-select:none;
+  position:relative;
+  box-shadow: rgb(0 0 0 / 5%) 4px 3px 10px 0px;
+  transition: 0.1s ease-in;
+}
+
+.app-container[data-theme="flutter"] .list-row.active {
+  /* border-left: 5px solid #1f69bd;
+  border-left: 5px solid rgb(37, 139, 255); */
+  background: #f0f7ff;
+}
+
+
+.app-container[data-theme="flutter"] .active-border{
+  position: absolute;
+  left: -10px;
+  top: 0px;
+  bottom: 0px;
+  width: 2px;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  background: rgb(37, 139, 255);
+  transition: 0.1s linear;
+}
+
+.app-container[data-theme="flutter"] .task-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 36px 1fr;
+  background-color: #fff;
+  xbox-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  /* border: 0.01em solid #dadada; */
+  overflow-y: hidden;
+  border-radius: 0px;
+}
+
+.app-container[data-theme="flutter"] .task_inbox_list {
+  transition: all 0.55s ease-out 0s;
+  display: grid;
+  row-gap: 0px;
+  align-content: baseline;
+  padding-right: 0px;
+}
+
+.app-container[data-theme="flutter"] .list-detail{
+  display: grid;
+  max-height: 90px;
+  grid-template-rows: auto auto auto;
+  margin-right: 10px;
+  background: transparent;
+  border-bottom: 0.0em solid rgb(229, 229, 229);
+  flex-grow: 1;
+  padding: 10px 10px 7px 0px;
+}
+
+.app-container[data-theme="flutter"] .task-list-name {
+  font-size: 1.15rem;
+  font-weight: bold;
+  margin: 10px 0px 0px 20px;
+}
+
+.app-container[data-theme="flutter"] .task-list-item-category-label{
+  font-size: 0.6rem;
+  color: #5c5c5c;
+  background: #e7e7e7;
+  padding: 0px 10px;
+  border-radius: 10px;
+}
+
+.app-container[data-theme="flutter"] .task-name {
+  font-size: .75rem;
+  padding-bottom: 5px;
+  padding-top: 5px;
+  overflow-y: hidden;
+}
+
+.app-container[data-theme="flutter"] .task_view_header{
+  z-index: 1;
+  border: 0px solid rgb(208, 208, 208);
+  display: flex;
+  column-gap: 5px;
+  height: fit-content;
+  background: rgb(249 249 249); /* rgba(255, 255, 255, 0.86); */
+  margin: 0px;
+  border-radius: 0px;
+}
+
+.task_view_header {
+    z-index: 1;
+    border: 0px solid rgb(208, 208, 208);
+    display: flex;
+    column-gap: 5px;
+    height: fit-content;
+    background: rgb(249 249 249);
+    margin: 0px;
+    border-radius: 0px;
+}
+
+.app-container[data-theme="flutter"] .task_details_container .task_title {
+  font-size: 0.95rem;
+  letter-spacing: 0.025rem;
+  font-weight: bold;
+  color: #404040;
+  padding: 0px;
+  margin-left: 0px;
+  z-index: 1;
+}
+
+.app-container[data-theme="flutter"] .task_details_container .task_created_by {
+    font-size: 0.65rem !important;
+    font-weight: normal !important;
+}
+
+.app-container[data-theme="flutter"] .tab-bar {
+    padding: 10px 5px 5px;
+    color: rgb(51, 51, 51);
+    background:rgb(240 247 255) !important;
+    height: 25px;
+    margin: 0px;
+    margin-top: 0px !important;
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+    border-radius: 0px !important;
+    border: 0px solid #d0d0d0 !important;
+    border-top: 1px solid #dae8f9 !important;
+    border-bottom: 1px solid #dae8f9 !important;
+    border-right: none;
+    border-left: none;
+    z-index: 0;
+}
+
+
+.app-container-modal[data-theme="flutter"] .tab-bar {
+    padding: 10px 5px 5px;
+    color: rgb(51, 51, 51);
+    background:rgb(240 247 255) !important;
+    height: 25px;
+    margin: 0px;
+    margin-top: 0px !important;
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+    border-radius: 0px !important;
+    border: 0px solid #d0d0d0 !important;
+    border-top: 1px solid #dae8f9 !important;
+    border-bottom: 1px solid #dae8f9 !important;
+    border-right: none;
+    border-left: none;
+    z-index: 0;
+}
+
+
+.app-container[data-theme="flutter"] .uk-subnav-pill > .uk-active > a {
+    border-bottom: 2px solid #4698f5!important;
+    color: #4698f5;
+    background-color: transparent !important;
+}
+
+.app-container-modal[data-theme="flutter"] .uk-subnav-pill > .uk-active > a {
+    border-bottom: 2px solid #4698f5!important;
+    color: #4698f5;
+    background-color: transparent !important;
+}
+
+.app-container[data-theme="flutter"] .app-container-div{
+  display: flex;
+  overflow-y: hidden;
+  position: relative;
+  box-sizing: border-box;
+  flex-grow: 9;
+  border-top: 0px solid #cccccc;
+}
+
+.app-container[data-theme="flutter"] .activities_list{
+  background-color:#f0f0f0c7;
+  padding: 20px;
+  font-size: 0.65rem;
+}
+
+.app-container-modal[data-theme="flutter"] .activities_list{
+  background-color:#f0f0f0c7;
+  padding: 20px;
+  font-size: 0.65rem;
+}
+
+.mentioned-node {
+  color:#619bf5;
+  cursor: pointer;
+}
+
+.app-container[data-theme="flutter"] .activity-sno {
+    top: 15px;
+    left: -40px;
+    height: 20px;
+    width: 20px;
+    text-align: center;
+    border-radius: 12px;
+    position: absolute;
+    color: #ffffff;
+    background: #2196f3;
+    font-size: .55rem;
+}

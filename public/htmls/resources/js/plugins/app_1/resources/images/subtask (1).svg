@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g id="Subtask" transform="translate(-10970 1919)">
+    <g id="Subtask-2" data-name="Subtask" transform="translate(-2324 1212)">
+      <g id="Group_1278" data-name="Group 1278" transform="translate(13297.001 -3125.776)">
+        <g id="Group_1066" data-name="Group 1066">
+          <g id="Rectangle_1210" data-name="Rectangle 1210" fill="none" stroke="#686868" stroke-width="1.3">
+            <rect width="11.863" height="5.931" rx="1" stroke="none"/>
+            <rect x="0.65" y="0.65" width="10.563" height="4.631" rx="0.35" fill="none"/>
+          </g>
+          <g id="Rectangle_1211" data-name="Rectangle 1211" transform="translate(5.931 7.909)" fill="#686868" stroke="#686868" stroke-width="1.3">
+            <rect width="11.863" height="5.931" rx="1" stroke="none"/>
+            <rect x="0.65" y="0.65" width="10.563" height="4.631" rx="0.35" fill="none"/>
+          </g>
+          <path id="Path_2237" data-name="Path 2237" d="M6104.391-1831v5.9h3.734" transform="translate(-6102.135 1836.243)" fill="none" stroke="#686868" stroke-linejoin="round" stroke-width="1.3"/>
+        </g>
+      </g>
+      <rect id="Rectangle_1324" data-name="Rectangle 1324" width="18" height="18" transform="translate(13297 -3128)" fill="none"/>
+    </g>
+    <rect id="Rectangle_1453" data-name="Rectangle 1453" width="24" height="24" transform="translate(10970 -1919)" fill="none"/>
+  </g>
+</svg>

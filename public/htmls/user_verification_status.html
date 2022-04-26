@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Hotkup App - User Verification Status</title>
+        <meta charset="UTF-8">
+        <!-- <link href="/resources/images/favicon7.ico" rel='shortcut icon' > -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link href="https://fonts.googleapis.com/css?family=Lato|Raleway:200&display=swap" rel="stylesheet">
+
+        <style type="text/css">
+          html,body{
+            box-sizing: border-box;
+            margin: 0px;
+            padding: 10px 20px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-start;
+            height: 100%;
+            font-size: 17px;
+            letter-spacing: 0px;
+            word-spacing: 0px;
+          }
+
+          input[type="password"]{
+            font-size: 20px;
+            padding-left: 10px;
+            box-sizing: border-box;
+            padding-top: 5px;
+            padding-bottom: 5px;
+          }
+
+          button:hover{
+            cursor: pointer;
+          }
+
+          button:active{
+            transform: scale(0.98);
+          }
+
+          /* Small Devices, Tablets */
+  		    @media only screen and (min-width : 768px) {
+            html,body{
+              box-sizing: border-box;
+              margin: 0px;
+              padding: 10px 20px;
+              overflow: hidden;
+              display: flex;
+              align-items: flex-start;
+              justify-content: flex-start;
+              height: 100%;
+              font-size: 15px;
+              letter-spacing: 0px;
+              word-spacing: 0px;
+              width: 50%;
+            }
+
+            input[type="password"]{
+              font-size: 20px;
+              padding-left: 10px;
+              box-sizing: border-box;
+              padding-top: 5px;
+              padding-bottom: 5px;
+            }
+  		    }
+        </style>
+
+
+    </head>
+    <body>
+
+
+        <div class="uk-box-shadow-small uk-box-shadow-hover-large uk-padding">
+            <div class="uk-background-default uk-padding-large">
+            	<div style="display:flex;align-items:center;gap:10px;background: whitesmoke;margin: 20px 0px;padding: 20px;border-radius: 5px;">
+            		<span style="color: lime;font-size: 30px;min-width: 50px;min-height: 50px;background: #eaeaea;border-radius: 50%;display: flex;justify-content: center;align-items: center;">&#x2714;</span>
+                <div style="display: flex;flex-direction: column;gap: 5px;">
+                  <span id="message"></span>
+                  <span> Please click <a href="/home">here</a> to login into your hotkup.com account.</span>
+                </div>
+            	</div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+
+      if(window.location.href.includes("message=")) {
+        document.querySelector("#message").innerHTML = decodeURIComponent(window.location.href.split('message=')[1]);
+      }
+    </script>
+
+</body>
+
+</html>
