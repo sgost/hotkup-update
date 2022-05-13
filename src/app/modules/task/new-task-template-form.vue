@@ -381,7 +381,7 @@ export default {
 
     loadTemplateData () {
       // Fetch the template's configured checklist items
-      const url1 = './category-processes/get/' + this.chosenTaskTemplate.id;
+      const url1 = './task-service/category-processes/get/' + this.chosenTaskTemplate.id;
       try {
         axios.get(process.env.VUE_APP_API_URL + url1)
           .then((dataResponse) => {
@@ -405,7 +405,7 @@ export default {
       }
 
       // Fetch the template's attached forms.
-      const url2 = './category-processes/list-attached-forms/' + this.chosenTaskTemplate.id;
+      const url2 = './task-service/category-processes/list-attached-forms/' + this.chosenTaskTemplate.id;
       try {
         // VueJS ajax call-1
         axios.get(process.env.VUE_APP_API_URL + url2)

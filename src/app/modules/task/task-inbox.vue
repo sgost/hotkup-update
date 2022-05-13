@@ -861,7 +861,7 @@
       this.matchingTaskTemplates = [];
 
       // Attempting to use Comlink Worker
-          const get_url = './category-processes/list/all/' + this.newTaskFromTemplate.categoryId;
+          const get_url = './task-service/category-processes/list/all/' + this.newTaskFromTemplate.categoryId;
           const callbackFunction = (dataResponse) => {
             dataResponse.data = dataResponse;
             const list = dataResponse.data;

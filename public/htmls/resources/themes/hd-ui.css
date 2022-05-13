@@ -593,6 +593,7 @@ svg[data-svg="menu"]{
 		left: auto;
 	  top: 0px;
 		bottom: auto;
+		max-width: 80%;
 		border: 22px solid;
 		border-color: #ffffff transparent transparent transparent;
 		border-color: #e3fbd4 transparent transparent transparent;
@@ -609,6 +610,7 @@ svg[data-svg="menu"]{
 	border-radius: 5px;
 	padding: 10px 10px 5px 15px !important;
 	min-height: 20px;
+	max-width: 80%;
 	z-index: 0;
 	word-break: break-word;
 	filter: drop-shadow(1px 2px 4px #0202024f);

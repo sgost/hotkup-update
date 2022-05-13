@@ -69,8 +69,8 @@
     min-width: 250px;
     max-width: 65%;
     justify-self: start;padding-left: 20px;
-    display: grid;
-    grid-template-columns: 1fr auto;
+    display: flex;
+    grid-template-columns: auto;
   }
 
   .reply-btn{

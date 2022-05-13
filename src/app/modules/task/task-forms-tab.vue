@@ -452,7 +452,7 @@ export default {
 
       const tableId = fieldInfo.tableId;
       const fieldKey = fieldInfo.name;
-      const get_url = './task-tabular-form-templates/get/' + tableId;
+      const get_url = './task-service/task-form-attachments/get-tabular-form/' + tableId;
 
       // Create this object to store tabular data for every table field.
       this.tabularFormsMap[fieldKey] = {};
@@ -910,7 +910,7 @@ export default {
 
         });
 
-      const post_url = './task-form-attachments-data/save';
+      const post_url = './task-service/task-form-attachments-data/save';
       console.log('Saving new form-template-data to : ' + post_url);
 
 
@@ -1022,7 +1022,7 @@ export default {
     submitTabularFormAttachment () {
       // btnId = tabularFormSubmitButton
 
-      const post_url = './task-tabular-form-attachments-data/save';
+      const post_url = './task-service/task-tabular-form-attachments-data/save';
       console.log('Saving new form-template-data to : ' + post_url);
 
       const tableData = [];
@@ -1177,7 +1177,7 @@ export default {
 
       // API http://localhost:9090/task-form-attachments-data/get-by-attachment/600649f64a576b43899d0001
 
-      const get_url = './task-form-attachments-data/get-by-attachment/' + attachmentId;
+      const get_url = './task-service/task-form-attachments-data/get-by-attachment/' + attachmentId;
 
       axios.get(process.env.VUE_APP_API_URL + get_url)
         .then((dataResponse) => {
@@ -1341,7 +1341,7 @@ export default {
 
       // API http://localhost:9090/task-form-attachments-data/get-by-attachment/600649f64a576b43899d0001
 
-      const get_url = './task-tabular-form-attachments-data/get-by-attachment/' + attachmentId;
+      const get_url = './task-service/task-tabular-form-attachments-data/get-by-attachment/' + attachmentId;
 
       axios.get(process.env.VUE_APP_API_URL + get_url)
         .then((dataResponse) => {
@@ -1489,6 +1489,7 @@ export default {
     },
     viewForm (attachmentId, formTemplateId, attachedFormTemplateName, attachedFormTemplate, isTabularForm) {
 
+
       this.currentFormToBeSubmitted = attachedFormTemplate;
       console.log("currentTaskID = ", this.id);
       console.log("attachmentId = ", attachmentId);
@@ -1540,6 +1541,7 @@ export default {
       this.attachmentFormTemplateNameToBeEdited = attachedFormTemplateName;
       this.chosenFormDataMap = {};
 
+
       if (!isTabularForm) {
         UIkit.modal(document.querySelector('#form-template-render-container-modal')).show();
         this.getFormTemplateMetadata(formTemplateId);
@@ -1564,7 +1566,7 @@ export default {
       UIkit.modal(document.querySelector('#tabular-form-display-data-modal')).hide();
     },
     getFormTemplateMetadata (formTemplateId) {
-      const get_url = './task-form-templates/get/' + formTemplateId;
+      const get_url = './task-service/task-form-attachments/get-form/' + formTemplateId;
 
       axios.get(process.env.VUE_APP_API_URL + get_url)
         .then((dataResponse) => {
@@ -1602,7 +1604,7 @@ export default {
             tablePreviewDiv.style.transform = "scale(0)";
       this.clearRows();
 
-      const get_url = './task-tabular-form-templates/get/' + formTemplateId;
+      const get_url = './task-service/task-form-attachments/get-tabular-form/' + formTemplateId;
 
 
       axios.get(process.env.VUE_APP_API_URL + get_url)
@@ -1698,6 +1700,7 @@ export default {
     cloneAndAppend (fieldInfo, dropzone) {
       const _this = this;
 
+      console.log("cloneAndAppend : fieldInfo : ", fieldInfo);
       let elementSelector = null;
       const fieldType = fieldInfo.type;
       const fieldName = fieldInfo.name;
@@ -1735,6 +1738,7 @@ export default {
 
       const appendedItem = dropzone.appendChild(cln);
       console.log('Appended Item ', appendedItem);
+      console.log("yo", fieldType, fieldName);
 
       // If FieldLabel is undefined or null, then we convert the field's name attribute to a Label Formatted String with spaces.
       // Convert underscores to spaces for Labels and also capitalize the first letter
@@ -1803,8 +1807,11 @@ export default {
         });
       }
       else if (fieldType === "table") {
+
+        console.log("Field type is table");
         closestInputElement.setAttribute("data-table-id", fieldInfo.tableId);
         this.loadTableInFormField(fieldInfo, dropzone);
+
       }
     },
 
@@ -1835,7 +1842,7 @@ export default {
       document.getElementById('attachFormTemplateButton').innerHTML = 'Saving..';
       this.disableHTMLElement(document.getElementById('attachFormTemplateButton'));
 
-      const post_url = './task-form-templates/attach';
+      const post_url = './task-service/task-form-attachments/attach';
       console.log('Saving new form-template to : ' + post_url);
 
       const form = {
@@ -1924,7 +1931,7 @@ export default {
     },
     loadSubtasks () {
       try {
-        const url = './tasks/list/all-attachedFormTemplates/' + this.id; // Fetch all attachedFormTemplates
+        const url = './task-service/tasks/list/all-attachedFormTemplates/' + this.id; // Fetch all attachedFormTemplates
         // console.log("loading attachedFormTemplates : " + url);
         this.getUnpaginatedList('attachedFormTemplates', url); // This lib call will fire the callback "handleUnpaginatedListData" when it completes.
       } catch (e) {
@@ -1933,7 +1940,7 @@ export default {
     },
 
     fetchAllFormTemplates () {
-      const url = './task-form-templates/list/all';
+      const url = './task-service/task-form-attachments/list-all-forms/all';
       try {
         // VueJS ajax call-1
         axios.get(process.env.VUE_APP_API_URL + url)
@@ -1961,7 +1968,7 @@ export default {
       }
     },
     fetchAllTabularFormTemplates () {
-      const url = './task-tabular-form-templates/list/all';
+      const url = './task-service/task-form-attachments/list-all-tabular-forms/all';
       try {
         // VueJS ajax call-1
         axios.get(process.env.VUE_APP_API_URL + url)
@@ -1991,7 +1998,7 @@ export default {
     fetchFormTemplatesAttachedToTask () {
       console.log('fetchFormTemplatesAttachedToTask called..');
 
-      const url = './task-form-templates/list-attached-forms/' + this.id;
+      const url = './task-service/task-form-attachments/list-attached-forms/' + this.id;
       try {
         // VueJS ajax call-1
         axios.get(process.env.VUE_APP_API_URL + url)

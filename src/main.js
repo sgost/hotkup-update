@@ -60,6 +60,11 @@ import ComponentB from './app/modules/test/component-b.vue';
 import NotificationSubscriptionForm from './app/modules/notifications/notification-subscription-form.vue';
 import NotificationsPanel from './app/modules/notifications/notifications-panel.vue';
 import UserProfilePanel from './app/modules/user-profile/user-profile-panel.vue';
+
+
+
+
+
 export const bus = mitt();
 
 window.Comlink = Comlink;
@@ -123,6 +128,8 @@ app.component('component-a', ComponentA);
 app.component('component-b', ComponentB);
 
 app.component('cron-builder', defineAsyncComponent(() => import(/* webpackChunkName: "cron-builder" */ './app/modules/task/cron-builder.vue'))); // CronBuilder);
+
+
 
 app.use(store)
   .use(router)

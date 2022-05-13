@@ -441,7 +441,7 @@
           const get_url = "./users/get-settings";
           const callbackFunction = (dataResponse) => {
             console.log("user-settings-retrieved : ", dataResponse);
-            localStorage.setItem("preferredTheme", dataResponse.preferredTheme);
+            localStorage.setItem("preferredTheme", (dataResponse.preferredTheme) ? dataResponse.preferredTheme : "flutter");
             localStorage.setItem("preferredTaskView", dataResponse.preferredTaskView);
 
             // Invoke this function to set the data for these preferred properties

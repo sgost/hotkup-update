@@ -92,6 +92,8 @@ export default {
 
             dataResponse.data = dataResponse;
 
+            
+
             if (dataResponse.data.actionResult === 1) {
 
               const listOfTasks = (dataResponse.data.bean);// .slice(0, 10);
@@ -213,7 +215,7 @@ export default {
           };
 
           const callbackError = (error) => {
-            console.error('Error in task-inbox.vue fetchTaskCounts()');
+            console.error('Error in task-inbox.vue getTaskList()');
             console.error(error);
             UIkit.notification("<span uk-icon='icon: warning;ratio: 0.75'></span>" + error, {
               status: 'danger',
