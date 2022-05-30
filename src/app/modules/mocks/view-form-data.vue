@@ -173,6 +173,8 @@ export default {
                   fieldsInRow.forEach(field => {
 
                      if (field.type !== "table") {
+
+
                          const fieldHTML = `<div style='display:flex;'>
                                                 <div style="min-width:100px;max-width: 150px;text-align:right;padding:5px;font-weight:bold">${field.label}</div>
                                                 <div style="min-width:100px;max-width: 150px;text-align:left;;padding:5px;padding-left:20px">${this.chosenFormDataMap[field.name].value}</div>
@@ -1125,9 +1127,26 @@ export default {
                   fieldsInRow.forEach(field => {
 
                      if (field.type !== "table") {
+
+                         let val = this.chosenFormDataMap[field.name].value;
+
+
+
+                         // Just formatting for displaying the csv with spaces.
+                         if (field.type === "checkbox") {
+                           val = val.split(",").join(", ");
+                         }
+                         else if (field.type === "datetime-local") {
+                           // val = new Date(val); // .toISOString();
+
+                           // Try this if date formats display wrong time
+                           // val = dayjs(val + "Z").format('DD/MM/YYYY HH:mm');
+                           val = dayjs(val).format('DD/MM/YYYY HH:mm');
+                         }
+
                          const fieldHTML = `<div style='display:flex;'>
                                                 <div style=";max-width: 150px;min-width:150px;text-align:right;padding:5px;font-weight:bold;color: #686868;background: #d9d9d9;">${field.label} </div>
-                                                <div style=";max-width: 150px;min-width:150px;text-align:left;;padding:5px;padding-left:20px">${this.chosenFormDataMap[field.name].value}</div>
+                                                <div style=";max-width: 150px;min-width:150px;text-align:left;;padding:5px;padding-left:20px">${val}</div>
                                             </div>`;
 
                         fieldsHTML = fieldsHTML + fieldHTML;

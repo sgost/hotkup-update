@@ -5,7 +5,7 @@
 <template>
 
     <div v-bind:data-form-container-id="finalAttachmentDataId" class="app_container" style="background-color: whitesmoke;;display: flex;box-sizing: border-box;width: 100%;">
-
+      <div style="display:none">  {{attachmentInfo}}</div>
       <div class="form-container" style="background-color:#fff" id="form-container-for-printing">
 
           <div class="ndropzone_row ndraggable_row" >
@@ -13,7 +13,7 @@
               <div class="ndraggable field text-input-element form-element" style="position:relative;">
                 <div style="width:fit-content;">
                   <div class="label field-label textinput-label" style="font-size: .75rem;font-weight: bold !important;">
-                      <span>{{attachmentFormTemplateNameToBeEdited}} - {{taskSNO}}</span>
+                      <span>{{attachmentInfo.formTemplateName}} - {{taskSNO}}</span>
                       <a class="hide-during-print" v-on:click="downloadEmptyFormAsPDF('form-container-for-printing', $event)" style="font-size: 0.45rem;margin-left: 10px;">(Download Empty Form PDF)</a>
                       <span style="font-size: 0.55rem;font-weight: normal !important;padding-left: 20px;" v-if="currentFormToBeSubmitted.formStatus!=='Submitted' && currentFormToBeSubmitted.assigneeInfo!=='any' && currentFormToBeSubmitted.assigneeInfo!==undefined && currentFormToBeSubmitted.assigneeInfo!==null">Assigned to : {{currentFormToBeSubmitted.assigneeInfo.split("#")[1]}}</span>
                       <span style="font-size: 0.55rem;font-weight: normal !important;padding-left: 20px;" v-if="currentFormToBeSubmitted.formStatus==='Submitted' && currentFormToBeSubmitted.submitterInfo!==undefined && currentFormToBeSubmitted.submitterInfo!==null">Submitted by : {{currentFormToBeSubmitted.submitterInfo.split("#")[1]}}</span>
@@ -103,15 +103,15 @@ export default {
     utilsMixinLib,
     uiListMixinLib
   ],
-  props: ['attachmentDataId', 'activityId', 'attachmentId', 'formTemplateId', 'attachmentInfo'],
+  props: ['attachmentDataId', 'activityId', 'attachmentId', 'formTemplateId'],
   data: function () {
     return {
-      attachmentDataIdViaURLParam: this.$route.params.attachmentDataId,
-      finalAttachmentDataId: (this.attachmentDataId !== undefined && this.attachmentDataId !== null) ? this.attachmentDataId : this.attachmentDataIdViaURLParam,
+      attachmentIdViaURLParam: this.$route.params.attachmentId,
+      finalAttachmentDataId: "new",
       resetTime: {
         time: new Date().getTime()
       },
-      // attachmentInfo: {},
+      attachmentInfo: {},
       currentFormToBeSubmitted: {},
 
 
@@ -318,7 +318,7 @@ export default {
 
       // Added by Vignesh on May 25, 2022
       if (fieldType === 'text') {
-        closestInputElement.value = (this.attachmentInfo[fieldName])["value"];
+        // closestInputElement.value = (this.attachmentInfo[fieldName])["value"];
       }
 
       if (fieldType === 'datetime-local') {
@@ -363,13 +363,7 @@ export default {
           }
         };
 
-
-        // The following 2 lines are added by Vignesh on May 25
-        const checkboxSelectedValues = (this.attachmentInfo[fieldName])["value"];
-        const checkboxSelectedValuesArray = checkboxSelectedValues.split(",");
-
         checkboxOptions.forEach((option) => {
-
           const parentElement = closestInputElement;
           const siblingElementToInsertBefore = closestInputElement.querySelector('.new-checkbox-option-button');
           console.log('siblingElement is ', siblingElementToInsertBefore);
@@ -378,23 +372,15 @@ export default {
           newCheckboxOption.setAttribute('class', 'checkbox-option');
           newCheckboxOption.setAttribute('data-option', 'Option');
           newCheckboxOption.setAttribute('style', 'display:flex');
-
-
-          const isSelected = checkboxSelectedValuesArray.includes(option.value);
-
-          if (isSelected) {
-            newCheckboxOption.innerHTML = `<div class="checkbox-option-label">${option.label}</div>
-                                           <input type="${fieldType}" name="${fieldName}" value="${option.value}" style="cursor:pointer" class="checkbox-option-element" checked/>`;
-          }
-          else {
-            newCheckboxOption.innerHTML = `<div class="checkbox-option-label">${option.label}</div>
-                                           <input type="${fieldType}" name="${fieldName}" value="${option.value}" style="cursor:pointer" class="checkbox-option-element"/>`;
-          }
+          newCheckboxOption.innerHTML = `<div class="checkbox-option-label">${option.label}</div>
+                                                       <input type="${fieldType}" name="${fieldName}" value="${option.value}" style="cursor:pointer" class="checkbox-option-element"/>`;
 
           parentElement.appendChild(newCheckboxOption);
           parentElement.insertBefore(newCheckboxOption, siblingElementToInsertBefore);
           console.log('New option is added to this ' + fieldType);
         });
+
+
       }
       else if (fieldType === "table") {
         closestInputElement.setAttribute("data-table-id", fieldInfo.tableId);
@@ -872,12 +858,12 @@ export default {
 
 
       const form = {
-        id: this.finalAttachmentDataId, // Since we only allow the form to be submitted once and not update data, we comment the below line and use only 'new' instead.
+        id: "new", // Since we only allow the form to be submitted once and not update data, we comment the below line and use only 'new' instead.
         // id: (this.chosenFormDataMap.id !== undefined && this.chosenFormDataMap.id !== null) ? this.chosenFormDataMap.id : 'new',
         taskId: this.attachmentInfo.taskId, // TaskID provided from the props by the enclosing parent component.
         taskFormAttachmentId: this.attachmentId, // this.attachmentIdToBeEdited,
-        taskFormTemplateId: this.attachmentInfo.templateId, // this.attachmentFormTemplateIdToBeEdited,
-        taskFormTemplateName: this.attachmentInfo.templateName, // this.attachmentFormTemplateNameToBeEdited,
+        taskFormTemplateId: this.attachmentInfo.formTemplateId, // this.attachmentFormTemplateIdToBeEdited,
+        taskFormTemplateName: this.attachmentInfo.formTemplateName, // this.attachmentFormTemplateNameToBeEdited,
         fields: fields,
         tabularFieldsDataMap: this.tabularFormsMap,
         clientTimeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
@@ -977,8 +963,26 @@ export default {
         });
     },
 
+    loadAttachmentInfo (attachmentId) {
+
+      const get_url = './task-service/task-form-attachments/get-form-attachment/' + attachmentId;
+      axios.get(get_url)
+           .then((dataResponse) => {
+             console.log("dataResponse", dataResponse);
+              // alert(dataResponse.data.formTemplateId);
+             this.attachmentInfo = dataResponse.data;
+              // alert(this.attachmentInfo.formTemplateId);
+              this.getFormTemplateMetadataLatest(dataResponse.data.formTemplateId);
+
+           });
+    },
 
     getFormTemplateMetadataLatest (formTemplateId) {
+
+
+
+      // alert(formTemplateId);
+
 
       this.showTemplate = 'form-template-render-container-modal';
       // alert(formTemplateId);
@@ -996,7 +1000,7 @@ export default {
             console.log('Form Template fetched is ', this.formTemplateObject);
 
             // Reset the form's innerHTML before adding the currently selected record's fields.
-            const form = document.querySelector('[data-activity-container-id="' + this.activityId + '"]')
+            const form = document.querySelector('[data-form-container-id="' + this.finalAttachmentDataId + '"]')
                                  .querySelector('.edit_form_template_container');
             form.innerHTML = '';
 
@@ -1031,14 +1035,15 @@ export default {
 
     // this.viewForm(this.attachmentId, attachedFormTemplate.templateId, attachedFormTemplate.templateName, attachedFormTemplate, false);
 
-
+    // Use this for testing the component independently.
+    // this.loadAttachmentInfo("62943f2211309f6669b0319f");
 
 
   },
   watch: {
-    'attachmentInfo.formTemplateId' (newVal, oldVal) {
-      // alert("attachmentInfo.id changed from " + oldVal + " to " + newVal);
-      this.getFormTemplateMetadataLatest(newVal);
+    'attachmentId' (newVal, oldVal) {
+      // alert("attachmentId changed from " + oldVal + " to " + newVal);
+      this.loadAttachmentInfo(newVal);
     }
   }
 };

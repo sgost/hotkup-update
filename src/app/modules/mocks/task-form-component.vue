@@ -41,7 +41,6 @@
           </div>
       </div>
       <div v-else  v-bind:data-activity-container-id="activityId">
-            {{attachmentInfo.formTemplateId}}
             <new-form v-bind:activityId="activityId"
                       v-bind:attachmentInfo="attachmentInfo"
                       v-bind:attachmentId="attachmentInfo.id"
@@ -96,7 +95,7 @@ export default {
                .then((dataResponse) => {
                   this.attachmentInfo = dataResponse.data;
 
-                  alert("yo : " + this.attachmentInfo.formTemplateId);
+                  // alert("yo : " + this.attachmentInfo.formTemplateId);
                   if (this.attachmentInfo.formStatus === "Submitted")
                   {
                     this.currentFormView = "view_form_data";

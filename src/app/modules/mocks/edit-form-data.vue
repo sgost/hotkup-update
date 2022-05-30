@@ -5,7 +5,6 @@
 <template>
 
     <div v-bind:data-form-container-id="finalAttachmentDataId" class="app_container" style="background-color: whitesmoke;;display: flex;box-sizing: border-box;width: 100%;">
-
       <div class="form-container" style="background-color:#fff" id="form-container-for-printing">
 
           <div class="ndropzone_row ndraggable_row" >
@@ -107,7 +106,7 @@ export default {
   data: function () {
     return {
       attachmentDataIdViaURLParam: this.$route.params.attachmentDataId,
-      finalAttachmentDataId: (this.attachmentDataId !== undefined && this.attachmentDataId !== null) ? this.attachmentDataId : this.attachmentDataIdViaURLParam,
+      finalAttachmentDataId: (this.attachmentDataId !== undefined && this.attachmentDataId !== null && this.attachmentDataId !== "") ? this.attachmentDataId : this.$route.params.attachmentDataId,
       resetTime: {
         time: new Date().getTime()
       },
@@ -321,8 +320,13 @@ export default {
         closestInputElement.value = (this.attachmentInfo[fieldName])["value"];
       }
 
+      if (fieldType === 'textarea') {
+        closestInputElement.value = (this.attachmentInfo[fieldName])["value"];
+      }
+
       if (fieldType === 'datetime-local') {
         closestInputElement.setAttribute('type', 'datetime-local');
+        closestInputElement.value = (this.attachmentInfo[fieldName])["value"];
       }
 
       if (fieldLabel === undefined || fieldLabel === null) {

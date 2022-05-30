@@ -81,6 +81,11 @@ const routes = [
     component: TaskInbox
   },
   {
+    path: '/new-form/:attachmentId',
+    name: 'new-form',
+    component: MockNewForm
+  },
+  {
     path: '/edit-form-data/:attachmentDataId',
     name: 'edit-form-data',
     component: MockEditFormData
