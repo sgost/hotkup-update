@@ -48,7 +48,15 @@ import NotificationSubscriptionForm from './../app/modules/notifications/notific
 
 import NotificationsPanel from './../app/modules/notifications/notifications-panel.vue';
 
+
+import TaskFormComponent from './../app/modules/mocks/task-form-component.vue';
+import MockNewForm from './../app/modules/mocks/new-form.vue';
+import MockEditFormData from './../app/modules/mocks/edit-form-data.vue';
+import MockViewFormData from './../app/modules/mocks/view-form-data.vue';
+
 const NotificationTypeSubscriptionPage = () => import(/* webpackChunkName: "notification-subscription-page" */ './../app/modules/notifications/notification-subscription.vue');
+
+
 
 const routesObsolete = [
   // {
@@ -72,6 +80,22 @@ const routes = [
     name: 'home',
     component: TaskInbox
   },
+  {
+    path: '/edit-form-data/:attachmentDataId',
+    name: 'edit-form-data',
+    component: MockEditFormData
+  },
+  {
+    path: '/view-form-data/:attachmentDataId',
+    name: 'view-form-data',
+    component: MockViewFormData
+  },
+  {
+    path: '/view-form/:attachmentId',
+    name: 'view-form',
+    component: TaskFormComponent
+  },
+
   // Task Pages
   {
     path: '/task/inbox/',

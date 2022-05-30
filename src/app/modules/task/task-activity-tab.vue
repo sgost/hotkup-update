@@ -213,8 +213,8 @@
                     <div style="display:flex;flex-direction:column;margin-bottom: 20px;">
 
                         <div class="activity_description">
-
-                          <!-- <div>{{activity.id}}</div> -->
+                          <!-- <div> {{activity.type}} </div> -->
+                          <!-- <div> {{activity.id}} </div> -->
                           <span class="activity-sno">{{activity.reversedSno}}</span>
                           <div v-if="activity.type=='NEW_COMMENT'">
                               <div  v-on:click="toggleActivityDetail($event)"  style="cursor:pointer;user-select:none;font-weight: normal;position: relative;min-height: 35px;display: flex;justify-content:flex-start;align-items: center;" >
@@ -485,6 +485,31 @@
                                       </div>
                                   </template>
                               </div>
+                          </div>
+
+                          <div v-else-if="activity.type=='TASK_FORM_ATTACHED'">
+                              <div v-on:click="toggleActivityDetail($event)"  style="cursor:pointer;user-select:none;font-weight: normal;position: relative;min-height: 35px;display: flex;justify-content:flex-start;align-items: center;">
+                                <span style="font-weight: normal;color: #2196F3;">{{activity.createdBy.split("#")[0]}}</span> &nbsp; {{activity.typeLabel}}
+                                <span style="font-weight: normal;font-size: 0.55rem;;color: #b3b3b3;" v-bind:title="activity.createdOnFormatted">&nbsp; {{activity.createdOnAgo}}</span>
+                                <span v-bind:data-activity-id="activity.id"  class="openActivityDetailTrigger activity_detail_trigger"  style="user-select: none;" title="" aria-expanded="false">
+                                  <svg style="pointer-events: none;" width="17" height="17" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" data-svg="chevron-up"><polyline fill="none" stroke="#000" stroke-width="1.03" points="16 7 10 13 4 7"></polyline></svg>
+                                </span>
+                              </div>
+                              <div class="just_for_debugging">{{activity.formAttachmentInfo}} </div>
+
+                              <!-- This is the new task-form-component for embedding forms within activity tab. -->
+                              <!-- Added by Vignesh on May 27, 2022 -->
+                              <task-form-component v-bind:attachmentId="activity.formAttachmentInfo.id"
+                                                   v-bind:activityId="activity.id"/>
+
+                              <!--
+                              <activity-form-tab v-bind:loggedInUser="loggedInUser"
+                                                 v-bind:taskId="id"
+                                                 v-bind:activityId="activity.id"
+                                                 v-bind:attachmentId="activity.formAttachmentInfo.id"
+                                                 v-bind:formID="activity.formAttachmentInfo.templateId"
+                                                 v-bind:formName="activity.formAttachmentInfo.name"/>
+                               -->
                           </div>
 
                           <div v-if="activity.replies===null || activity.replies!==undefined" class="replyToTrigger" style="display:none;gap: 10px;position: absolute;right: -60px;top: 10px;">
@@ -2784,7 +2809,9 @@ export default {
 
 <style scoped>
 
-
+  .just_for_debugging{
+    display: none;
+  }
 
   .dull-text{
     color: #8080809c;

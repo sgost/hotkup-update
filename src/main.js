@@ -63,6 +63,12 @@ import UserProfilePanel from './app/modules/user-profile/user-profile-panel.vue'
 
 
 
+import ActivityFormTab from './app/modules/task/activity-form-tab.vue';
+
+import TaskFormComponent from './app/modules/mocks/task-form-component.vue';
+import NewForm from './app/modules/mocks/new-form.vue';
+import ViewFormData from './app/modules/mocks/view-form-data.vue';
+import EditFormData from './app/modules/mocks/edit-form-data.vue';
 
 
 export const bus = mitt();
@@ -129,6 +135,12 @@ app.component('component-b', ComponentB);
 
 app.component('cron-builder', defineAsyncComponent(() => import(/* webpackChunkName: "cron-builder" */ './app/modules/task/cron-builder.vue'))); // CronBuilder);
 
+
+app.component('activity-form-tab', ActivityFormTab);
+app.component('task-form-component', TaskFormComponent);
+app.component('new-form', NewForm);
+app.component('view-form-data', ViewFormData);
+app.component('edit-form-data', EditFormData);
 
 
 app.use(store)

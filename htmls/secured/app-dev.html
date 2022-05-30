@@ -6,7 +6,7 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>Hotkup App</title>
+        <title>DEV MODE - Hotkup App</title>
         <meta charset="UTF-8">
         <!-- <link href='/resources/images/icons/icon-96x96b.png' rel='shortcut icon' > -->
         <link href="/resources/images/favicon.ico" rel="shortcut icon">
@@ -107,16 +107,15 @@ and open the template in the editor.
 
     <!--
       Uncomment this for production-build
-      <link href="http://localhost:8080/resources/js/plugins/app/af702.min.css" rel="stylesheet" >
-    -->
+
+      <link href="http://localhost:9001/resources/js/plugins/hotkup-ui/hotkup_vue_app.min.css" rel="stylesheet" >
+-->
 
     <!--
-      Uncomment this for developement build
-      <link href="http://localhost:8080/js/af702.min.css" rel="stylesheet" >
-    -->
-
-    <link href="http://localhost:8081/js/af702.min.css" rel="stylesheet" >
-
+      Uncomment this for developement build-->
+      <!-- <link href="http://localhost:8080/js/af702.min.css" rel="stylesheet" > -->
+      <link href="http://localhost:8081/js/hotkup_vue_app.min.css" rel="stylesheet" >
+      <!--  -->
 
 
     <link href='resources/js/fullcalendar/lib/main.css' rel='stylesheet' />
@@ -166,14 +165,17 @@ and open the template in the editor.
     <!-- key:1a Attempting to use dev-server files. May 19,2021 -->
 
         <!-- Use this for dev-server or uncomment while using production build -->
-        <script type="text/javascript" src="http://localhost:8081/js/chunk-vendors.js"></script>
-        <script type="text/javascript" src="http://localhost:8081/js/app.js"></script></body>
 
+          <script type="text/javascript" src="http://localhost:8081/js/chunk-vendors.js"></script>
+          <script type="text/javascript" src="http://localhost:8081/js/app.js"></script></body>
+        <!--- -->
 
         <!---
           Uncomment this for production build
-            <script type="text/javascript" src="http://localhost:8080/resources/js/plugins/app/chunk-vendors.min.js"></script>
-            <script type="text/javascript" src="http://localhost:8080/resources/js/plugins/app/af702.min.js"></script>
+        -->
+        <!---
+            <script type="text/javascript" src="http://localhost:9001/resources/js/plugins/hotkup-ui/chunk-vendors.min.js"></script>
+            <script type="text/javascript" src="http://localhost:9001/resources/js/plugins/hotkup-ui/hotkup_vue_app.min.js"></script>
           -->
     <!-- key:1a -->
 

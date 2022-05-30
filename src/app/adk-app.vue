@@ -569,6 +569,12 @@
 
       if (sessionInformationResult === 'resolved') {
 
+          setTimeout(() => {
+            document.querySelector("#loading_spinner").classList.add('hide_reveal');
+            document.querySelector("#loading_spinner").style.display = "none";
+            document.querySelector("#app-container").classList.remove("hide_reveal");
+          }, 120);
+
           const rsocketConnectionResult = await this.connectToRSocket();
           console.log('rsocket-conn : ', rsocketConnectionResult);
 
@@ -659,11 +665,8 @@
       console.error(e);
     }
 
-    setTimeout(() => {
-      document.querySelector("#loading_spinner").classList.add('hide_reveal');
-      document.querySelector("#loading_spinner").style.display = "none";
-      document.querySelector("#app-container").classList.remove("hide_reveal");
-    }, 120);
+
+
   },
   computed: {
     currentRouteName () {

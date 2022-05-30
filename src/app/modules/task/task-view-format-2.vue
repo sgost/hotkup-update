@@ -327,7 +327,7 @@
                               </div>
                             </div>
                           </div>
-                          <div style="position: relative;">
+                          <!-- <div style="position: relative;">
                             <div class="chat-context-menu-triggerx" >
                               <span uk-tooltip="Click to view action menu" v-bind:id="'ctx-menu-trigger-' + taskObject.id" class="uk-button updateTaskInfoTrigger recd-ctx-menu-trigger list-item-menu" uk-icon="icon:more-vertical;ratio:0.65" v-on:click.stop="openContextMenu(taskObject.id, $event)" >
                               </span>
@@ -344,6 +344,10 @@
                                   </div>
                               </div>
                             </div>
+                          </div> -->
+                          <div>
+                            <span  style="user-select: none;" uk-tooltip="Click to expand this task window" v-show="!isTaskInfoContainerExpanded"  class="uk-button updateTaskInfoTrigger" uk-icon="icon:expand;ratio:0.85"   v-on:click="expandOrShrinkTaskInfoContainer()"></span>
+                            <span  style="user-select: none;" uk-tooltip="Click to shrink this task window" v-show="isTaskInfoContainerExpanded"  class="uk-button updateTaskInfoTrigger" uk-icon="icon:shrink;ratio:0.85"   v-on:click="expandOrShrinkTaskInfoContainer()"></span>
                           </div>
                         </div>
                     </div>
@@ -880,6 +884,7 @@
   data: function () {
     return {
       // /loggedInUser :  {},
+      isTaskInfoContainerExpanded: false,
       taskId: this.$route.params.taskId,
       subtaskId: this.$route.params.subtaskId,
       parentTaskName: null,
@@ -950,6 +955,19 @@
   },
   methods: {
 
+    expandOrShrinkTaskInfoContainer () {
+
+      if (this.isTaskInfoContainerExpanded) {
+
+        this.isTaskInfoContainerExpanded = false;
+        document.querySelector(".listOfTasksContainer").style.display = null;
+      }
+      else {
+        this.isTaskInfoContainerExpanded = true;
+        document.querySelector(".listOfTasksContainer").style.display = "none";
+      }
+
+    },
 
     openAddReminderModal () {
       // Clear these fields before attaching a new form-template.

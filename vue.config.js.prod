@@ -4,9 +4,9 @@ const chunkPrefix = '[name].min';
 module.exports = {
 
   outputDir: 'dist/',
-  publicPath: 'resources/js/plugins/app',
+  publicPath: 'resources/js/plugins/hotkup-ui',
   pages: {
-    af702: {
+    hotkup_vue_app: {
       entry: 'src/main.js'
     }
   },
