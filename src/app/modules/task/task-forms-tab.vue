@@ -29,11 +29,11 @@
                 <div class="attachedFormTemplate_row" >
                   <div style="font-weight:normal;flex-basis: 25%;" >
                     <a v-if="attachedFormTemplate.formStatus!=='Submitted'" uk-tooltip="Edit Form Attachment" v-on:click="openFormTemplateAttachmentModalForModification(attachedFormTemplate, attachedFormTemplate.formTemplateId, attachedFormTemplate.formTemplateName)">
-                      {{attachedFormTemplate.formTemplateName}}
+                    #{{attachedFormTemplate.sno}} - {{attachedFormTemplate.formTemplateName}}
                     </a>
                     <div v-else-if="attachedFormTemplate.formStatus==='Submitted'" style="" uk-tooltip="This form is submitted and hence cannot be edited.">
                       <span uk-icon="icon:check;ratio:0.65" style="color:green"></span> &nbsp;
-                      <span>{{attachedFormTemplate.formTemplateName}}</span>
+                      <span>#{{attachedFormTemplate.sno}} - {{attachedFormTemplate.formTemplateName}}</span>
                     </div>
                     <div style="margin-top: 5px;">
                       <span v-if="attachedFormTemplate.stageName !== null" style="margin-left: 0px;background: rgb(227, 227, 227);padding: 3px 5px 3px 3px;border-radius: 4px;font-size: 0.45rem;text-transform: uppercase;letter-spacing: 1px;">Stage - {{attachedFormTemplate.stageName}}</span>

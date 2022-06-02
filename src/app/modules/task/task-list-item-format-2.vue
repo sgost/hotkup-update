@@ -57,6 +57,7 @@
           </div>
 
           <div style="display: flex;column-gap: 2px;">
+
               <span v-if="item.statusInfo !== null" style="display: flex;column-gap: 5px;font-size: 0.6rem;margin-left: 5px;color: rgb(135, 135, 135);border: 1px solid rgb(223, 223, 223);padding: 0px 10px;border-radius: 10px;"  v-bind:uk-tooltip="item.statusInfo.label">{{(item.statusInfo.label.length > 20 ? item.statusInfo.label.substring(0, 20) + ".." : item.statusInfo.label)}}</span>
 
 
@@ -64,7 +65,7 @@
 
 
               <div style="display:none;" class="task-created-date" title="Due Date" v-if="item.dueDateTime!==null">{{item.dueDateTimeFormatted}}</div>
-              <div class="task-created-date" style="overflow: hidden;max-width: 50%;text-transform: uppercase;white-space: pre;border: 1px solid rgb(239, 239, 239);padding: 2px 10px;background: #27ca27;color: white;border-radius: 20px;" v-if="item.statusInfo!==null && item.isRecent">{{item.statusInfo.label}}</div>
+              <!-- <div class="task-created-date" style="overflow: hidden;max-width: 50%;text-transform: uppercase;white-space: pre;border: 1px solid rgb(239, 239, 239);padding: 2px 10px;background: #27ca27;color: white;border-radius: 20px;" v-if="item.statusInfo!==null && item.isRecent">{{item.statusInfo.label}}</div> -->
 
               <div class="task-created-date" style="display:none;overflow: hidden;max-width: 50%;text-transform: uppercase;white-space: pre;border: 1px solid rgb(239, 239, 239);padding: 2px 10px;border-radius: 20px;" title="Status" v-if="item.statusInfo!==null && !item.isRecent">{{item.statusInfo.label}}</div>
 

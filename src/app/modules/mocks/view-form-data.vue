@@ -4,12 +4,29 @@
 
 <template>
 
-    <div class="app_container" style="background-color: whitesmoke;;display: flex;box-sizing: border-box;width: 100%;">
+    <div v-bind:data-form-container-id="attachmentDataId"  class="app_container" style="background-color: whitesmoke;;display: flex;flex-direction:column;box-sizing: border-box;width: 100%;">
 
-      <div class="form_data_display_container" style="margin-top: 10px;padding: 5px;background: whitesmoke;"></div>
+      <div v-show="isLoadingData">Loading data...</div>
+      <div v-if="attachmentDataId === null || attachmentDataId === undefined"
+           style="box-sizing:border-box;font-size: 0.75rem; letter-spacing: 0.05rem;padding-left:25px;padding-bottom:20px;border-bottom: 0px solid #e4e4e4; ">
+        <span>Form Status - </span>
+        <span style="color:green;text-transform:uppercase">SUBMITTED</span>
+      </div>
+
+      <div v-if="attachmentDataId !== null && attachmentDataId !== undefined" style="box-sizing:border-box;font-size: 0.75rem; letter-spacing: 0.05rem;padding-left:25px;padding-bottom:20px;border-bottom: 1px solid #e4e4e4; ">
+          <!-- isHistoricRecord = {{isHistoricRecord}} -->
+          <!-- <div style="display:none">Submitted by - {{chosenFormDataMap.createdOn}}</div> -->
+          <div v-if="chosenFormDataMap.createdBy !== null && chosenFormDataMap.createdBy !== undefined">
+            <span v-if="isHistoricRecord">Submitted by - {{chosenFormDataMap.createdBy.split("#")[1]}} </span>
+            <span v-else-if="!isHistoricRecord">Submitted by - {{chosenFormDataMap.createdBy.split("#")[1]}} </span>
+            <span v-if="!isHistoricRecord">&nbsp;<a v-on:click="sendEditFormEvent">(Edit Data)</a></span>
+          </div>
+          <div v-if="isHistoricRecord && chosenFormDataMap.createdOnDateFormatted !== null && chosenFormDataMap.createdOnDateFormatted !== undefined">Submitted on - {{chosenFormDataMap.createdOnDateFormatted}}</div>
+          <div v-if="!isHistoricRecord && chosenFormDataMap.createdOnDateFormatted !== null && chosenFormDataMap.createdOnDateFormatted !== undefined">Submitted on - {{chosenFormDataMap.createdOnDateFormatted}}</div>
+      </div>
+      <div v-if="attachmentDataId !== null && attachmentDataId !== undefined"  class="form_data_display_container" style="margin-top: 10px;padding: 5px;background: whitesmoke;"></div>
 
 
-      <hr>
 
       <div class="container form-pallete" style="display:none;flex-grow: 1;border-left: 1px solid rgb(226 226 226);padding-left: 10px;">
           <div class="ndraggable field text-input-element"  style="position:relative">
@@ -81,6 +98,7 @@ export default {
   props: ['attachmentDataId', 'activityId', 'attachmentId'],
   data: function () {
     return {
+      isLoadingData: true,
       attachmentDataIdViaURLParam: this.$route.params.attachmentDataId,
       finalAttachmentDataId: (this.attachmentDataId !== undefined && this.attachmentDataId !== null) ? this.attachmentDataId : this.attachmentDataIdViaURLParam,
       resetTime: {
@@ -88,6 +106,7 @@ export default {
       },
       attachmentInfo: {},
       currentFormToBeSubmitted: {},
+      isHistoricRecord: false,
 
 
       chosenFormDataMap: {},
@@ -109,9 +128,17 @@ export default {
   },
   methods: {
 
+    sendEditFormEvent () {
+      this.$emit("editForm", {});
+    },
     loadFormData () {
 
-      this.getFormAttachment(this.finalAttachmentDataId);
+      // Load this after a delay
+      setTimeout(() => {
+        this.isLoadingData = false;
+        this.getFormAttachment(this.finalAttachmentDataId);
+      }, 1000);
+
       return false;
 
       const get_url = './task-service/task-form-attachments/get-form-data/' + this.finalAttachmentDataId;
@@ -163,6 +190,13 @@ export default {
               this.chosenFormDataMap = formDataMap;
 
               console.log('Form Data fetched is ', this.chosenFormDataMap);
+
+              if (this.chosenFormDataMap.createdOn !== null && this.chosenFormDataMap.createdOn !== undefined) {
+
+                // The conversion below is giving wrong time on the display.
+                // this.attachmentInfo.formSubmissionDate = this.convertUTCDateFromServerToLocalDate(this.attachmentInfo.formSubmissionDate);
+                this.chosenFormDataMap.createdOnDateFormatted = dayjs(this.chosenFormDataMap.createdOn).format('DD/MM/YYYY HH:mm'); // ('DD/MM/YYYY HH:mm');
+              }
 
               let formHTML = "";
               this.chosenFormDataMap.rows.forEach(row => {
@@ -292,7 +326,7 @@ export default {
       // If this component is tested separately using its route, then 'activityId' will be null.
       // If this component is tested within task-activity-tab, then 'activityId' will be present.
       if (this.activityId) {
-        form = document.querySelector('[data-activity-container-id="' + this.activityId + '"]')
+        form = document.querySelector('[data-form-container-id="' + this.attachmentDataId + '"]')
                        .querySelector('.edit_form_template_container');
       }
       else {
@@ -321,7 +355,7 @@ export default {
      // If this component is tested separately using its route, then 'activityId' will be null.
      // If this component is tested within task-activity-tab, then 'activityId' will be present.
      if (this.activityId) {
-       form = document.querySelector('[data-activity-container-id="' + this.activityId + '"]')
+       form = document.querySelector('[data-form-container-id="' + this.attachmentDataId + '"]')
                       .querySelector('.edit_form_template_container');
      }
      else {
@@ -950,14 +984,14 @@ export default {
 
       const fields = [];
 
-      // const formContainer = // document.querySelector('[data-activity-container-id="' + this.activityId + '"]')
+      // const formContainer = // document.querySelector('[data-form-container-id="' + this.activityId + '"]')
       //                      document.querySelectorAll('.edit_form_template_container .form-input-element');
 
        let formContainer = null;
        // If this component is tested separately using its route, then 'activityId' will be null.
        // If this component is tested within task-activity-tab, then 'activityId' will be present.
        if (this.activityId) {
-         formContainer = document.querySelector('[data-activity-container-id="' + this.activityId + '"]')
+         formContainer = document.querySelector('[data-form-container-id="' + this.attachmentDataId + '"]')
                         .querySelector('.edit_form_template_container');
        }
        else {
@@ -1114,9 +1148,21 @@ export default {
 
               console.log('Form Data fetched is ', dataResponse);
               const formDataMap = dataResponse.data.bean;
+              this.attachmentInfo = dataResponse.data.bean;
               this.chosenFormDataMap = formDataMap;
 
               console.log('Form Data fetched is ', this.chosenFormDataMap);
+
+              if (formDataMap.status !== undefined && formDataMap.status !== null && formDataMap.status === "HISTORY") {
+                this.isHistoricRecord = true;
+              }
+
+              if (this.chosenFormDataMap.createdOn !== null && this.chosenFormDataMap.createdOn !== undefined) {
+
+                // The conversion below is giving wrong time on the display.
+                // this.attachmentInfo.formSubmissionDate = this.convertUTCDateFromServerToLocalDate(this.attachmentInfo.formSubmissionDate);
+                this.chosenFormDataMap.createdOnDateFormatted = dayjs(this.chosenFormDataMap.createdOn).format('DD/MM/YYYY HH:mm'); // ('DD/MM/YYYY HH:mm');
+              }
 
               let formHTML = "";
               this.chosenFormDataMap.rows.forEach(row => {
@@ -1128,8 +1174,10 @@ export default {
 
                      if (field.type !== "table") {
 
-                         let val = this.chosenFormDataMap[field.name].value;
+                          console.log("Reading field name value ", field.name, this.chosenFormDataMap);
 
+                         let val = this.chosenFormDataMap[field.name].value;
+                         console.log("Value is ", val);
 
 
                          // Just formatting for displaying the csv with spaces.
@@ -1145,7 +1193,7 @@ export default {
                          }
 
                          const fieldHTML = `<div style='display:flex;'>
-                                                <div style=";max-width: 150px;min-width:150px;text-align:right;padding:5px;font-weight:bold;color: #686868;background: #d9d9d9;">${field.label} </div>
+                                                <div style=";max-width: 150px;min-width:150px;text-align:right;padding:5px;font-weight:bold;color: #686868;background: #e7e6e6;">${field.label} </div>
                                                 <div style=";max-width: 150px;min-width:150px;text-align:left;;padding:5px;padding-left:20px">${val}</div>
                                             </div>`;
 
@@ -1186,7 +1234,7 @@ export default {
                             tableHTML = `<div style='padding: 0px;'>${tableHTML}</div>`; //
 
                         const fieldHTML = `<div style='display:flex;'>
-                                               <div style=";max-width: 150px;min-width:150px;text-align:right;padding:5px;font-weight:bold;color: #686868;background: #d9d9d9;">${field.label}</div>
+                                               <div style=";max-width: 150px;min-width:150px;text-align:right;padding:5px;font-weight:bold;color: #686868;background: #e7e6e6;">${field.label}</div>
                                                <div style=";min-width:150px;text-align:left;;padding:5px;padding-left:20px">${tableHTML}</div>
                                            </div>`;
 
@@ -1208,7 +1256,7 @@ export default {
               // If this component is tested separately using its route, then 'activityId' will be null.
               // If this component is tested within task-activity-tab, then 'activityId' will be present.
               if (this.activityId) {
-                form = document.querySelector('[data-activity-container-id="' + this.activityId + '"]')
+                form = document.querySelector('[data-form-container-id="' + this.attachmentDataId + '"]')
                                .querySelector('.form_data_display_container');
               }
               else {
@@ -1216,7 +1264,7 @@ export default {
               }
               form.innerHTML = formHTML;
 
-              // document// .querySelector('[data-activity-container-id="' + this.activityId + '"]')
+              // document// .querySelector('[data-form-container-id="' + this.activityId + '"]')
               //         .querySelector('.form_data_display_container').innerHTML = formHTML;
 
               this.isFormTemplateRendered = true;
@@ -1224,11 +1272,13 @@ export default {
             }
           })
           .catch((error) => {
-            UIkit.notification("<span uk-icon='icon: warning;ratio: 0.75'></span>" + error, {
-              status: 'danger',
-              pos: 'bottom-left',
-              timeout: 5000
-            });
+
+            console.error("getFormAttachment error for attachmentDataId ", attachmentDataId, error);
+            // UIkit.notification("<span uk-icon='icon: warning;ratio: 0.75'></span> getFormAttachment :: " + error + "  " + attachmentDataId, {
+            //   status: 'danger',
+            //   pos: 'bottom-left',
+            //   timeout: 5000
+            // });
             return false;
           });
       }

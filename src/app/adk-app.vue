@@ -4,6 +4,8 @@
       <div id="app-container" class="XXapp-container hide_reveal" style="width: 100% !important;display: flex;flex-direction: column;flex-grow: 9;overflow-y: hidden;" >
             <div class="app_theme activity_background"></div>
 
+            <audio style="display:none" id="new_activity_notification_sound" src="resources/audios/ding.wav" controls preload="auto" autobuffer></audio>
+            <audio style="display:none" id="new_chat_notification_sound" src="resources/audios/chat2.mp3" controls preload="auto" autobuffer></audio>
             <audio style="display:none" id="chatsound" src="/resources/audios/ding.wav" controls preload="auto" autobuffer></audio>
             <audio style="display:none" id="incoming_call_ringtone" src="/resources/audios/ding.wav" controls preload="auto" loop="" autobuffer></audio>
 
@@ -293,8 +295,6 @@
             </div>
             -->
 
-            <audio style="display:none" id="new_activity_notification_sound" src="resources/audios/new_activity_notification.mp3" controls preload="auto" autobuffer></audio>
-            <audio style="display:none" id="new_chat_notification_sound" src="resources/audios/chat2.mp3" controls preload="auto" autobuffer></audio>
 
             <div class="activity_item_context_menu" style="z-index:100000">
                 <ul>
@@ -537,15 +537,17 @@
       // Increment the Notification Label Count
       bus.on('new-notification', (data) => {
 
+        var thissound = document.querySelector('#new_activity_notification_sound');
+        thissound.volume = 1;
+        thissound.play();
+
         if (this.newNotificationsCounter > 10) {
           this.newNotificationsCounter = '10+';
         } else {
           this.newNotificationsCounter += 1;
         }
 
-        var thissound = document.getElementById('notification_sound');
-        thissound.volume = 1;
-        thissound.play();
+
       });
 
       // Decrement the Notification Label Count when the notification is opened/expanded.

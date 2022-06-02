@@ -8,11 +8,11 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "resources/js/plugins/hotkup-ui/hotkup_vue_app.html"
   },
   {
-    "revision": "d8922a965f48bf03ec98",
+    "revision": "cb1b7a527182455ea46e",
     "url": "resources/js/plugins/hotkup-ui/hotkup_vue_app.min.css"
   },
   {
-    "revision": "d8922a965f48bf03ec98",
+    "revision": "cb1b7a527182455ea46e",
     "url": "resources/js/plugins/hotkup-ui/hotkup_vue_app.min.js"
   },
   {

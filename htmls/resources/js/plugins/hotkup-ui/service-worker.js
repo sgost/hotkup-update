@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "resources/js/plugins/hotkup-ui/precache-manifest.1708412b775fbd7e10a47dfe3d32a6c6.js"
+  "resources/js/plugins/hotkup-ui/precache-manifest.8e62ed614c0b41b45baf780a32194eef.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "hotkup-ui"});

@@ -13,15 +13,15 @@
         <div>{{attachmentInfo.formStatus}}</div>
       -->
       <div v-if="attachmentInfo.formStatus === 'Submitted'"
-          style="border-bottom: 1px solid #e4e4e4; display: flex; flex-direction: column; row-gap: 5px; padding: 20px; font-size: 0.75rem; letter-spacing: 0.05rem;margin-left: 25px;margin-right: 25px;">
+          style="border-bottom: 0px solid #e4e4e4; display: flex; flex-direction: column; row-gap: 5px; padding: 10px; font-size: 0.75rem; letter-spacing: 0.05rem;margin-left: 25px;margin-right: 25px;">
 
-          <div>Current Status -
+          <!-- <div>Current Status -
               <span style="color:green;text-transform:uppercase">{{attachmentInfo.formStatus}}</span>
               <span v-if="currentFormView === 'view_form_data'" style="color:blue;margin-left:20px">(<a v-on:click="currentFormView = 'edit_form_data'">Edit Form</a>)</span>
               <span v-if="currentFormView === 'edit_form_data'" style="color:blue;margin-left:20px">(<a v-on:click="currentFormView = 'view_form_data'">Cancel Edit</a>)</span>
-          </div>
-          <div>Submitted by - {{attachmentInfo.submitterInfo.split("#")[1]}}</div>
-          <div>Submitted on - {{attachmentInfo.formSubmissionDateFormatted}}</div>
+          </div> -->
+          <!-- <div>Submitted by - {{attachmentInfo.submitterInfo.split("#")[1]}}</div>
+          <div>Submitted on - {{attachmentInfo.formSubmissionDateFormatted}}</div> -->
           <!-- <div class="form_data_display_container" style="margin-top: 10px;padding: 5px;background: whitesmoke;"></div> -->
       </div>
 
@@ -29,23 +29,29 @@
            v-bind:data-activity-container-id="activityId">
 
           <div v-if="currentFormView === 'view_form_data'">
-                <view-form-data v-bind:attachmentDataId="attachmentInfo.attachmentDataRecordId"
+                <view-form-data v-bind:attachmentDataId="attachmentDataRecordId"
                                 v-bind:activityId="activityId"
-                                v-bind:attachmentId= "attachmentInfo.id" />
+                                v-bind:attachmentId= "attachmentInfo.id"
+                                v-on:editForm="currentFormView = 'edit_form_data'"/>
           </div>
           <div v-else-if="currentFormView === 'edit_form_data'">
-                <edit-form-data v-bind:attachmentDataId="attachmentInfo.attachmentDataRecordId"
+              <edit-form-data v-bind:attachmentDataId="attachmentDataRecordId"
                                 v-bind:activityId="activityId"
                                 v-bind:attachmentId= "attachmentInfo.id"
                                 v-on:cancelEditForm="handleCancelEditForm()" />
           </div>
       </div>
       <div v-else  v-bind:data-activity-container-id="activityId">
-            <new-form v-bind:activityId="activityId"
-                      v-bind:attachmentInfo="attachmentInfo"
-                      v-bind:attachmentId="attachmentInfo.id"
-                      v-bind:formTemplateId="attachmentInfo.formTemplateId"
-                      v-on:cancelEditForm="handleCancelEditForm()"/>
+            <div >
+                <new-form v-bind:activityId="activityId"
+                          v-bind:attachmentInfo="attachmentInfo"
+                          v-bind:attachmentId="attachmentInfo.id"
+                          v-bind:formTemplateId="attachmentInfo.formTemplateId"
+                          v-bind:currentTaskStageId="taskInfo.status"
+                          v-bind:attachmentStageId="attachmentInfo.stageId"
+                          v-on:cancelEditForm="handleCancelEditForm()"/>
+            </div>
+            <div></div>
       </div>
 
 
@@ -67,7 +73,7 @@ export default {
     utilsMixinLib,
     uiListMixinLib
   ],
-  props: ['attachmentId', 'activityId'],
+  props: ['attachmentId', 'activityId', 'attachmentDataRecordId', 'taskInfo'],
   data: function () {
     return {
       finalAttachmentId: this.attachmentId || this.$route.params.attachmentId,
@@ -125,10 +131,15 @@ export default {
 
   },
   mounted: function () {
+    // alert(this.taskInfo.status + "," + this.attachmentInfo.stageId);
     this.getFormAttachment();
   },
   watch: {
-
+    // 'taskInfo' (newVal, oldVal) {
+    //
+    //      console.log("watching.." + this.taskInfo.status + "," + this.attachmentInfo.stageId);
+    //      this.getFormAttachment();
+    // }
   }
 };
 

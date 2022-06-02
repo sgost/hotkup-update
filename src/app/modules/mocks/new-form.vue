@@ -4,10 +4,19 @@
 
 <template>
 
-    <div v-bind:data-form-container-id="finalAttachmentDataId" class="app_container" style="background-color: whitesmoke;;display: flex;box-sizing: border-box;width: 100%;">
+    <div v-if="finalAttachmentDataId != null && finalAttachmentDataId !== undefined" v-bind:data-form-container-id="attachmentId" class="app_container" style="background-color: whitesmoke;;display: flex;box-sizing: border-box;width: 100%;">
       <div style="display:none">  {{attachmentInfo}}</div>
-      <div class="form-container" style="background-color:#fff" id="form-container-for-printing">
+      <!-- {{attachmentStageId}} = {{currentTaskStageId}} -->
 
+      <!--
+          The below if condition checks the current stage of the task and the attached form.
+          If the form is configured to a stage and the current task's stage matches it, then we display the form.
+
+          If the form is not configured to any stage, then we display the form.
+
+          If the form is configured to a stage and the current task's stage doesn't match it, then we DONT display the form.
+      -->
+      <div v-if="(attachmentStageId !== null && attachmentStageId === currentTaskStageId ) || attachmentStageId === null" class="form-container" style="background-color:#fff" id="form-container-for-printing">
           <div class="ndropzone_row ndraggable_row" >
             <div class="ndropzone" style="border-bottom: 1px solid #d4d4d4;margin-bottom: 10px;border-radius: 0px;">
               <div class="ndraggable field text-input-element form-element" style="position:relative;">
@@ -34,6 +43,7 @@
           </div>
       </div>
 
+      <div v-else style="display: flex; align-items: center; justify-content: center; width: 100%;background: #ff000017;"> Form cannot displayed during this stage</div>
       <hr>
 
       <div class="container form-pallete" style="display:none;flex-grow: 1;border-left: 1px solid rgb(226 226 226);padding-left: 10px;">
@@ -103,11 +113,11 @@ export default {
     utilsMixinLib,
     uiListMixinLib
   ],
-  props: ['attachmentDataId', 'activityId', 'attachmentId', 'formTemplateId'],
+  props: ['attachmentDataId', 'activityId', 'attachmentId', 'formTemplateId', 'attachmentStageId', 'currentTaskStageId'],
   data: function () {
     return {
       attachmentIdViaURLParam: this.$route.params.attachmentId,
-      finalAttachmentDataId: "new",
+      finalAttachmentDataId: this.attachmentId,
       resetTime: {
         time: new Date().getTime()
       },
@@ -267,7 +277,7 @@ export default {
       let elementSelector = null;
       const fieldType = fieldInfo.type;
       const fieldName = fieldInfo.name;
-      const fieldLabel = fieldInfo.label;
+      const fieldLabel = fieldInfo.label; // + "-" + this.attachmentId;
 
       if (fieldType === 'text') {
         elementSelector = '.form-pallete .text-input-element';
@@ -389,7 +399,7 @@ export default {
     },
 
     // Tabular Forms
-    loadTableInFormField (fieldInfo, dropzone) {
+    loadTableInFormFieldObsolete (fieldInfo, dropzone) {
 
       // alert("Loading table");
       console.log("fieldInfo ", fieldInfo);
@@ -601,6 +611,219 @@ export default {
       }
 
     },
+
+    loadTableInFormField (fieldInfo, dropzone) {
+
+      // alert("Loading table");
+      console.log("fieldInfo ", fieldInfo);
+      console.log("attachmentInfo", this.attachmentInfo);
+
+      const numberOfRowsInTable = 3; // this.attachmentInfo[fieldInfo["name"]].length;
+      console.log("This table contains " + numberOfRowsInTable + " rows");
+      console.log("Table data is ", this.attachmentInfo[fieldInfo["name"]]);
+      const tableData = this.attachmentInfo[fieldInfo["name"]];
+
+      const template = `<form autocomplete="off">
+        <div style="display: flex;column-gap: 10px;background-color: #dccfcf;text-transform: none;font-weight: bold;letter-spacing: 1px;">
+            <template v-for="item in tableColumnsArray">
+                <div v-if="item.type==='number'" v-bind:style="'text-align: right;min-width:' + item.minWidth + ';padding: 5px;'">{{item.label}}</div>
+                <div v-else v-bind:style="'min-width:' + item.minWidth + ';padding: 5px;'">{{item.label}}</div>
+            </template>
+        </div>
+        <template v-for="row in rowsArray">
+          <div v-bind:data-row-key="row.key" class="table_row" style="display:flex;column-gap:10px;">
+              <template v-for="item in tableColumnsArray">
+                  <div v-if="item.type==='text'" v-bind:style="'width:' + item.minWidth + ';padding: 5px;'">
+                      <input v-on:input="populateTabularFormData($event)" data-type="text" v-bind:data-column-key="item.name" type="text" class="textbox form-input-element" v-bind:style="'outline: 0px;border: 0px;border-bottom: 1px solid black;width:' + item.minWidth" v-bind:id="'column_' + item.name" />
+                  </div>
+                  <div v-if="item.type==='date'" v-bind:style="'width:' + item.minWidth + ';padding: 5px;'">
+                      <input v-on:input="populateTabularFormData($event)" data-type="date" v-bind:data-column-key="item.name" type="date" class="textbox form-input-element" v-bind:style="'outline: 0px;border: 0px;border-bottom: 1px solid black;width:' + item.minWidth" v-bind:id="'column_' + item.name" />
+                  </div>
+                  <div v-if="item.type==='datetime-local'" v-bind:style="'width:' + item.minWidth + ';padding: 5px;'">
+                      <input v-on:input="populateTabularFormData($event)" data-type="datetime-local" v-bind:data-column-key="item.name" type="datetime-local" class="textbox form-input-element" v-bind:style="'outline: 0px;border: 0px;border-bottom: 1px solid black;width:' + item.minWidth" v-bind:id="'column_' + item.name" />
+                  </div>
+                  <div v-if="item.type==='integer'" v-bind:style="'width:' + item.minWidth + ';padding: 5px;'">
+                      <input v-on:input="populateTabularFormData($event)" data-type="integer" min="0" v-bind:data-column-key="item.name" type="number" class="textbox form-input-element" v-bind:style="'outline: 0px;border: 0px;border-bottom: 1px solid black;text-align: right;width:' + item.minWidth" v-bind:id="'column_' + item.name" />
+                  </div>
+                  <div v-if="item.type==='float'" v-bind:style="'width:' + item.minWidth + ';padding: 5px;'">
+                      <input v-on:input="populateTabularFormData($event)" data-type="float" min="0" v-bind:data-column-key="item.name" type="number" class="textbox form-input-element" v-bind:style="'outline: 0px;border: 0px;border-bottom: 1px solid black;text-align: right;width:' + item.minWidth" v-bind:id="'column_' + item.name" />
+                  </div>
+              </template>
+          </div>
+        </template>
+      </form>`;
+
+
+
+
+      const columnTemplate = `<div v-if="item.type==='number'" v-bind:style="'text-align: right;min-width:' + item.minWidth + ';padding: 5px;'">{{item.label}}</div>
+                              <div v-else v-bind:style="'min-width:' + item.minWidth + ';padding: 5px;'">{{item.label}}</div>`;
+
+      const columnInputTemplate = `<div v-bind:data-row-key="row.key" class="table_row" style="display:flex;column-gap:10px;">
+              <template v-for="item in tableColumnsArray">
+                  <div v-if="item.type==='text'" v-bind:style="'width:' + item.minWidth + ';padding: 5px;'">
+                      <input v-on:input="populateTabularFormData($event)" data-type="text" v-bind:data-column-key="item.name" type="text" class="textbox form-input-element" v-bind:style="'outline: 0px;border: 0px;border-bottom: 1px solid black;width:' + item.minWidth" v-bind:id="'column_' + item.name" />
+                  </div>
+                  <div v-if="item.type==='date'" v-bind:style="'width:' + item.minWidth + ';padding: 5px;'">
+                      <input v-on:input="populateTabularFormData($event)" data-type="date" v-bind:data-column-key="item.name" type="date" class="textbox form-input-element" v-bind:style="'outline: 0px;border: 0px;border-bottom: 1px solid black;width:' + item.minWidth" v-bind:id="'column_' + item.name" />
+                  </div>
+                  <div v-if="item.type==='datetime-local'" v-bind:style="'width:' + item.minWidth + ';padding: 5px;'">
+                      <input v-on:input="populateTabularFormData($event)" data-type="datetime-local" v-bind:data-column-key="item.name" type="datetime-local" class="textbox form-input-element" v-bind:style="'outline: 0px;border: 0px;border-bottom: 1px solid black;width:' + item.minWidth" v-bind:id="'column_' + item.name" />
+                  </div>
+                  <div v-if="item.type==='integer'" v-bind:style="'width:' + item.minWidth + ';padding: 5px;'">
+                      <input v-on:input="populateTabularFormData($event)" data-type="integer" min="0" v-bind:data-column-key="item.name" type="number" class="textbox form-input-element" v-bind:style="'outline: 0px;border: 0px;border-bottom: 1px solid black;text-align: right;width:' + item.minWidth" v-bind:id="'column_' + item.name" />
+                  </div>
+                  <div v-if="item.type==='float'" v-bind:style="'width:' + item.minWidth + ';padding: 5px;'">
+                      <input v-on:input="populateTabularFormData($event)" data-type="float" min="0" v-bind:data-column-key="item.name" type="number" class="textbox form-input-element" v-bind:style="'outline: 0px;border: 0px;border-bottom: 1px solid black;text-align: right;width:' + item.minWidth" v-bind:id="'column_' + item.name" />
+                  </div>
+              </template>
+          </div>`;
+
+      const tableId = fieldInfo.tableId;
+      const fieldKey = fieldInfo.name;
+      // const get_url = './task-tabular-form-templates/get/' + tableId;
+      const get_url = './task-service/task-form-attachments/get-tabular-form/' + tableId;
+
+
+      // Create this object to store tabular data for every table field.
+      this.tabularFormsMap[fieldKey] = {};
+      this.tabularFormsSchemaMap[fieldKey] = {};
+
+      axios.get(process.env.VUE_APP_API_URL + get_url)
+            .then((dataResponse) => {
+              if (dataResponse.data.actionResult == 1) {
+
+
+                const formTemplateObject = dataResponse.data.bean;
+                // this.formTemplateObject = formTemplateObject;
+
+                console.log('Tabular Form Template fetched is ', formTemplateObject);
+                console.log("Table " + formTemplateObject.name + " will be injected into dropzone ", dropzone);
+
+
+                let columnHeaderTemplateHTML = "";
+                let columnInputTemplateHTML = "";
+                const rowKey = "row_1";
+
+                formTemplateObject.columns.forEach(columnMetadata => {
+
+                    const columnKey = columnMetadata.name;
+                    const columnType = columnMetadata.type;
+                    const columnLabel = columnMetadata.label;
+                    const columnMinWidth = columnMetadata.minWidth;
+
+                    // Store the columnKey=columnType in the tabularFormsSchemaMap to be later used in the code.
+                    (this.tabularFormsSchemaMap[fieldKey])[columnKey] = columnType;
+
+                    // Construct each column header here.
+                    if (columnType === "integer" || columnType === "bigdecimal" || columnType === "number" || columnType === "float") {
+                        columnHeaderTemplateHTML += `<div style="text-align: right;min-width:${columnMinWidth};padding: 5px;">${columnLabel}</div>`;
+                    }
+                    else {
+                      columnHeaderTemplateHTML += `<div style="min-width:${columnMinWidth};padding: 5px;">${columnLabel}</div>`;
+                    }
+
+                    // Construct each column input here for a single row.
+                    if (columnType === "text") {
+
+                        columnInputTemplateHTML += `<div style="width:${columnMinWidth};padding: 5px;">
+                                                        <input data-type="text" data-column-key="${columnKey}" type="text" class="textbox form-input-element" style="outline: 0px;border: 0px;border-bottom: 1px solid black;width:${columnMinWidth}" id="column_${columnKey}" />
+                                                    </div>`;
+                    }
+                    else if (columnType === "date") {
+
+                        columnInputTemplateHTML += `<div style="width:${columnMinWidth};padding: 5px;">
+                                                        <input data-type="date" data-column-key="${columnKey}" type="date" class="textbox form-input-element" style="outline: 0px;border: 0px;border-bottom: 1px solid black;width:${columnMinWidth}" id="column_${columnKey}" />
+                                                    </div>`;
+                    }
+                    else if (columnType === "datetime-local") {
+
+                        columnInputTemplateHTML += `<div style="width:${columnMinWidth};padding: 5px;">
+                                                        <input data-type="datetime-local" data-column-key="${columnKey}" type="datetime-local" class="textbox form-input-element" style="outline: 0px;border: 0px;border-bottom: 1px solid black;width:${columnMinWidth}" id="column_${columnKey}" />
+                                                    </div>`;
+                    }
+                    else if (columnType === "integer") {
+
+                        columnInputTemplateHTML += `<div style="width:${columnMinWidth};padding: 5px;">
+                                                        <input data-type="integer" min="0" data-column-key="${columnKey}" type="number" class="textbox form-input-element" style="outline: 0px;border: 0px;border-bottom: 1px solid black;text-align: right;width:${columnMinWidth}" id="column_${columnKey}" />
+                                                    </div>`;
+                    }
+                    else if (columnType === "float") {
+
+                        columnInputTemplateHTML += `<div style="width:${columnMinWidth};padding: 5px;">
+                                                        <input data-type="float" min="0" data-column-key="${columnKey}" type="number" class="textbox form-input-element" style="outline: 0px;border: 0px;border-bottom: 1px solid black;text-align: right;width:${columnMinWidth}" id="column_${columnKey}" />
+                                                    </div>`;
+                    }
+
+                });
+
+                const tableFormHTML = `<form autocomplete="off" >
+                  <div style="display: flex;column-gap: 10px;background-color: whitesmoke;text-transform: none;font-weight: bold;letter-spacing: 1px;">
+                      ${columnHeaderTemplateHTML}
+                  </div>
+                  <div data-row-key="${rowKey}" class="table_row" style="display:flex;column-gap:10px;">
+                      ${columnInputTemplateHTML}
+                  </div>
+                </form>
+                <div class="mini-btn hide-during-print duplicate-row-button" style="margin-top: 25px;user-select: none;display: flex;align-items: center;max-width: 70px;margin-right: auto;margin-left: auto;">
+                  <span uk-icon="icon:plus;ratio:0.55" class="uk-icon"></span>
+                  <span style="margin-left:7px;">Add Row</span>
+                </div>`;
+
+                dropzone.querySelector(".table").innerHTML = tableFormHTML;
+                // Add Input event listeners here..
+                setTimeout(() => {
+                  Array.from(dropzone.querySelectorAll(".form-input-element"))
+                       .forEach(inputElement => {
+
+                          inputElement.addEventListener('input', e => {
+                              this.populateTabularFormDataForHybridForm(e, fieldKey, dropzone.querySelector(".table").getAttribute("data-table-id"));
+                          });
+
+                          inputElement.setAttribute("data-evt-listener-added", "true");
+                       });
+
+                       // Add event listener to duplicate row button
+                       dropzone.querySelector(".duplicate-row-button")
+                               .addEventListener('click', e => {
+                                  this.addRowToTableInHybridForm(e, fieldKey, dropzone);
+                               });
+                }, 500);
+
+                return false;
+
+                // Reset the form's innerHTML before adding the currently selected record's fields.
+                // const form = document.querySelector('#edit_tabular_form_template_container');
+                // form.innerHTML = '';
+
+                this.tableColumnsArray = this.formTemplateObject.columns;
+
+                // Store the columnTypes metadata for later use while submitting the form data
+                this.tableColumnsArray.forEach(col => {
+                  this.tableColumnTypes[col.name] = col.type;
+                });
+
+                // Add minimum of 3 rows.
+                this.duplicateRow();
+                this.duplicateRow();
+                this.duplicateRow();
+
+              }
+            })
+            .catch((error) => {
+                console.error("loadTableInFormField error :: ", error);
+                UIkit.notification("<span uk-icon='icon: warning;ratio: 0.75'></span>" + error, {
+                  status: 'danger',
+                  pos: 'bottom-left',
+                  timeout: 5000
+                });
+                return false;
+            });
+
+
+
+    },
+
     addRowToTableInHybridForm (evt, fieldKey, dropzone) {
 
       const existingNumberOfTableRows = evt.target.closest(".table").querySelectorAll(".table_row").length;
@@ -866,7 +1089,9 @@ export default {
         taskFormTemplateName: this.attachmentInfo.formTemplateName, // this.attachmentFormTemplateNameToBeEdited,
         fields: fields,
         tabularFieldsDataMap: this.tabularFormsMap,
-        clientTimeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
+        clientTimeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        isEditOperation: false,
+        editedDataRecordId: null
       };
 
 
@@ -1014,6 +1239,7 @@ export default {
           }
         })
         .catch((error) => {
+          console.error("Error in getFormTemplateMetadataLatest :: ", error);
           UIkit.notification("<span uk-icon='icon: warning;ratio: 0.75'></span>" + error, {
             status: 'danger',
             pos: 'bottom-left',
@@ -1036,14 +1262,27 @@ export default {
     // this.viewForm(this.attachmentId, attachedFormTemplate.templateId, attachedFormTemplate.templateName, attachedFormTemplate, false);
 
     // Use this for testing the component independently.
-    // this.loadAttachmentInfo("62943f2211309f6669b0319f");
+    // this.loadAttachmentInfo("6297252be47971184e9f2250");
 
 
   },
   watch: {
     'attachmentId' (newVal, oldVal) {
       // alert("attachmentId changed from " + oldVal + " to " + newVal);
-      this.loadAttachmentInfo(newVal);
+      this.finalAttachmentDataId = newVal;
+
+      /*
+          The below if condition checks the current stage of the task and the attached form.
+          If the form is configured to a stage and the current task's stage matches it, then we display the form.
+
+          If the form is not configured to any stage, then we display the form.
+
+          If the form is configured to a stage and the current task's stage doesn't match it, then we DONT display the form.
+      */
+      if ((this.attachmentStageId !== null && this.attachmentStageId === this.currentTaskStageId) || this.attachmentStageId === null) {
+        this.loadAttachmentInfo(newVal);
+      }
+
     }
   }
 };

@@ -876,7 +876,7 @@ export default {
 
 
       const form = {
-        id: this.finalAttachmentDataId, // Since we only allow the form to be submitted once and not update data, we comment the below line and use only 'new' instead.
+        // id: this.finalAttachmentDataId, // Since we only allow the form to be submitted once and not update data, we comment the below line and use only 'new' instead.
         // id: (this.chosenFormDataMap.id !== undefined && this.chosenFormDataMap.id !== null) ? this.chosenFormDataMap.id : 'new',
         taskId: this.attachmentInfo.taskId, // TaskID provided from the props by the enclosing parent component.
         taskFormAttachmentId: this.attachmentId, // this.attachmentIdToBeEdited,
@@ -884,7 +884,9 @@ export default {
         taskFormTemplateName: this.attachmentInfo.templateName, // this.attachmentFormTemplateNameToBeEdited,
         fields: fields,
         tabularFieldsDataMap: this.tabularFormsMap,
-        clientTimeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
+        clientTimeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        isEditOperation: true,
+        editedDataRecordId: this.finalAttachmentDataId
       };
 
 

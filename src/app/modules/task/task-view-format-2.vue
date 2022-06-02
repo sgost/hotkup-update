@@ -502,7 +502,7 @@
               <div v-show="selectedTabKey==='activity'" style=";flex-grow: 1;overflow-y: hidden; position: relative;">
                 <!--div class="activity_background"></div>-->
                 <div v-if="isActivityTabInitialized" style="width: 100%;box-sizing: border-box;z-index: 0;position: absolute;display: flex;grid-template-rows: 1fr;flex-grow: 1;padding: 0px;height: 100%;overflow-y: hidden;xbackground: #ffffffa1;">
-                    <task-activity-tab v-bind:embeddingComponentName="embeddingViewName" v-bind:uniqueComponentId=" uniqueComponentId + '_activity_tab'" v-bind:id="taskObject.id"  v-bind:loggedInUser="loggedInUser"/>
+                    <task-activity-tab v-bind:embeddingComponentName="embeddingViewName" v-bind:uniqueComponentId=" uniqueComponentId + '_activity_tab'" v-bind:id="taskObject.id" v-bind:taskInfo="taskObject" v-bind:loggedInUser="loggedInUser"/>
                 </div>
               </div>
               <div v-show="selectedTabKey==='subtasks'" style=";flex-grow: 1;overflow-y: hidden; position: relative;    padding: 20px;;background: #ffffffa1;">

@@ -1,5 +1,5 @@
 <template>
-    <div style="display: flex;flex-direction: column;flex-grow: 1;">
+    <div style="display: flex;flex-direction: column;flex-grow: 1;max-width: 100%;box-sizing: border-box;">
 
       <div style="padding: 5px 0px;margin-right: 20px;margin-bottom: 0px;display: grid;display:none;grid-template-rows: 1fr;place-items: flex-end;border-bottom: 0px solid rgb(208, 208, 208);">
           <button v-on:click="openPostCommentModal()"  class="clickable-btn uk-button uk-button-danger uk-button-small uk-grid-margin uk-first-column end-call-button" style="background-color:#2196f3;border-radius: 3px;min-width: 100px;font-size: 0.65rem;line-height: 30px;font-weight: normal !important;display: inline-block;">
@@ -12,7 +12,7 @@
               <span style="padding-left: 10px;">Add comment</span>
           </button>
       </div>
-      <div style="padding: 5px 0px;margin-right: 20px;margin-bottom: 0px;display: grid;grid-template-rows: 1fr;place-items: flex-start;border-bottom: 0px solid rgb(208, 208, 208);">
+      <div style="padding: 5px 0px;margin-right: 0px;margin-bottom: 0px;display: grid;grid-template-rows: 1fr;place-items: flex-start;border-bottom: 0px solid rgb(208, 208, 208);">
             <form  class="uk-grid-small uk-grid ui-form activity-comment-container" uk-grid="" style=";padding-bottom: 50px;width: 100%;place-self: center" onsubmit="console.log('Submitted.');return false;">
                 <div class="uk-width-1-1" style="margin-top: 0px;position:relative">
                     <div>
@@ -203,6 +203,14 @@
       </div>
       -->
 
+      <div style="display:flex;justify-content:flex-end">
+        <div v-on:click="showDetailEvents()" class="hotkup-toggle-btn">
+          <div style="text-transform: uppercase;letter-spacing: 0.02rem;font-size: 0.55rem;">Show Details</div>
+          <div class="toggle-button activity_details_toggle_button">
+            <div></div>
+          </div>
+        </div>
+      </div>
       <div class="first_column_scrollable custom-scroll-bar activities_list" style="border-top:0px solid gray;margin-top:10px;position:relative;flex-grow: 1;" v-on:clickXX="openContextMenu($event)" >
 
           <template v-for="activity,idx in availableActivities">
@@ -215,8 +223,11 @@
                         <div class="activity_description">
                           <!-- <div> {{activity.type}} </div> -->
                           <!-- <div> {{activity.id}} </div> -->
-                          <span class="activity-sno">{{activity.reversedSno}}</span>
+
+
                           <div v-if="activity.type=='NEW_COMMENT'">
+                              <span class="activity-sno">{{activity.reversedSno}}</span>
+
                               <div  v-on:click="toggleActivityDetail($event)"  style="cursor:pointer;user-select:none;font-weight: normal;position: relative;min-height: 35px;display: flex;justify-content:flex-start;align-items: center;" >
                                 <span style="font-weight: normal;color: #2196F3;">{{activity.createdBy.split("#")[0]}}</span> &nbsp; commented
                                 <span v-if="activity.comment!==null" v-html="'&nbsp;' + activity.commentHint.substring(0, 30) + '..'" ></span>
@@ -244,6 +255,7 @@
                               </div>
                           </div>
                           <div v-if="activity.type=='NEW_SUBTASK'">
+                              <span class="activity-sno">{{activity.reversedSno}}</span>
                               <div  v-on:click="toggleActivityDetail($event)"  style="cursor:pointer;user-select:none;font-weight: normal;position: relative;min-height: 35px;display: flex;justify-content:flex-start;align-items: center;">
                                 <span style="font-weight: normal;color: #2196F3;">{{activity.createdBy.split("#")[0]}}</span> &nbsp;  added subtask Task#{{activity.subTask.sno}}.
                                 <span style="font-weight: normal;font-size: 0.55rem;;color: #b3b3b3;" v-bind:title="activity.createdOnFormatted">&nbsp; {{activity.createdOnAgo}}</span>
@@ -258,6 +270,7 @@
                           </div>
 
                           <div v-else-if="activity.type=='NEW_TASK'">
+                              <span class="activity-sno">{{activity.reversedSno}}</span>
                               <div v-on:click="toggleActivityDetail($event)"  style="cursor:pointer;user-select:none;font-weight: normal;position: relative;min-height: 35px;display: flex;justify-content:flex-start;align-items: center;">
                                 <span style="font-weight: normal;color: #2196F3;">{{activity.createdBy.split("#")[1]}}</span> &nbsp; created task.
                                 <span style="font-weight: normal;font-size: 0.55rem;;color: #b3b3b3;" v-bind:title="activity.createdOnFormatted">&nbsp; {{activity.createdOnAgo}}</span>
@@ -288,7 +301,8 @@
                           </div>
 
 
-                          <div v-else-if="activity.type=='TASK_INFO_CHANGES'">
+                          <div v-else-if="showActivityDetails && activity.type=='TASK_INFO_CHANGES'">
+                              <span class="activity-sno">{{activity.reversedSno}}</span>
                               <div v-on:click="toggleActivityDetail($event)"  style="cursor:pointer;user-select:none;font-weight: normal;position: relative;min-height: 35px;display: flex;justify-content:flex-start;align-items: center;">
                                 <span style="font-weight: normal;color: #2196F3;">{{activity.createdBy.split("#")[0]}}</span> &nbsp; updated task.
                                 <span style="font-weight: normal;font-size: 0.55rem;;color: #b3b3b3;" v-bind:title="activity.createdOnFormatted">&nbsp; {{activity.createdOnAgo}}</span>
@@ -324,7 +338,8 @@
                               </div>
                           </div>
 
-                          <div v-else-if="activity.type=='TASK_CHECKLIST_ITEM_ADDED'" style="flex-grow: 1;width: 100%;">
+                          <div v-else-if="showActivityDetails && activity.type=='TASK_CHECKLIST_ITEM_ADDED'" style="flex-grow: 1;width: 100%;">
+                              <span class="activity-sno">{{activity.reversedSno}}</span>
                               <div v-on:click="toggleActivityDetail($event)"  class="list-item-row-1" style="cursor:pointer;user-select:none;font-weight: normal; position: relative; min-height: 35px; display: flex; justify-content:flex-start; align-items: center;">
                                 <div style="font-weight: normal;flex-grow: 1;display: flex;align-items: center;">
                                   <span style="font-weight: normal;color: #2196F3;">{{activity.createdBy.split("#")[0]}}</span> &nbsp;added checklist item.
@@ -349,7 +364,8 @@
                                   </template>
                               </div>
                           </div>
-                          <div v-else-if="activity.type=='TASK_CHECKLIST_ITEM_UPDATED'" style="flex-grow: 1;width: 100%;">
+                          <div v-else-if="showActivityDetails && activity.type=='TASK_CHECKLIST_ITEM_UPDATED'" style="flex-grow: 1;width: 100%;">
+                              <span class="activity-sno">{{activity.reversedSno}}</span>
                               <div v-on:click="toggleActivityDetail($event)"  class="list-item-row-1" style="cursor:pointer;user-select:none;font-weight: normal; position: relative; min-height: 35px; display: flex; justify-content:flex-start; align-items: center;">
                                 <div style="font-weight: normal;flex-grow: 1;display: flex;align-items: center;">
                                   <span style="font-weight: normal;color: #2196F3;">{{activity.createdBy.split("#")[0]}}</span> &nbsp; updated checklist item.
@@ -374,7 +390,8 @@
                                   </template>
                               </div>
                           </div>
-                          <div v-else-if="activity.type=='TASK_CHECKLIST_ITEM_STATUS_UPDATE'" style="flex-grow: 1;width: 100%;">
+                          <div v-else-if="showActivityDetails && activity.type=='TASK_CHECKLIST_ITEM_STATUS_UPDATE'" style="flex-grow: 1;width: 100%;">
+                              <span class="activity-sno">{{activity.reversedSno}}</span>
                               <div  v-on:click="toggleActivityDetail($event)" class="list-item-row-1" style="cursor:pointer;user-select:none;font-weight: normal; position: relative; min-height: 35px; display: flex; justify-content:flex-start; align-items: center;">
                                 <div style="font-weight: normal;flex-grow: 1;display: flex;align-items: center;">
                                   <span style="font-weight: normal;color: #2196F3;">{{activity.createdBy.split("#")[0]}}</span> &nbsp;updated checklist status.
@@ -406,7 +423,8 @@
                               </div>
                           </div>
 
-                          <div v-else-if="activity.type=='TASK_REMINDER_ADDED' ">
+                          <div v-else-if="showActivityDetails && activity.type=='TASK_REMINDER_ADDED' ">
+                              <span class="activity-sno">{{activity.reversedSno}}</span>
                               <div v-on:click="toggleActivityDetail($event)"  style="cursor:pointer;user-select:none;font-weight: normal;position: relative;min-height: 35px;display: flex;justify-content:flex-start;align-items: center;">
                                 <span style="font-weight: normal;color: #2196F3;">{{activity.createdBy.split("#")[0]}}</span> &nbsp; added reminder.
                                 <span style="font-weight: normal;font-size: 0.55rem;;color: #b3b3b3;" v-bind:title="activity.createdOnFormatted">&nbsp; {{activity.createdOnAgo}}</span>
@@ -428,7 +446,8 @@
                                   </template>
                               </div>
                           </div>
-                          <div v-else-if="activity.type=='TASK_REMINDER_CHANGES' ">
+                          <div v-else-if="showActivityDetails && activity.type=='TASK_REMINDER_CHANGES' ">
+                              <span class="activity-sno">{{activity.reversedSno}}</span>
                               <div v-on:click="toggleActivityDetail($event)"  style="cursor:pointer;user-select:none;font-weight: normal;position: relative;min-height: 35px;display: flex;justify-content:flex-start;align-items: center;">
                                 <span style="font-weight: normal;color: #2196F3;">{{activity.createdBy.split("#")[0]}}</span> &nbsp; updated reminder.
                                 <span style="font-weight: normal;font-size: 0.55rem;;color: #b3b3b3;" v-bind:title="activity.createdOnFormatted">&nbsp; {{activity.createdOnAgo}}</span>
@@ -450,7 +469,8 @@
                                   </template>
                               </div>
                           </div>
-                          <div v-else-if="activity.type=='TASK_TIMELOG_ADDED'">
+                          <div v-else-if="showActivityDetails && activity.type=='TASK_TIMELOG_ADDED'">
+                              <span class="activity-sno">{{activity.reversedSno}}</span>
                               <div v-on:click="toggleActivityDetail($event)"  style="cursor:pointer;user-select:none;font-weight: normal;position: relative;min-height: 35px;display: flex;justify-content:flex-start;align-items: center;">
                                 <span style="font-weight: normal;color: #2196F3;">{{activity.createdBy.split("#")[0]}}</span> &nbsp; added timelog.
                                 <span style="font-weight: normal;font-size: 0.55rem;;color: #b3b3b3;" v-bind:title="activity.createdOnFormatted">&nbsp; {{activity.createdOnAgo}}</span>
@@ -468,7 +488,8 @@
                                   </template>
                               </div>
                           </div>
-                          <div v-else-if="activity.type=='TASK_TIMELOG_CHANGES'">
+                          <div v-else-if="showActivityDetails && activity.type=='TASK_TIMELOG_CHANGES'">
+                              <span class="activity-sno">{{activity.reversedSno}}</span>
                               <div v-on:click="toggleActivityDetail($event)"  style="cursor:pointer;user-select:none;font-weight: normal;position: relative;min-height: 35px;display: flex;justify-content:flex-start;align-items: center;">
                                 <span style="font-weight: normal;color: #2196F3;">{{activity.createdBy.split("#")[0]}}</span> &nbsp; updated timelog.
                                 <span style="font-weight: normal;font-size: 0.55rem;;color: #b3b3b3;" v-bind:title="activity.createdOnFormatted">&nbsp; {{activity.createdOnAgo}}</span>
@@ -488,6 +509,7 @@
                           </div>
 
                           <div v-else-if="activity.type=='TASK_FORM_ATTACHED'">
+                              <span class="activity-sno">{{activity.reversedSno}}</span>
                               <div v-on:click="toggleActivityDetail($event)"  style="cursor:pointer;user-select:none;font-weight: normal;position: relative;min-height: 35px;display: flex;justify-content:flex-start;align-items: center;">
                                 <span style="font-weight: normal;color: #2196F3;">{{activity.createdBy.split("#")[0]}}</span> &nbsp; {{activity.typeLabel}}
                                 <span style="font-weight: normal;font-size: 0.55rem;;color: #b3b3b3;" v-bind:title="activity.createdOnFormatted">&nbsp; {{activity.createdOnAgo}}</span>
@@ -500,7 +522,9 @@
                               <!-- This is the new task-form-component for embedding forms within activity tab. -->
                               <!-- Added by Vignesh on May 27, 2022 -->
                               <task-form-component v-bind:attachmentId="activity.formAttachmentInfo.id"
-                                                   v-bind:activityId="activity.id"/>
+                                                   v-bind:activityId="activity.id"
+                                                   v-bind:taskInfo="taskInfo"
+                                                   v-bind:attachmentDataRecordId="activity.formAttachmentInfo.attachmentDataRecordId"/>
 
                               <!--
                               <activity-form-tab v-bind:loggedInUser="loggedInUser"
@@ -611,9 +635,10 @@ export default {
     utilsMixinLib,
     uiListMixinLib
   ],
-  props: ['id', 'uniqueComponentId', 'embeddingComponentName', 'loggedInUser'],
+  props: ['id', 'uniqueComponentId', 'embeddingComponentName', 'loggedInUser', 'taskInfo'],
   data: function () {
     return {
+      showActivityDetails: false,
       loggedInUserx: {},
       taskActivityComment: {},
       availableActivities: [],
@@ -648,6 +673,20 @@ export default {
     };
   },
   methods: {
+
+    showDetailEvents () {
+
+      this.showActivityDetails = !this.showActivityDetails;
+      const btn = document.querySelector(".activity_details_toggle_button");
+
+      if (this.showActivityDetails) {
+        btn.classList.add("on");
+      }
+      else {
+        btn.classList.remove("on");
+      }
+
+    },
 
     // /get-one-to-one-chat
     async getOneToOneChatOrCreateNew (withUserId) {
@@ -2809,6 +2848,60 @@ export default {
 
 <style scoped>
 
+  .hotkup-toggle-btn {
+    display: flex;gap: 5px;
+    cursor: pointer;justify-content: flex-end;
+    user-select: none;align-items: center;
+    padding: 0px 10px;border-radius: 3px;
+    transition:0.25s ease-in;
+  }
+
+  .hotkup-toggle-btn:hover{
+    background: #f0f0f0;
+  }
+
+  .toggle-button{
+    border-radius: 50px;
+    height: 20px;
+    width: 40px;
+    background-color: #f0f0f0;
+    border: 1px solid #80808087;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    transition:0.25s ease-in;
+    cursor: pointer;
+  }
+
+  .toggle-button > div{
+    position: absolute;
+    transition: 0.25s ease-in;
+    border-radius: 30px;
+    height: 10px;
+    width: 10px;
+    background-color: #ffffff;
+    border: 1px solid #808080b3;
+    padding: 2px;
+    margin-left: 3px;
+    margin-right: 3px;
+  }
+
+  .toggle-button.on {
+    background-color: #8bc34a;
+  }
+
+  .toggle-button.on > div {
+    margin-left: 20px;
+  }
+
+  .activities_list{
+    overflow-x: hidden;
+  }
+
+  .activities_list:hover{
+    overflow-x: auto;
+  }
+
   .just_for_debugging{
     display: none;
   }
@@ -2842,7 +2935,7 @@ export default {
 
   .activity_description{
     position: relative;
-    padding: 2px 10px 0px 10px;
+    padding: 0px 10px 0px 10px;
     min-height: 75px;
     display: flex;
     flex-direction: column;
