@@ -460,6 +460,14 @@
                   </span>
                   <span class="tab_label">Forms</span></a>
               </li>
+              <li v-on:click="displayTab($event, 'files')" class="forms" uk-tooltip="title:Attached Files;pos:bottom">
+                <a style="pointer-events: none;user-select: none;align-items: center;justify-content: center;position:relative" >
+                  <span v-show="taskObject.attachedFilesCount!==undefined && taskObject.attachedFilesCount!==null && taskObject.attachedFilesCount>0" style="position: absolute;right: -10px;top: -5px;background: rgb(241 241 241);color: #868686;border-radius: 15px;text-align: center;padding: 1px 2px;min-width: 20px;font-size: 0.45rem;">{{taskObject.attachedFilesCount}}</span>
+                  <span class="tab_icon" style="display: flex;column-gap: 5px;align-items: center;position:relative">
+                    <ui-icon name="files" style="width: 15px; height: 15px;"/>
+                  </span>
+                  <span class="tab_label">Files</span></a>
+              </li>
               <li v-on:click="displayTab($event, 'hooks')" class="hooks" uk-tooltip="title:Task Hooks;pos:bottom">
                 <a style="pointer-events: none;user-select: none;align-items: center;justify-content: center;transform: translateY(-3px);">
                   <span class="tab_icon" style="display: flex;column-gap: 5px;align-items: center;">
@@ -794,6 +802,11 @@
                       <task-forms-tab v-bind:loggedInUser="loggedInUser" v-bind:taskSNO="'Task #' + taskObject.sno"  v-bind:id="taskObject.id" v-bind:assignees="availableMembers"/>
                   </div>
               </div>
+              <div v-show="selectedTabKey==='files'" style="flex-grow: 1; overflow-y: hidden; position: relative; background: rgba(255, 255, 255, 0.75); display: flex; flex-direction: column;">
+                  <div v-if="isFilesTabInitialized" style="display: grid;padding: 10px;padding-top: 15px;margin-right: 20px;overflow-y: scroll;">
+                      <task-files-tab v-bind:loggedInUser="loggedInUser" v-bind:taskSNO="'Task #' + taskObject.sno"  v-bind:id="taskObject.id" v-bind:assignees="availableMembers"/>
+                  </div>
+              </div>
 
             </div>
       </div>
@@ -948,6 +961,7 @@
       isTimelogsTabInitialized: false,
       isTransitionsTabInitialized: false,
       isFormsTabInitialized: false,
+      isFilesTabInitialized: false,
       isHooksTabInitialized: false
 
 
@@ -2331,7 +2345,6 @@
         e.target.classList.add("uk-active");
       }
       else if (e === null && this.selectedTabKey !== null) {
-
         document.querySelector('#' + this.embeddingViewName + '_switcherTabs > li.' + this.selectedTabKey)
                 .classList.add("uk-active");
       }
@@ -2375,6 +2388,10 @@
       else if (this.selectedTabKey === 'forms' && !this.isFormsTabInitialized)
       {
         this.isFormsTabInitialized = true;
+      }
+      else if (this.selectedTabKey === 'files' && !this.isFilesTabInitialized)
+      {
+        this.isFilesTabInitialized = true;
       }
 
       // alert("Going to activity Tab");
