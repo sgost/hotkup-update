@@ -86,6 +86,8 @@ export default {
         return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
     },
     fetchAllFilesForTask () {
+
+      this.attachedFiles = [];
       const url = './file-service/files/' + this.id + "/all";
       try {
         // VueJS ajax call-1
@@ -150,6 +152,12 @@ export default {
 
   },
   watch: {
+    // Since we are passing an asynced data as 'availableItems', it is necessary to watch this prop when it receives new data.
+    id: function (newId, oldId) {
+      console.log("id in attachedFiles tab changed from " + oldId + " to " + newId);
+      // this.loadSubtasks(); //();
+      this.fetchAllFilesForTask();
+    }
 
   }
 };

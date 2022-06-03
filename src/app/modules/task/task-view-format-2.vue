@@ -460,7 +460,7 @@
                   </span>
                   <span class="tab_label">Forms</span></a>
               </li>
-              <li v-on:click="displayTab($event, 'files')" class="forms" uk-tooltip="title:Attached Files;pos:bottom">
+              <li v-on:click="displayTab($event, 'files')" class="files" uk-tooltip="title:Attached Files;pos:bottom">
                 <a style="pointer-events: none;user-select: none;align-items: center;justify-content: center;position:relative" >
                   <span v-show="taskObject.attachedFilesCount!==undefined && taskObject.attachedFilesCount!==null && taskObject.attachedFilesCount>0" style="position: absolute;right: -10px;top: -5px;background: rgb(241 241 241);color: #868686;border-radius: 15px;text-align: center;padding: 1px 2px;min-width: 20px;font-size: 0.45rem;">{{taskObject.attachedFilesCount}}</span>
                   <span class="tab_icon" style="display: flex;column-gap: 5px;align-items: center;position:relative">
@@ -2335,64 +2335,72 @@
       // e.preventDefault();
       this.selectedTabKey = tabKey;
 
+      // console.log("embeddingViewName=" + this.embeddingViewName + ", tab=" + this.selectedTabKey);
 
       // Reset all active tabs
       Array.from(document.querySelectorAll('#' + this.embeddingViewName + '_switcherTabs > li'))
            .forEach(item => item.classList.remove("uk-active"));
 
-      if (e !== null)
-      {
-        e.target.classList.add("uk-active");
-      }
-      else if (e === null && this.selectedTabKey !== null) {
-        document.querySelector('#' + this.embeddingViewName + '_switcherTabs > li.' + this.selectedTabKey)
-                .classList.add("uk-active");
-      }
-      else
-      {
-        console.log("No active tab, so making the first one active");
-        (Array.from(document.querySelectorAll('#' + this.embeddingViewName + '_switcherTabs > li'))[0]).classList.add("uk-active");
-      }
+         try
+         {
+            if (e !== null)
+            {
+              e.target.classList.add("uk-active");
+            }
+            else if (e === null && this.selectedTabKey !== null) {
+              document.querySelector('#' + this.embeddingViewName + '_switcherTabs > li.' + this.selectedTabKey)
+                      .classList.add("uk-active");
+            }
+            else
+            {
+              console.log("No active tab, so making the first one active");
+              (Array.from(document.querySelectorAll('#' + this.embeddingViewName + '_switcherTabs > li'))[0]).classList.add("uk-active");
+            }
 
-      if (this.selectedTabKey === 'activity' && !this.isActivityTabInitialized)
-      {
-        this.isActivityTabInitialized = true;
-      }
-      else if (this.selectedTabKey === 'subtasks' && !this.isSubtasksTabInitialized)
-      {
-        this.isSubtasksTabInitialized = true;
-      }
-      else if (this.selectedTabKey === 'checklist' && !this.isChecklistsTabInitialized)
-      {
-        this.isChecklistsTabInitialized = true;
-        // Animate show the checkboxes.
-        setTimeout(() => {
-           Array.from(document.querySelectorAll(".scaleZero"))
-                .forEach(checklist => {
-                    checklist.classList.remove("scaleZero");
-                });
-        }, 500);
-      }
-      else if (this.selectedTabKey === 'reminders' && !this.isRemindersTabInitialized)
-      {
-        this.isRemindersTabInitialized = true;
-      }
-      else if (this.selectedTabKey === 'timelogs' && !this.isTimelogsTabInitialized)
-      {
-        this.isTimelogsTabInitialized = true;
-      }
-      else if (this.selectedTabKey === 'transitions' && !this.isTransitionsTabInitialized)
-      {
-        this.isTransitionsTabInitialized = true;
-      }
-      else if (this.selectedTabKey === 'forms' && !this.isFormsTabInitialized)
-      {
-        this.isFormsTabInitialized = true;
-      }
-      else if (this.selectedTabKey === 'files' && !this.isFilesTabInitialized)
-      {
-        this.isFilesTabInitialized = true;
-      }
+            if (this.selectedTabKey === 'activity' && !this.isActivityTabInitialized)
+            {
+              this.isActivityTabInitialized = true;
+            }
+            else if (this.selectedTabKey === 'subtasks' && !this.isSubtasksTabInitialized)
+            {
+              this.isSubtasksTabInitialized = true;
+            }
+            else if (this.selectedTabKey === 'checklist' && !this.isChecklistsTabInitialized)
+            {
+              this.isChecklistsTabInitialized = true;
+              // Animate show the checkboxes.
+              setTimeout(() => {
+                 Array.from(document.querySelectorAll(".scaleZero"))
+                      .forEach(checklist => {
+                          checklist.classList.remove("scaleZero");
+                      });
+              }, 500);
+            }
+            else if (this.selectedTabKey === 'reminders' && !this.isRemindersTabInitialized)
+            {
+              this.isRemindersTabInitialized = true;
+            }
+            else if (this.selectedTabKey === 'timelogs' && !this.isTimelogsTabInitialized)
+            {
+              this.isTimelogsTabInitialized = true;
+            }
+            else if (this.selectedTabKey === 'transitions' && !this.isTransitionsTabInitialized)
+            {
+              this.isTransitionsTabInitialized = true;
+            }
+            else if (this.selectedTabKey === 'forms' && !this.isFormsTabInitialized)
+            {
+              this.isFormsTabInitialized = true;
+            }
+            else if (this.selectedTabKey === 'files' && !this.isFilesTabInitialized)
+            {
+              this.isFilesTabInitialized = true;
+            }
+        }
+        catch (error) {
+          console.error("ERROR Info : embeddingViewName=" + this.embeddingViewName + ", tab=" + this.selectedTabKey);
+          console.error("error in displayTab :: ", error);
+        }
 
       // alert("Going to activity Tab");
       // UIkit.switcher(document.getElementById(this.embeddingViewName + '_switcherTabs')).show(6);
