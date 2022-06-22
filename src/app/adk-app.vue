@@ -202,6 +202,13 @@
                           <div style="transform: scale(0.85);text-transform: uppercase;font-size: 0.45rem;letter-spacing: 1px;;user-select:none">Dashboard</div>
                       </div>
 
+                         <div v-on:click="loadComponent('Clients-component')" id="Clients-component-module" xv-on:clickPrev="signalShowChat('chat_menu')" style="user-select:none;display: flex;align-items: center;flex-direction: column;font-size: 0.65rem;gap: 5px;">
+                          <div style="transform: scale(0.85);border: 3px solid rgb(230 230 230);background: rgb(234 234 234);border-radius: 50%;position: relative;padding: 10px;display: flex;">
+                            <span class="lnr lnr-pie-chart" style="transform: scale(1.25);"></span>
+                          </div>
+                          <div style="transform: scale(0.85);text-transform: uppercase;font-size: 0.45rem;letter-spacing: 1px;;user-select:none">Clients</div>
+                      </div>
+
                       <!--
                       <div v-on:click="loadComponent('dev-chat-component')" id="dev-chat-component-module" xv-on:xclickPrev="signalShowChat('chat_menu')" style="user-select:none;display: flex;align-items: center;flex-direction: column;font-size: 0.65rem;gap: 5px;">
                           <div style="border: 3px solid rgb(230 230 230);background: rgb(234 234 234);border-radius: 50%;position: relative;padding: 10px;display: flex;">
@@ -437,6 +444,8 @@
 
   // const Dashboard = defineAsyncComponent(() => import(/* webpackChunkName: "dashboard" */ './../app/modules/dashboard/dashboard.vue'));
   import Dashboard from './../app/modules/dashboard/dashboard-new.vue';
+
+    import Clients from './../app/modules/clients/clients.vue';
 
   export default {
 
@@ -1073,6 +1082,10 @@
       } else if (name === 'dashboard-component') {
         this.isTaskView = false;
         this.currentTabComponent = Dashboard;
+      }
+        else if (name === 'Clients-component') {
+        this.isTaskView = false;
+        this.currentTabComponent = Clients;
       } else if (name === 'my-settings') {
         this.isTaskView = false;
         this.currentTabComponent = MySettingsComponent;
@@ -1081,7 +1094,7 @@
       // this.toggleModuleMenu();
     },
     switchApp (appName) {
-      if (appName === 'settings') { window.location = '/admin'; } else if (appName === 'tasks') { window.location = '/app'; } else if (appName === 'channels') { window.location = '/channels'; } else if (appName === 'calendar') { window.location = '/calendar'; } else if (appName === 'businessbench') { window.location = '/businessbench'; } else if (appName === 'dashboard') { window.location = '/dashboard'; }
+      if (appName === 'settings') { window.location = '/admin'; } else if (appName === 'tasks') { window.location = '/app'; } else if (appName === 'channels') { window.location = '/channels'; } else if (appName === 'calendar') { window.location = '/calendar'; } else if (appName === 'businessbench') { window.location = '/businessbench'; } else if (appName === 'dashboard') { window.location = '/dashboard'; } else if (appName === 'Clients') { window.location = '/Clients'; }
     },
     showOrHideChat (menuFilter) {
       if (!this.isChatViewOn) { this.signalShowChat(menuFilter); } else { this.signalHideChat(); }

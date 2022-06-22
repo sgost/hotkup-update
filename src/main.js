@@ -72,6 +72,10 @@ import ViewFormData from './app/modules/mocks/view-form-data.vue';
 import EditFormData from './app/modules/mocks/edit-form-data.vue';
 
 
+
+import Clients from './app/modules/clients/clients.vue';
+
+
 export const bus = mitt();
 
 window.Comlink = Comlink;
@@ -144,6 +148,8 @@ app.component('new-form', NewForm);
 app.component('view-form-data', ViewFormData);
 app.component('edit-form-data', EditFormData);
 
+
+app.component('Clients', Clients);
 
 app.use(store)
   .use(router)
