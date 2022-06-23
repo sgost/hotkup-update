@@ -5,13 +5,21 @@
         <button id="add_client" v-on:click="popToggle = !popToggle; clientPop = 'clientPopAdd'"><span id="add_client_span">+</span>Add Client</button>
 
         <p id="cient_categories" v-on:click="CategoriesFun()">Client Categories</p>
-
+   <!-- <a href="#modal-center" uk-toggle>Open</a> -->
         <ul id="client_list" v-show="showCategories">
           <li id="client_people" v-for="(mockdata, index) in mockdata"
               :key="index"  v-on:click="clientNameToggleFun(index)">{{mockdata.name}}<span>({{mockdata.clients.length}})</span></li>
         </ul>
         </div>
-      </div>
+      </div>   
+
+<!-- <div id="modal-center" class="uk-flex-top" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+
+    </div>
+</div> -->
 
 
 
@@ -305,31 +313,31 @@
 <!-- Popup for add form -->
            <div id="main_container_form"  v-show="clientPop === 'clientPopAdd'">
           <div id="form_wrap_total">
-        <div class="form-main" >
+    <div class="form-main" >
             <label
                 class="form_label">Name</label>
             <input class="form_inputs"
-                placeholder="Name"/>
+                placeholder="Name" v-model="name"/>
         </div>
         <div class="form-main">
             <label
                 class="form_label">Email</label>
             <input class="form_inputs"
-                placeholder="user@gmail.com" />
+                placeholder="user@gmail.com"  v-model="mail"/>
         </div>
 
         <div class="form-main">
             <label
                 class="form_label">Phone</label>
             <input class="form_inputs"
-                placeholder="Phone" />
+                placeholder="Phone"  v-model="phone"/>
         </div>
 
         <div class="form-main">
             <label
                 class="form_label">Website</label>
             <input class="form_inputs"
-                placeholder="www.user.com"/>
+                placeholder="www.user.com" v-model="web"/>
         </div>
 
         <div class="form-main">
@@ -349,36 +357,36 @@
             <label
                 class="form_label">Provience</label>
             <input class="form_inputs"
-                placeholder="Provience"/>
+                placeholder="Provience" v-model="provience"/>
         </div>
         <div class="form-main">
             <label
                 class="form_label">Address</label>
             <input class="form_inputs"
-                placeholder="Address" />
+                placeholder="Address" v-model="Address"/>
         </div>
         <div class="form-main">
             <label
                 class="form_label">City</label>
             <input class="form_inputs"
-                placeholder="City" />
+                placeholder="City" v-model="city"/>
         </div>
         <div class="form-main">
             <label
-                class="form_label">Country</label>
+                class="form_label" >Country</label>
             <input class="form_inputs"
-                placeholder="Country" />
+                placeholder="Country" v-model="country"/>
         </div>
         <div class="form-main">
             <label
-                class="form_label">Pin</label>
+                class="form_label" >Pin</label>
             <input class="form_inputs"
-                placeholder="Pin" />
+                placeholder="Pin" v-model="pin"/>
         </div>
 
         <div id="save_can_btns">
             <button
-                class="save_btn">SAVE</button>
+                class="save_btn" v-on:click="addClient()">SAVE</button>
             <button
                 class="can_btn">CANCEL</button>
         </div>
@@ -497,6 +505,17 @@ export default {
       popToggle: false,
       clientPop: '',
       teskShowPop: false,
+      name: "",
+      mail: '',
+      phone: '',
+      web: '',
+      prntOrg: '',
+      provience: '',
+      Address: '',
+      city: '',
+      country: '',
+      pin: '',
+      sameMockData: [],
       mockdata : [
         {name: 'USA',
         clients: [
@@ -1387,6 +1406,23 @@ export default {
    clientNameToggleFun(e) {
      this.clientNameToggle = e;
    },
+    addClient() {
+    const temp = [];
+     temp.push({
+            name: this.name,
+            mail: this.mail,
+            phone: this.phone,
+            web: this.web,
+            prntOrg: this.prntOrg,
+            provience: this.provience,
+            Address: this.Address,
+            city: this.city,
+            country: this.country,
+            pin: this.pin
+      });
+      
+      this.sameMockData = temp;
+   }
   },
 };
 </script>
