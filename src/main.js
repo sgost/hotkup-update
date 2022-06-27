@@ -74,7 +74,12 @@ import EditFormData from './app/modules/mocks/edit-form-data.vue';
 
 
 import Clients from './app/modules/clients/clients.vue';
-
+import ClientsItem from './app/modules/clients/clients-list-item.vue';
+import ClientsViewFormate from './app/modules/clients/client-view-formate.vue';
+import ClientsContacts from './app/modules/clients/clients-contacts.vue';
+import ClientsActivity from './app/modules/clients/clients-activity-tab.vue';
+import ClientsAbout from './app/modules/clients/clients-about.vue';
+import ClientsInfo from './app/modules/clients/client-info-tab.vue';
 
 export const bus = mitt();
 
@@ -150,6 +155,12 @@ app.component('edit-form-data', EditFormData);
 
 
 app.component('Clients', Clients);
+app.component('clients-list-item', ClientsItem);
+app.component('client-view-formate', ClientsViewFormate);
+app.component('clients-contacts', ClientsContacts);
+app.component('clients-activity-tab', ClientsActivity);
+app.component('clients-about', ClientsAbout);
+app.component('client-info-tab', ClientsInfo);
 
 app.use(store)
   .use(router)

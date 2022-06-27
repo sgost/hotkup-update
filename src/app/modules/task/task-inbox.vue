@@ -1427,7 +1427,6 @@
     // console.log("Loading Task-Inbox.vue component..");
     // this.getList(); Moved from the confusing ui-list.js functions to the more clearer 'getTaskList()';
     this.getTaskList();
-
     bus.off('show-task-details');
     bus.on('show-task-details', (data) => {
       this.showTaskByTaskId(data.taskId, data.eventType);
