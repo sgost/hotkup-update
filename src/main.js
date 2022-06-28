@@ -80,6 +80,12 @@ import ClientsContacts from './app/modules/clients/clients-contacts.vue';
 import ClientsActivity from './app/modules/clients/clients-activity-tab.vue';
 import ClientsAbout from './app/modules/clients/clients-about.vue';
 import ClientsInfo from './app/modules/clients/client-info-tab.vue';
+import ClientsAdd from './app/modules/clients/add-client.vue';
+
+
+
+import People from './app/modules/people/people.vue';
+import PeopleAdd from './app/modules/people/add-people.vue';
 
 export const bus = mitt();
 
@@ -161,7 +167,14 @@ app.component('clients-contacts', ClientsContacts);
 app.component('clients-activity-tab', ClientsActivity);
 app.component('clients-about', ClientsAbout);
 app.component('client-info-tab', ClientsInfo);
+app.component('add-client', ClientsAdd);
 
+
+
+
+
+app.component('People', People);
+app.component('add-people', PeopleAdd);
 app.use(store)
   .use(router)
   .mount('#app');

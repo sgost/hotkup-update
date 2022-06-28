@@ -1,32 +1,31 @@
 <template>
- <div class="first_column_scrollable custom-scroll-bar activities_list" style="border-top:0px solid gray;margin-top:10px;position:relative;flex-grow: 1; height: 500px">
 <div id="form_wrap_total">
 <div class="form-main">
     <label class="form_label">Name</label>
-    <input class="form_inputs" placeholder="Name" v-model="editClient.name"/>
+    <input class="form_inputs" placeholder="Name" v-model="name"/>
 </div>
 <div class="form-main">
     <label class="form_label">Email</label>
     <input class="form_inputs"
-        placeholder="user@gmail.com" v-model="editClient.email"/>
+        placeholder="user@gmail.com" v-model="email"/>
 </div>
 
 <div class="form-main">
     <label class="form_label">Phone</label>
-    <input class="form_inputs" placeholder="Phone" v-model="editClient.phone"/>
+    <input class="form_inputs" placeholder="Phone" v-model="phone"/>
 </div>
 
 <div class="form-main">
     <label class="form_label">Website</label>
     <input class="form_inputs"
-        placeholder="www.user.com" v-model="editClient.website"/>
+        placeholder="www.user.com" v-model="website"/>
 </div>
 
 <div class="form-main">
     <label class="form_label">Parent
         Organization</label>
     <select class="form_inputs" placeholder="Parent
-                        Organization" v-model="editClient.organisation">
+                        Organization" v-model="organisation">
         <option>COKE-COLA</option>
         <option>THUMSUP</option>
         <option>FANTA</option>
@@ -37,29 +36,28 @@
 <div class="form-main">
     <label class="form_label">Provience</label>
     <input class="form_inputs"
-        placeholder="Provience" v-model="editClient.provience" />
+        placeholder="Provience" v-model="provience" />
 </div>
 <div class="form-main">
     <label class="form_label" >Address</label>
-    <input class="form_inputs" placeholder="Address" v-model="editClient.address"/>
+    <input class="form_inputs" placeholder="Address" v-model="address"/>
 </div>
 <div class="form-main">
     <label class="form_label">City</label>
-    <input class="form_inputs" placeholder="City" v-model="editClient.city"/>
+    <input class="form_inputs" placeholder="City" v-model="city"/>
 </div>
 <div class="form-main">
     <label class="form_label">Country</label>
-    <input class="form_inputs" placeholder="Country" v-model="editClient.country"/>
+    <input class="form_inputs" placeholder="Country" v-model="country"/>
 </div>
 <div class="form-main">
     <label class="form_label">Pin</label>
-    <input class="form_inputs" placeholder="Pin" v-model="editClient.pin" />
+    <input class="form_inputs" placeholder="Pin" v-model="pin" />
 </div>
 
 <div id="save_can_btns">
     <button class="save_btn" v-on:click="saveClient">SAVE</button>
     <button class="can_btn uk-modal-close" type="button">CANCEL</button>
-</div>
 </div>
 </div>
 </template>
@@ -79,30 +77,25 @@ export default {
   city: "",
   country: "",
   pin: "",
-  addClient: [],
-  editClient: {
-            name: "COCO-COLA",
-            email: 'coco@gmail.com',
-            phone: '9494978552',
-            website: 'www.coco.com',
-            organisation: 'USA',
-            provience: 'XYZ provience',
-            address: 'XYZ, street, 2/93, XYZ location',
-            city: 'XYZ city',
-            country: 'XYZ country',
-            pin: '325468',
-        }
+  addClient: []
   }
   },
  methods: {
     saveClient() {
         console.log('name', this.name)
-        let addObj = editClient
+        let addObj = {
+            name: this.name,
+            email: this.email,
+            phone: this.phone,
+            website: this.website,
+            organisation: this.organisation,
+            provience: this.provience,
+            address: this.address,
+            city: this.city,
+            country: this.country,
+            pin: this.pin,
+        }
         this.addClient.push(addObj)
-
-        console.log('addClient', this.addClient)
-        console.log('addObj', addObj)
-        console.log('editClient', this.editClient)
     }
  }
 };

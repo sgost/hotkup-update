@@ -175,7 +175,7 @@
                             <span  style="user-select: none;" uk-tooltip="Click to close this task" v-show="showTaskInfoContainer"  class="uk-button updateTaskInfoTrigger" uk-icon="icon:chevron-up;ratio:0.85"   v-on:click="hideTaskInfoContainer()"></span>
                           </div>
                           <div style="position: relative;">
-                            <div class="chat-context-menu-triggerx" style="user-select: none;">
+                            <!-- <div class="chat-context-menu-triggerx" style="user-select: none;">
                               <span uk-tooltip="Add / Remove Hooks" v-bind:id="'ctx-menu-trigger-' + taskObject.id" class="uk-button updateTaskInfoTrigger recd-ctx-menu-trigger" uk-icon="icon:more-verticalx;ratio:0.65" v-on:click.stop="openContextMenu(taskObject.id, $event)" >
                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="15" viewBox="0 0 18 18">
                                     <g id="Add_hook" data-name="Add hook" transform="translate(-3140 502)">
@@ -192,7 +192,7 @@
                                     </g>
                                 </svg>
                               </span>
-                            </div>
+                            </div> -->
                             <div v-bind:id="'ctx_menu_' + taskObject.id" class="context-menu">
                               <div style="user-select: none;display: flex;gap: 0px;flex-direction: column;">
 
@@ -385,6 +385,9 @@
 
         </div>
       </div>
+
+
+      <!-- Client Edit -->
       <div v-show="showTaskInfoContainer" style="position:relative" class="task-info-container">
           <div class="first_column_scrollable custom-scroll-bar" style="font-size: 0.7rem;position: absolute;left: 35px;right: 35px;top: -1px;opacity: 1;z-index: 100;background: linear-gradient(rgb(254 254 254), rgb(255, 255, 255));border-width: 0px 1px 1px;border-top-style: initial;border-right-style: solid;border-bottom-style: solid;border-left-style: solid;border-top-color: initial;border-right-color: rgb(226, 226, 226);border-bottom-color: rgb(226, 226, 226);border-left-color: rgb(226, 226, 226);border-image: initial;box-shadow: rgba(0, 0, 0, 0.12) 0px 15px 12px 0px;border-radius: 0px 0px 5px 5px;">
             <client-info-tab v-bind:taskInfo="taskObject" hideUpdateButton="false" v-on:refreshTaskDetails="getRecord()" />
@@ -437,7 +440,7 @@
               </li>
             </ul>
 
-            <div  v-bind:id="embeddingViewName + '_switcherTabsContent'"  class="xuk-switcher xuk-switcher-component" style="margin-top: 0px;font-size: 0.7rem;padding:5px 10px;overflow-y: hidden;display: flex;flex-grow: 1;background: rgb(255, 255, 255, 0);touch-action: pan-y pinch-zoom;box-sizing: border-box;">
+            <div  v-bind:id="embeddingViewName + '_switcherTabsContent'"  class="xuk-switcher xuk-switcher-component" style="margin-top: 0px;font-size: 0.7rem;padding:5px 10px;overflow-y: hidden;display: flex;flex-grow: 1;background: rgb(255, 255, 255, 0);touch-action: pan-y pinch-zoom;box-sizing: border-box; min-height: 40rem">
 
               <!-- CONTACT -->
               <div v-show="selectedTabKey==='Contact'" class="custom-scroll-bar" style="flex-grow: 1;overflow-y: scroll;position: relative;padding: 15px;height: 100%;background: transparent; xbackground:rgba(255, 255, 255, 0.7);box-sizing: border-box;margin-bottom: 10px;">

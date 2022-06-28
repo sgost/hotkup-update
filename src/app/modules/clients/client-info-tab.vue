@@ -8,56 +8,56 @@
             <div class="uk-width-2-3@s uk-first-column ">
                 <label class="uk-form-label">Name *</label>
                 <div class="uk-form-controls">
-                  <input v-model="taskObject.name" class="uk-input" type="text" placeholder=""  tabindex="1">
+                  <input v-model="editClient.name" class="uk-input" type="text" placeholder="">
                 </div>
             </div>
 
             <div class="uk-width-1-3@s uk-grid-margin">
                 <label class="uk-form-label" for="form-stacked-text">Email *</label>
                 <div style="position:relative">
-                      <input v-model="taskObject.name" class="uk-input" type="text" placeholder=""  tabindex="1">
+                      <input v-model="editClient.email" class="uk-input" type="text" placeholder="">
                 </div>
             </div>
 
              <div class="uk-width-2-3@s uk-first-column ">
                 <label class="uk-form-label">Phone</label>
                 <div class="uk-form-controls">
-                  <input v-model="taskObject.name" class="uk-input" type="text" placeholder=""  tabindex="1">
+                  <input v-model="editClient.phone" class="uk-input" type="text" placeholder="">
                 </div>
             </div>
 
             <div class="uk-width-1-3@s uk-grid-margin">
                 <label class="uk-form-label" for="form-stacked-text">Website *</label>
                 <div style="position:relative">
-                      <input v-model="taskObject.name" class="uk-input" type="text" placeholder=""  tabindex="1">
+                      <input v-model="editClient.website" class="uk-input" type="text" placeholder="">
                 </div>
             </div>
 
              <div class="uk-width-2-3@s uk-first-column ">
                 <label class="uk-form-label">Parent Organization *</label>
                 <div class="uk-form-controls">
-                  <input v-model="taskObject.name" class="uk-input" type="text" placeholder=""  tabindex="1">
+                  <input v-model="editClient.organisation" class="uk-input" type="text" placeholder="">
                 </div>
             </div>
 
             <div class="uk-width-1-3@s uk-grid-margin">
                 <label class="uk-form-label" for="form-stacked-text">Provience *</label>
                 <div style="position:relative">
-                      <input v-model="taskObject.name" class="uk-input" type="text" placeholder=""  tabindex="1">
+                      <input v-model="editClient.provience" class="uk-input" type="text" placeholder="">
                 </div>
             </div>  
 
              <div class="uk-width-2-3@s uk-first-column ">
                 <label class="uk-form-label">Address *</label>
                 <div class="uk-form-controls">
-                  <input v-model="taskObject.name" class="uk-input" type="text" placeholder=""  tabindex="1">
+                  <input v-model="editClient.address" class="uk-input" type="text" placeholder="">
                 </div>
             </div>
 
             <div class="uk-width-1-3@s uk-grid-margin">
                 <label class="uk-form-label" for="form-stacked-text">City *</label>
                 <div style="position:relative">
-                      <input v-model="taskObject.name" class="uk-input" type="text" placeholder=""  tabindex="1">
+                      <input v-model="editClient.city" class="uk-input" type="text" placeholder="">
                 </div>
             </div>  
 
@@ -65,14 +65,14 @@
              <div class="uk-width-2-3@s uk-first-column ">
                 <label class="uk-form-label">Country *</label>
                 <div class="uk-form-controls">
-                  <input v-model="taskObject.name" class="uk-input" type="text" placeholder=""  tabindex="1">
+                  <input v-model="editClient.country" class="uk-input" type="text" placeholder="">
                 </div>
             </div>
 
             <div class="uk-width-1-3@s uk-grid-margin">
                 <label class="uk-form-label" for="form-stacked-text">Email *</label>
                 <div style="position:relative">
-                      <input v-model="taskObject.name" class="uk-input" type="text" placeholder=""  tabindex="1">
+                      <input v-model="editClient.pin" class="uk-input" type="text" placeholder="">
                 </div>
             </div>  
 
@@ -128,7 +128,25 @@ export default {
       },
       taskObjectBeforeChange: {},
       taskTransitionUpdate: {},
-      doesCategoryHasAdvancedSettings: false
+      doesCategoryHasAdvancedSettings: false,
+
+
+
+
+
+
+      editClient: {
+            name: "COCO-COLA",
+            email: 'coco@gmail.com',
+            phone: '9494978552',
+            website: 'www.coco.com',
+            organisation: 'USA',
+            provience: 'XYZ provience',
+            address: 'XYZ, street, 2/93, XYZ location',
+            city: 'XYZ city',
+            country: 'XYZ country',
+            pin: '325468',
+        }
     };
   },
   methods: {

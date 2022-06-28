@@ -9,10 +9,10 @@
               <div>
                 <div style="min-height: 75px;opacity: 1;display: flex;align-items: center;justify-content: center;">
                     <div style="position:relative">
-                      <button id="new_task_button" uk-toggle="target: #add-client-modal" class="btn clickable-btn uk-button uk-button-danger uk-button-small uk-grid-margin uk-first-column end-call-button"
+                      <button id="new_task_button" uk-toggle="target: #add-people-modal" class="btn clickable-btn uk-button uk-button-danger uk-button-small uk-grid-margin uk-first-column end-call-button"
                               style="background-color: rgb(37, 139, 255);border-radius: 3px 0px 0px 3px;place-self: center;place-items: center;min-width: 100px;font-size: 0.75rem;line-height: 27px;font-weight: normal !important;text-transform: capitalize;">
                         <span uk-icon="icon:plus;ratio:0.75"></span>
-                        <span style="margin-left:5px"> Add Client</span>
+                        <span style="margin-left:5px"> Add Contact</span>
                       </button>
 
 
@@ -412,10 +412,10 @@
 
 
 <!-- ADD client popup -->
-<div id="add-client-modal" class="uk-flex-top" uk-modal>
+<div id="add-people-modal" class="uk-flex-top" uk-modal>
     <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
         <button class="uk-modal-close-default" type="button" uk-close></button>
-        <add-client/>
+        <add-people/>
     </div>
 </div>
 
