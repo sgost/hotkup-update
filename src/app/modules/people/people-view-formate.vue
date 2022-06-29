@@ -51,7 +51,7 @@
             <div style="display:flex;width: 100%;position:relative">
                   <div style="flex-grow: 1;display: flex;gap: 5px;flex-direction: column;justify-content: center;">
                       <div style="color: rgb(129, 129, 129);font-weight: bold;font-size: 0.50rem;border-radius: 2px;letter-spacing: 1px;display: flex;align-items: center;">
-                          <div style="color: rgb(127, 126, 126);color:rgb(126 126 126);font-weight: normal;font-size: 0.5rem;text-transform: uppercase;letter-spacing: 1px;padding: 0px 0px;font-size: 0.75rem;text-transform: capitalize;font-weight: bold;color: #258bfe;color:rgb(112 112 112);letter-spacing: 1px;">Client Id #{{catItem.id}} </div>
+                          <div style="color: rgb(127, 126, 126);color:rgb(126 126 126);font-weight: normal;font-size: 0.5rem;text-transform: uppercase;letter-spacing: 1px;padding: 0px 0px;font-size: 0.75rem;text-transform: capitalize;font-weight: bold;color: #258bfe;color:rgb(112 112 112);letter-spacing: 1px;">Contact Number #{{catItem.id}} </div>
                           <div style="padding-left:10px;">
                               <div v-if="taskObject.priority!==null && taskObject.dueDateTimeFormatted !==null && taskObject.dueDateTimeFormatted !== undefined && taskObject.priority === 'Critical'" class="task-created-date critical" style="align-items: center;display: flex;overflow: hidden;text-transform: none;white-space: pre;border: 0px solid rgb(239, 239, 239);padding: 2px 10px;border-radius: 20px;background-color: rgba(233, 30, 99, 0.4);color: white;column-gap: 5px;" v-bind:title="taskObject.priority + ' priority, with Due Date - ' + taskObject.dueDateTimeFormatted">
                                     <div>
@@ -396,15 +396,7 @@
       <div  v-show="!showNewSubTaskForm" style="display: grid;grid-template-rows: auto 1fr;display: flex;flex-direction: column;flex-grow: 1;overflow-y: hidden;">
             <ul  v-bind:id="embeddingViewName + '_switcherTabs'" class="uk-subnav uk-subnav-pill tab-bar" xuk-switcher style="gap: 10px;user-select: none;align-items: center;justify-content: flex-start;column-gap: 30px;">
               <!--<li uk-tooltip="title:Task Info;pos:bottom"><a href="#"><span class="tab_icon"><ui-icon name="info" size="width:15px;height:15px"/></span><span class="">Task Info</span></a></li>-->
-               <li v-on:click="displayTab($event, 'Contact')" class="contact" uk-tooltip="title:Contact;pos:bottom">
-                  <a style="pointer-events: none;user-select: none;align-items: center;justify-content: center;" >
-                    <span class="tab_icon"  style="display: flex;column-gap: 5px;align-items: center;position:relative">
-                        <ui-icon name="activity" size="width:15px;height:15px"/>
-                    </span>
-                    <span class="tab_label">Contact</span>
-                  </a>
-              </li>
-              <li v-on:click="displayTab($event, 'activity')" class="activity" uk-tooltip="title:Activities;pos:bottom">
+              <li v-on:click="displayTab($event, 'activity')" class="activity" uk-tooltip="title:Activity;pos:bottom">
                   <a style="pointer-events: none;user-select: none;align-items: center;justify-content: center;" >
                     <span class="tab_icon"  style="display: flex;column-gap: 5px;align-items: center;position:relative">
                         <ui-icon name="activity" size="width:15px;height:15px"/>
@@ -412,23 +404,24 @@
                     <span class="tab_label">Activity</span>
                   </a>
               </li>
-              <li v-on:click="displayTab($event, 'about')" class="about" uk-tooltip="title:About;pos:bottom">
+              <li v-on:click="displayTab($event, 'information')" class="information" uk-tooltip="title:Information;pos:bottom">
                   <a style="pointer-events: none;user-select: none;align-items: center;justify-content: center;" >
                     <span class="tab_icon"  style="display: flex;column-gap: 5px;align-items: center;position:relative">
                         <ui-icon name="activity" size="width:15px;height:15px"/>
                     </span>
-                    <span class="tab_label">About</span>
+                    <span class="tab_label">Information</span>
                   </a>
               </li>
-              <li v-on:click="displayTab($event, 'subtasks')" class="subtasks" uk-tooltip="title:Sub Tasks;pos:bottom">
-                  <a style="pointer-events: none;user-select: none;align-items: center;justify-content: center;position:relative" >
-                    <span v-show="taskObject.subTasksCount>0" style="position: absolute;right: -10px;top: -5px;background: rgb(241 241 241);color: #868686;border-radius: 15px;text-align: center;padding: 1px 2px;min-width: 20px;font-size: 0.45rem;">{{taskObject.subTasksCount}}</span>
+
+              <li v-on:click="displayTab($event, 'organization')" class="organization" uk-tooltip="title:Organization;pos:bottom">
+                  <a style="pointer-events: none;user-select: none;align-items: center;justify-content: center;" >
                     <span class="tab_icon"  style="display: flex;column-gap: 5px;align-items: center;position:relative">
-                        <ui-icon name="subtask" size="width:15px;height:15px"/>
+                        <ui-icon name="activity" size="width:15px;height:15px"/>
                     </span>
-                    <span class="tab_label">Tasks </span>
+                    <span class="tab_label">Organization</span>
                   </a>
               </li>
+
               <li v-on:click="displayTab($event, 'reminders')" class="reminders" uk-tooltip="title:Reminders;pos:bottom">
                 <a style="pointer-events: none;user-select: none;align-items: center;justify-content: center;position:relative" >
                   <span v-show="taskObject.remindersCount!==undefined && taskObject.remindersCount!==null && taskObject.remindersCount>0" style="position: absolute;right: -10px;top: -5px;background: rgb(241 241 241);color: #868686;border-radius: 15px;text-align: center;padding: 1px 2px;min-width: 20px;font-size: 0.45rem;">{{taskObject.remindersCount}}</span>
@@ -441,113 +434,25 @@
             </ul>
 
             <div  v-bind:id="embeddingViewName + '_switcherTabsContent'"  class="xuk-switcher xuk-switcher-component" style="margin-top: 0px;font-size: 0.7rem;padding:5px 10px;overflow-y: hidden;display: flex;flex-grow: 1;background: rgb(255, 255, 255, 0);touch-action: pan-y pinch-zoom;box-sizing: border-box; min-height: 40rem">
-
-              <!-- CONTACT -->
-              <div v-show="selectedTabKey==='Contact'" class="custom-scroll-bar" style="flex-grow: 1;overflow-y: scroll;position: relative;padding: 15px;height: 100%;background: transparent; xbackground:rgba(255, 255, 255, 0.7);box-sizing: border-box;margin-bottom: 10px;">
+              <div v-show="selectedTabKey==='information'" style=";flex-grow: 1;overflow-y: hidden;position: relative;;height: 100%;background: white;">
                   <div class="task-communication" style="min-height:75px">
-                      <clients-contacts v-bind:addContact="addContact" v-bind:contactModal="contactModal"/>
+                  <people-information/>
                   </div>
               </div>
 
-
-              <div v-show="selectedTabKey==='about'" style=";flex-grow: 1;overflow-y: hidden;position: relative;;height: 100%;background: white;">
+              <div v-show="selectedTabKey==='organization'" style=";flex-grow: 1;overflow-y: hidden;position: relative;;height: 100%;background: white;">
                   <div class="task-communication" style="min-height:75px">
-                  <clients-about/>
+                  <people-organization/>
                   </div>
               </div>
+              
 
 
               <div v-show="selectedTabKey==='activity'" style=";flex-grow: 1;overflow-y: hidden; position: relative;">
-               <clients-activity-tab v-bind:embeddingComponentName="embeddingViewName" v-bind:uniqueComponentId=" uniqueComponentId + '_activity_tab'" v-bind:id="taskObject.id" v-bind:taskInfo="taskObject" v-bind:loggedInUser="loggedInUser"/>
+               <people-activity-tab v-bind:embeddingComponentName="embeddingViewName" v-bind:uniqueComponentId=" uniqueComponentId + '_activity_tab'" v-bind:id="taskObject.id" v-bind:taskInfo="taskObject" v-bind:loggedInUser="loggedInUser"/>
               </div>
 
-              
-              <div v-show="selectedTabKey==='subtasks'" style=";flex-grow: 1;overflow-y: hidden; position: relative;    padding: 20px;;background: #ffffffa1;">
-                  <div style="padding: 5px 0px;margin-right:20px;margin-bottom: 10px;display: grid;grid-template-rows: 1fr;place-items: start;border-bottom: 1px solid #d0d0d0;">
-                      <button v-on:click="addNewSubTask()"  class="clickable-btn uk-button uk-button-danger uk-button-small uk-grid-margin uk-first-column end-call-button" style="background-color:#2196f3;border-radius: 3px;min-width: 100px;font-size: 0.65rem;line-height: 30px;font-weight: normal !important;display: inline-block;">
-                          <span uk-icon="icon:plus;ratio:0.65" class="uk-icon" style="">
-                            <svg width="13" height="13" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" data-svg="plus">
-                              <rect x="9" y="1" width="1" height="17"></rect>
-                              <rect x="1" y="9" width="17" height="1"></rect>
-                            </svg>
-                          </span>
-                          <span style="padding-left: 10px;">Add New SubTask</span>
-                      </button>
-                  </div>
-                  <div v-if="isSubtasksTabInitialized" style="display:grid;padding-top:15px;margin-right:20px;">
-                      <clients-subtasks-tab v-bind:id="taskObject.id" />
-                  </div>
-              </div>
-              <div v-show="selectedTabKey==='checklist'" style="flex-grow: 1;overflow-y: hidden;position: relative;background: rgba(255, 255, 255, 0.75);display: flex;flex-direction: column;">
-                  <div style="display: flex;padding: 20px 0px;column-gap: 30px;;margin-right:15px;margin-left:15px;">
-                        <div style="flex:1">
-                            <input type="text" v-model="checklistItem.activityName" class="uk-input" placeholder="Add new checklist item" style="border-radius:3px"/>
-                        </div>
-                        <div>
-                            <button v-on:click="saveChecklistItem()"  class="clickable-btn uk-button uk-button-danger uk-button-small uk-grid-margin uk-first-column end-call-button" style="background-color:#2196f3;border-radius: 3px;min-width: 100px;font-size: 0.65rem;line-height: 30px;font-weight: normal !important;display: inline-block;">
-                                <span style="padding-left: 10px;">{{checklistLabel}}</span>
-                            </button>
-                        </div>
-                  </div>
-                  <br>
-                  <div v-if="isChecklistsTabInitialized" class="custom-scroll-bar" style="position: relative;flex-grow: 1;">
-                      <template v-for="item,index in taskObject.checklist">
-                          <div class="checklist_item"  v-if="(item.stageId === null) ||
-                                                             (item.stageId === undefined) ||
-                                                             (item.stageId !== null && taskObjectBeforeChange.statusInfo !== null && taskObjectBeforeChange.statusInfo.id === item.stageId)">
-
-                              <div v-show="item.status!=='COMPLETED' && item.status!=='CANCELLED'" v-on:click="updateChecklistItemStatus(item, $event)" style="border:1px solid #555;height: 20px;width: 20px;display: grid;cursor:pointer;border-radius: 3px;">
-                              </div>
-                              <div v-show="item.status==='COMPLETED'" uk-tooltip="pos:left;title:You cannot change the status of a completed item" style="xcursor: not-allowed;border: 1px solid rgb(86, 206, 42);background: rgb(122, 209, 90);height: 20px;width: 20px;display: grid;border-radius: 3px;">
-                                  <span uk-icon="check" class="scaleZero" style="color: white;transform-origin: center center;transition: 0.15s ease-out;"></span>
-                              </div>
-                              <div v-show="item.status==='CANCELLED'" style="filter: brightness(1.75);border:1px solid gray;height: 20px;width: 20px;display: grid;cursor:pointer;border-radius: 3px;">
-                              </div>
-
-                              <div style="flex:1;" v-if="item.status==='COMPLETED'">
-                                <div>
-                                  {{index+1}}.
-                                  <span style="text-decoration: xline-through red;">{{item.activityName}}</span>
-                                  <span style="color: #8080809c;display:none" v-if="item.stageName !== null" > [ Visible during stage - {{item.stageName}} ]</span>
-                                </div>
-                                <div v-if="item.updatedBy !== null" style="padding-left:0px">
-                                  <span style="color: rgb(140 140 140);font-size: 0.55rem;">
-                                     Completed by {{item.updatedBy.split("#")[1]}}
-                                  </span>
-                                  <span v-if="item.updatedOn !== null" style="cursor: help;color: rgb(140 140 140);font-size: 0.55rem;" v-bind:title="item.updatedOnFormatted">&nbsp; ({{item.updatedOnAgo}})</span>
-                                </div>
-                              </div>
-                              <div style="flex:1;" v-if="item.status!=='COMPLETED' && item.status!=='CANCELLED'">
-                                {{index+1}}. {{item.activityName}}
-                                <span style="color: #8080809c;display:none" v-if="item.stageName !== null" > [ Visible during stage - {{item.stageName}} ]</span>
-                              </div>
-                              <div style="flex: 1 1 0%;filter: brightness(1.75);" v-if="item.status==='CANCELLED'">
-                                <div>
-                                  {{index+1}}.
-                                    <span style="text-decoration: xline-through red;">{{item.activityName}} </span>
-                                    <span style="color: #8080809c;display:none" v-if="item.stageName !== null" > [ Visible during stage - {{item.stageName}} ]</span>
-                                </div>
-                                <div v-if="item.updatedBy !== null" style="padding-left:0px">
-                                  <span style="color: rgb(101 101 101);font-size: 0.55rem;">
-                                     Cancelled by {{item.updatedBy.split("#")[1]}}
-                                  </span>
-                                  <span v-if="item.updatedOn !== null" style="cursor: help;color: rgb(101 101 101);font-size: 0.55rem;" v-bind:title="item.updatedOnFormatted">&nbsp; ({{item.updatedOnAgo}})</span>
-                                </div>
-                              </div>
-
-                              <div v-if="item.status==='COMPLETED'">
-                                <span style="background: #59d059;color: white;padding:4px 10px;border-radius: 20px;font-size: 0.45rem;margin-left: 20px;letter-spacing: 1px;">COMPLETED</span>
-                              </div>
-                              <div v-if="item.status==='CANCELLED'">
-                                <span style="filter: brightness(1.75);background: rgb(99 99 99);color: #929292;padding:4px 10px;border-radius: 20px;font-size: 0.45rem;margin-left: 20px;letter-spacing: 1px;">CANCELLED</span>
-                              </div>
-                              <div v-if="item.status!=='COMPLETED' && item.status!=='CANCELLED'">
-                                <a uk-tooltip="pos:left;title:You cannot undo once you cancel the item" v-on:click="cancelChecklistItem(item)">Cancel Item</a>
-                              </div>
-                          </div>
-                      </template>
-                  </div>
-              </div>
+            
               <div v-show="selectedTabKey==='reminders'" style="display: flex;flex-direction: column;flex-grow: 1;overflow-y: hidden; position: relative;height: 100%;;background: #ffffffa1;">
                   <div v-if="isRemindersTabInitialized" style="display: flex;padding: 20px;min-height: 300px;flex-direction: column;">
 
@@ -831,10 +736,10 @@
 
 <script>
 
-  import { bus } from './../../../main.js';
-  import userMixinLib from './../../mixins/lib/user_mixin_lib';
-  import utilsMixinLib from './../../mixins/lib/utils_lib';
-  import uiListMixinLib from './../../mixins/lib/ui-list.js';
+  import { bus } from '../../../main.js';
+  import userMixinLib from '../../mixins/lib/user_mixin_lib';
+  import utilsMixinLib from '../../mixins/lib/utils_lib';
+  import uiListMixinLib from '../../mixins/lib/ui-list.js';
 
   export default {
   mixins: [

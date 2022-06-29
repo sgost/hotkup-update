@@ -8,7 +8,7 @@
     <div class="ui_grid_row list-detail" style=" display: grid; padding: 5px 2px 5px 15px; border-top: 0.5px solid #e5e5e5; border-bottom: 0.5px solid #e5e5e5; margin: 0">
       <div class="list-item-row-1" style="display:flex;column-gap:5px">
         <div class="task-sno">
-          <span>Client Id #{{item.id}}</span>
+          <span>Contact Number #{{item.id}}</span>
         </div>
         <div style="display:flex;column-gap:5px;margin-left:auto;display:none">
           <div style="display: flex;column-gap: 2px;color: #6f6f6f;"><img src="resources/images/attachments.svg" style="height:10px;width:15px"></div>
@@ -47,10 +47,10 @@
 </template>
 <script>
 
-  import { bus } from './../../../main.js';
-  import userMixinLib from './../../mixins/lib/user_mixin_lib';
-  import utilsMixinLib from './../../mixins/lib/utils_lib';
-  import uiListMixinLib from './../../mixins/lib/ui-list.js';
+  import { bus } from '../../../main.js';
+  import userMixinLib from '../../mixins/lib/user_mixin_lib';
+  import utilsMixinLib from '../../mixins/lib/utils_lib';
+  import uiListMixinLib from '../../mixins/lib/ui-list.js';
 
   export default {
   mixins: [

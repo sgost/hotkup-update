@@ -1,67 +1,87 @@
 <template>
+ <div class="first_column_scrollable custom-scroll-bar activities_list" style="border-top:0px solid gray;margin-top:10px;position:relative;flex-grow: 1; height: 500px">
 <div id="main_container_form">
 <div id="form_wrap_total">
     <div class="form-main">
         <label class="form_label">First
             Name</label>
         <input class="form_inputs"
-            placeholder="First Name" v-model="firstName"/>
+            placeholder="First Name" 
+            v-model="editClient.firstName"/>
 
     </div>
     <div class="form-main">
         <label class="form_label">Last
             Name</label>
         <input class="form_inputs"
-            placeholder="Last Name" v-model="lastName"/>
+            placeholder="Last Name" 
+        v-model="editClient.lastName"/>
     </div>
     <div class="form-main">
         <label class="form_label">Email</label>
         <input class="form_inputs"
-            placeholder="user@gmail.com" v-model="email"/>
+            placeholder="user@gmail.com" 
+            v-model="editClient.email"
+            />
     </div>
     <div class="form-main">
         <label class="form_label">Mobile</label>
         <input class="form_inputs"
-            placeholder="Mobile" v-model="mobile"/>
+            placeholder="Mobile" 
+            v-model="editClient.mobile"
+            />
     </div>
     <div class="form_main_wrapper">
         <div class="form-main">
             <label class="form_label">Telephone</label>
             <input class="form_inputs"
-                placeholder="Telephone" v-model="telephone"/>
+                placeholder="Telephone" 
+                v-model="editClient.telephone"
+                />
         </div>
         <div class="form-main">
             <label class="form_label">Extension</label>
             <input class="form_inputs"
-                placeholder="Extension" v-model="extension"/>
+                placeholder="Extension" 
+                v-model="editClient.extension"
+                />
         </div>
     </div>
     <div class="form-main">
         <label class="form_label">Street
             Name</label>
         <input class="form_inputs"
-            placeholder="Street Name" v-model="street"/>
+            placeholder="Street Name" 
+            v-model="editClient.street"
+            />
     </div>
     <div class="form-main">
         <label class="form_label">City</label>
-        <input class="form_inputs" placeholder="City" v-model="city"/>
+        <input class="form_inputs" placeholder="City" 
+        v-model="editClient.city"
+        />
     </div>
     <div class="form_main_wrapper">
         <div class="form-main">
             <label class="form_label">Provience</label>
             <input class="form_inputs"
-                placeholder="Provience" v-model="provience"/>
+                placeholder="Provience" 
+                v-model="editClient.provience"
+                />
         </div>
         <div class="form-main">
             <label class="form_label">Pin</label>
             <input class="form_inputs"
-                placeholder="Pin" v-model="pin"/>
+                placeholder="Pin" 
+                v-model="editClient.pin"
+                />
         </div>
     </div>
     <div id="save_can_btns">
-        <button class="save_btn" v-on:click="saveClient">SAVE</button>
+        <button class="save_btn" v-on:click="infoDetails">SAVE</button>
         <button class="can_btn">CANCEL</button>
     </div>
+</div>
 </div>
 </div>
 </template>
@@ -71,37 +91,26 @@ export default {
   name: "Table",
   data() {
   return {
-  firstName: "",
-  lastName: "",
-  email: "",
-  mobile: "",
-  telephone: "",
-  extension: "",
-  street: "",
-  city: "",
-  provience: "",
-  pin: "",
-  addClient: []
+  addClient: [],
+  editClient: {
+            firstName: 'Jonatan',
+            lastName: 'Cartine',
+            email: 'jonatan@gmail.com',
+            mobile: '9494978557',
+            telephone: '258141',
+            extension: '08625',
+            street: 'XYZ, street, 2/93, XYZ location',
+            city: 'XYZ city',
+            provience: 'XYZ provience',
+            pin: '325468', 
+        }
   }
   },
  methods: {
-    saveClient() {
-        // let addObj = {
-        //     firstName: this.firstName,
-        //     lastName: this.lastName,
-        //     email: this.email,
-        //     mobile: this.mobile,
-        //     telephone: this.telephone,
-        //     extension: this.extension,
-        //     street: this.street,
-        //     city: this.city,
-        //     provience: this.provience,
-        //     country: this.country,
-        //     pin: this.pin,
-        // }
+    infoDetails() {
+        // let addObj = editClient
         // this.addClient.push(addObj)
-
-        alert('people added')
+        alert('Information saved')
     }
  }
 };
@@ -189,5 +198,4 @@ cursor: pointer;
 .form_main_wrapper .form-main:nth-child(2) {
     margin-left: 1rem;
 }
-
 </style>

@@ -81,10 +81,16 @@ import ClientsActivity from './app/modules/clients/clients-activity-tab.vue';
 import ClientsAbout from './app/modules/clients/clients-about.vue';
 import ClientsInfo from './app/modules/clients/client-info-tab.vue';
 import ClientsAdd from './app/modules/clients/add-client.vue';
+import ClientsTasks from './app/modules/clients/clients-subtasks-tab.vue';
 
 
 
 import People from './app/modules/people/people.vue';
+import PeopleItem from './app/modules/people/people-list-item.vue';
+import PeopleViewFormate from './app/modules/people/people-view-formate.vue';
+import PeopleActivity from './app/modules/people/people-activity-tab.vue';
+import PeopleInformation from './app/modules/people/people-information.vue';
+import PeopleOrganization from './app/modules/people/people-organization.vue';
 import PeopleAdd from './app/modules/people/add-people.vue';
 
 export const bus = mitt();
@@ -167,6 +173,7 @@ app.component('clients-contacts', ClientsContacts);
 app.component('clients-activity-tab', ClientsActivity);
 app.component('clients-about', ClientsAbout);
 app.component('client-info-tab', ClientsInfo);
+app.component('clients-subtasks-tab', ClientsTasks);
 app.component('add-client', ClientsAdd);
 
 
@@ -174,6 +181,11 @@ app.component('add-client', ClientsAdd);
 
 
 app.component('People', People);
+app.component('people-list-item', PeopleItem);
+app.component('people-view-formate', PeopleViewFormate);
+app.component('people-activity-tab', PeopleActivity);
+app.component('people-information', PeopleInformation);
+app.component('people-organization', PeopleOrganization);
 app.component('add-people', PeopleAdd);
 app.use(store)
   .use(router)

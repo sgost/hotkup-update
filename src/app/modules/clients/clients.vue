@@ -114,9 +114,6 @@
         <div style="flex-grow: 1;overflow-y: hidden;position: relative;padding: 0px;height: 100%;">
                 <div style="display: flex;flex-direction: column;flex-grow: 1;height: 100%;">
                     <div class="task-list" id="tasklist" style="position:relative;font-size: 0.7rem;flex-grow: 1;margin-top: 10px;grid-template-rows: 1fr;background-color:#f2f2f2;background-color:rgb(255, 255, 255, 0)">
-                        <div id="tasklist_loading_spinner" style="display: flex;opacity:1;transition:0.25s linear;position:absolute;top:0px;right:0px;left:0px;bottom:0px;align-items:center;justify-content:center;z-index: 2;">
-                            <div class="spinner-2"></div>
-                        </div>
 
                         <div class="adk_grid_list_content custom-scroll-bar" id="taskListIntersectionObserver">
                           <div class="task_inbox_list elastic_scroll_list" >

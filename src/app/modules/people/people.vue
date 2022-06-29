@@ -61,7 +61,15 @@
                           <template v-for="(category, index) in myCategoriesList" :key="index">
                               <li class="menu-item" v-bind:id="clientFilter === index && 'activeClient'">
                                 <a v-on:click="loadTasksFromCategory(index)">{{category.name}}
-                                  <span class="counter-label" v-bind:id="'cat_count_'  + category.id">{{category.clients.length}}</span>
+                                  <span class="counter-label" v-bind:id="'cat_count_'  + category.id" style="
+                                  width: 17px;
+                                  height: 17px;
+                                  background: #258bff;
+                                  color: white;
+                                  display: flex;
+                                  justify-content: center;
+                                  border-radius: 11px;
+                                  font-size: 12px;">+</span>
                                 </a>
                               </li>
                           </template>
@@ -114,16 +122,13 @@
         <div style="flex-grow: 1;overflow-y: hidden;position: relative;padding: 0px;height: 100%;">
                 <div style="display: flex;flex-direction: column;flex-grow: 1;height: 100%;">
                     <div class="task-list" id="tasklist" style="position:relative;font-size: 0.7rem;flex-grow: 1;margin-top: 10px;grid-template-rows: 1fr;background-color:#f2f2f2;background-color:rgb(255, 255, 255, 0)">
-                        <div id="tasklist_loading_spinner" style="display: flex;opacity:1;transition:0.25s linear;position:absolute;top:0px;right:0px;left:0px;bottom:0px;align-items:center;justify-content:center;z-index: 2;">
-                            <div class="spinner-2"></div>
-                        </div>
 
                         <div class="adk_grid_list_content custom-scroll-bar" id="taskListIntersectionObserver">
                           <div class="task_inbox_list elastic_scroll_list" >
                           
-                            <div v-for="(kk, catIndex) in category.clients" :key="catIndex">
-                            <div v-on:click="cardActive = catIndex" v-bind:style="cardActive === catIndex && 'border-left: 2px solid rgb(37, 139, 255)'">
-                               <clients-list-item v-bind:item="kk" v-bind:cardActive="cardActive" v-bind:catIndex="catIndex"/>
+                            <div v-for="(catItem, catIndex) in category.clients" :key="catIndex">
+                            <div v-for="(catConItem, catConIndex) in catItem.contact" :key="catConIndex" v-on:click="cardActive = catConIndex; cardActiveBlock = catIndex" v-bind:style="((cardActive === catConIndex) && (cardActiveBlock === catIndex)) && 'border-left: 2px solid rgb(37, 139, 255)'">
+                               <people-list-item v-bind:item="catConItem" v-bind:cardActive="cardActive" v-bind:catIndex="catIndex"/>
                             </div>
                             </div>
                        
@@ -136,14 +141,16 @@
       </div>
       <div class="taskDetailContainer task-detail-container" style="width: 100%; background: rgb(246 246 246)" v-for="(category, index) in myCategoriesList" :key="index" v-show="clientFilter === index">
           <div v-for="(catItem, catIndex) in category.clients" :key="catIndex" v-show="cardActive === catIndex" style="width: 100%">
-          <div v-show="cardActive !== catIndex" style="display:grid;grid-template-rows:1fr;display:flex;flex-grow: 1;overflow-y:hidden">
+          <div v-for="(catConItem, catConIndex) in catItem.contact" :key="catConIndex" v-show="catIndex === catConIndex" style="width: 100%">
+          <div v-show="catIndex !== catConIndex" style="display:grid;grid-template-rows:1fr;display:flex;flex-grow: 1;overflow-y:hidden">
               <div style="display: flex;grid-template-rows: 1fr;flex-grow: 1;overflow-y: hidden;align-items: center;justify-content: center;background-color:rgb(255, 255, 255, 0.85), height: 100%;">
                   No Task chosen.
               </div>
           </div>
-          <div v-show="cardActive === catIndex" style="display:flex;flex-grow: 1;grid-template-rows:1fr;overflow-y:hidden">
-              <client-view-formate v-bind:catItem="catItem" v-bind:categoryMain="category"/>
+          <div v-show="catIndex === catConIndex" style="display:flex;flex-grow: 1;grid-template-rows:1fr;overflow-y:hidden">
+              <people-view-formate v-bind:catItem="catConItem" v-bind:categoryMain="category"/>
           </div>
+           </div>
           </div>
       </div>
     </div>
@@ -444,7 +451,7 @@
   data: function () {
     return {
       cronBasis: 'Weekly basis',
-      taskListName: 'Clients', // This is the list's name. Can be ["Inbox", "Sent", "Overdue", "Closed", "Category.."]
+      taskListName: 'People', // This is the list's name. Can be ["Inbox", "Sent", "Overdue", "Closed", "Category.."]
 
       // This is the primary list comprehensive object displaying the tasks.
       taskList: {
@@ -520,14 +527,20 @@
           contact: [
             {
             name: 'Jonatan Cartine',
+            id: '1476',
+            month: 'AUG',
             role: 'Owner',
             },
             {
             name: 'Sheetal Cartine',
+            id: '1476',
+            month: 'AUG',
             role: 'Owner',
             },
             {
             name: 'Norries Cartine',
+            id: '1476',
+            month: 'AUG',
             role: 'Accountant',
             }
           ],
@@ -633,14 +646,20 @@
           contact: [
             {
             name: 'Jonatan Cartine',
+            id: '1476',
+            month: 'AUG',
             role: 'Owner',
             },
             {
             name: 'Sheetal Cartine',
+            id: '1476',
+            month: 'AUG',
             role: 'Owner',
             },
             {
             name: 'Norries Cartine',
+            id: '1476',
+            month: 'AUG',
             role: 'Accountant',
             }
           ],
@@ -716,14 +735,20 @@
           contact: [
             {
             name: 'Jonatan Cartine',
+            id: '1476',
+            month: 'AUG',
             role: 'Owner',
             },
             {
             name: 'Sheetal Cartine',
+            id: '1476',
+            month: 'AUG',
             role: 'Owner',
             },
             {
             name: 'Norries Cartine',
+            id: '1476',
+            month: 'AUG',
             role: 'Accountant',
             }
           ],
@@ -799,14 +824,20 @@
           contact: [
             {
             name: 'Jonatan Cartine',
+            id: '1476',
+            month: 'AUG',
             role: 'Owner',
             },
             {
             name: 'Sheetal Cartine',
+            id: '1476',
+            month: 'AUG',
             role: 'Owner',
             },
             {
             name: 'Norries Cartine',
+            id: '1476',
+            month: 'AUG',
             role: 'Accountant',
             }
           ],
@@ -882,14 +913,20 @@
           contact: [
             {
             name: 'Jonatan Cartine',
+            id: '1476',
+            month: 'AUG',
             role: 'Owner',
             },
             {
             name: 'Sheetal Cartine',
+            id: '1476',
+            month: 'AUG',
             role: 'Owner',
             },
             {
             name: 'Norries Cartine',
+            id: '1476',
+            month: 'AUG',
             role: 'Accountant',
             }
           ],
@@ -964,15 +1001,21 @@
           month: 'AUG',
           contact: [
             {
-            name: 'Jonatan Cartine',
+            name: 'Pawan Bhojanala',
+            id: '1432',
+            month: 'AUG',
             role: 'Owner',
             },
             {
-            name: 'Sheetal Cartine',
+            name: 'vignesh',
+            id: '1433',
+            month: 'AUG',
             role: 'Owner',
             },
             {
-            name: 'Norries Cartine',
+            name: 'Manoj Ponugoti',
+            id: '1434',
+            month: 'AUG',
             role: 'Accountant',
             }
           ],
@@ -1052,14 +1095,20 @@
           contact: [
             {
             name: 'Jonatan Cartine',
+            id: '1476',
+            month: 'AUG',
             role: 'Owner',
             },
             {
             name: 'Sheetal Cartine',
+            id: '1476',
+            month: 'AUG',
             role: 'Owner',
             },
             {
             name: 'Norries Cartine',
+            id: '1476',
+            month: 'AUG',
             role: 'Accountant',
             }
           ],
@@ -1135,14 +1184,20 @@
           contact: [
             {
             name: 'Jonatan Cartine',
+            id: '1476',
+            month: 'AUG',
             role: 'Owner',
             },
             {
             name: 'Sheetal Cartine',
+            id: '1476',
+            month: 'AUG',
             role: 'Owner',
             },
             {
             name: 'Norries Cartine',
+            id: '1476',
+            month: 'AUG',
             role: 'Accountant',
             }
           ],
@@ -1218,14 +1273,20 @@
           contact: [
             {
             name: 'Jonatan Cartine',
+            id: '1476',
+            month: 'AUG',
             role: 'Owner',
             },
             {
             name: 'Sheetal Cartine',
+            id: '1476',
+            month: 'AUG',
             role: 'Owner',
             },
             {
             name: 'Norries Cartine',
+            id: '1476',
+            month: 'AUG',
             role: 'Accountant',
             }
           ],
@@ -1304,14 +1365,20 @@
           contact: [
             {
             name: 'Jonatan Cartine',
+            id: '1476',
+            month: 'AUG',
             role: 'Owner',
             },
             {
             name: 'Sheetal Cartine',
+            id: '1476',
+            month: 'AUG',
             role: 'Owner',
             },
             {
             name: 'Norries Cartine',
+            id: '1476',
+            month: 'AUG',
             role: 'Accountant',
             }
           ],
@@ -1393,7 +1460,8 @@
 
       // clients
       clientFilter: '',
-      cardActive: ''
+      cardActive: '',
+      cardActiveBlock: ''
     };
   },
   methods: {
