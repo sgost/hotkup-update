@@ -54,6 +54,10 @@ import MockNewForm from './../app/modules/mocks/new-form.vue';
 import MockEditFormData from './../app/modules/mocks/edit-form-data.vue';
 import MockViewFormData from './../app/modules/mocks/view-form-data.vue';
 
+
+
+import Clients from './../app/modules/clients/clients.vue';
+
 const NotificationTypeSubscriptionPage = () => import(/* webpackChunkName: "notification-subscription-page" */ './../app/modules/notifications/notification-subscription.vue');
 
 
@@ -188,7 +192,13 @@ const routes = [
     path: '/cb',
     name: 'cb',
     component: ComponentB
+  },
+  {
+    path: '/Clients',
+    name: 'Clients',
+    component: Clients
   }
+
 ];
 
 const router = createRouter({

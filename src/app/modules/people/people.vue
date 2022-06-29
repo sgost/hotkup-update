@@ -9,15 +9,13 @@
               <div>
                 <div style="min-height: 75px;opacity: 1;display: flex;align-items: center;justify-content: center;">
                     <div style="position:relative">
-                      <button id="new_task_button" v-on:click="sendNewTaskEvent($event)" xv-on:click="goTo('create-task-page')" class="btn clickable-btn uk-button uk-button-danger uk-button-small uk-grid-margin uk-first-column end-call-button"
+                      <button id="new_task_button" uk-toggle="target: #add-people-modal" class="btn clickable-btn uk-button uk-button-danger uk-button-small uk-grid-margin uk-first-column end-call-button"
                               style="background-color: rgb(37, 139, 255);border-radius: 3px 0px 0px 3px;place-self: center;place-items: center;min-width: 100px;font-size: 0.75rem;line-height: 27px;font-weight: normal !important;text-transform: capitalize;">
-                        <span uk-icon="icon:file-edit;ratio:0.75"></span>
-                        <span style="margin-left:5px"> New Task</span>
+                        <span uk-icon="icon:plus;ratio:0.75"></span>
+                        <span style="margin-left:5px"> Add Contact</span>
                       </button>
-                      <button v-on:click="handleNewTaskOptionsClick()" xv-on:click="goTo('create-task-page')" class="new_task_options_trigger_button clickable-btn uk-button uk-button-danger uk-button-small uk-grid-margin uk-first-column end-call-button"
-                              style="background-color: rgb(37, 139, 255);border-radius: 0px 3px 3px 0px;place-self: center;place-items: center;font-size: 0.65rem;line-height: 27px;font-weight: normal !important;margin-top: 0px;margin-left: 0.045rem;padding: 0px;;">
-                            <span uk-icon="triangle-down" class="uk-icon" style="pointer-events:none"></span>
-                      </button>
+
+
                       <div id="new_task_button_options" class="new_task_options">
                           <div id="menu" class="menu menu_fixed_height">
                               <div v-on:click="createTask('template')"  uk-tooltip="title:Create task from a process template;pos:right">
@@ -50,68 +48,28 @@
                 </div>
               </div>
               <ul class="uk-nav uk-nav-default">
-
-                  <li class="uk-active menu-item" id="inbox_menu">
-                    <a v-on:click="loadTasks('all','inbox_menu', 'Inbox')" uk-tooltip="title:Assigned or Followed Tasks;pos:right" >
-                      <span class="lnr lnr-inbox"></span>&nbsp;&nbsp;Inbox
-                      <span class="counter-label" id="inbox_count"></span>
-                    </a>
-                  </li>
-
-                  <!--
-                  <li class="menu-item" id="draft_tasks_menu">
-                    <a v-on:click="loadTasks('draft','draft_tasks_menu', 'Drafted Tasks')">
-                      <span class="lnr lnr-file-empty"></span>&nbsp;&nbsp;Drafts
-                      <span class="counter-label" id="drafts_count"></span>
-                    </a>
-                  </li>-->
-                  <li class="menu-item" id="sent_tasks_menu" >
-                    <a v-on:click="loadTasks('sent','sent_tasks_menu', 'Sent Tasks')" uk-tooltip="title:Sent Tasks only;pos:right">
-                      <span class="lnr lnr-location"></span>&nbsp;&nbsp;Sent
-                      <span class="counter-label" id="sent_count"></span>
-                    </a>
-                  </li>
-                  <li class="menu-item" id="closed_tasks_menu" >
-                    <a v-on:click="loadTasks('closed','closed_tasks_menu', 'Closed Tasks')" uk-tooltip="title:Assigned, Followed & Sent Tasks that are closed;pos:right">
-                      <span class="lnr lnr-checkmark-circle"></span>&nbsp;&nbsp;Closed
-                      <span class="counter-label" id="closed_count"></span>
-                    </a>
-                  </li>
-                  <li class="menu-item" id="overdue_tasks_menu">
-                    <a v-on:click="loadTasks('overdue','overdue_tasks_menu', 'Overdue Tasks')"  uk-tooltip="title:Assigned, Followed & Sent Tasks that are overdue;pos:right">
-                      <span class="lnr lnr-clock"></span>&nbsp;&nbsp;Overdue
-                      <span class="counter-label" id="overdue_count"></span>
-                    </a>
-                  </li>
-
-                  <!-- <li class="menu-item" id="all_tasks_menu">
-                    <a v-on:click="loadTasks('all','all_tasks_menu', 'All Tasks')">
-                      <span class="lnr lnr-layers"></span>&nbsp;&nbsp;All Tasks
-                      <span class="counter-label" id="all_tasks_count"></span>
-                    </a>
-                  </li> -->
-                  <!--
-                  <li class="menu-item" id="notification_subsriptions">
-                    <a v-on:click="goToPage('notification-subscriptions',{}, 'notification_subsriptions')">
-                      <span class="lnr lnr-alarm"></span>&nbsp;&nbsp;Notif. Subscriptions
-                    </a>
-                  </li>
-                  -->
-
                   <li class="uk-nav-header sidebar-category-dropdown" style="margin-top: 15px;">
                       <a style="color: #333!important;font-weight: normal!important;" v-on:click="toggleCategoryMenu()">
-                        My Categories
+                        Client Categories
                         <span class="counter-label">
                             <span uk-icon="icon:chevron-down;ratio:0.85" id="category-menu-trigger" class="uk-icon" style="transition: 0.25s linear;color: #cdcdcd;"></span>
                         </span>
                       </a>
                   </li>
-                  <li class="uk-parent" id="category-submenu" style="display:none">
+                  <li class="uk-parent" id="category-submenu">
                       <ul class="uk-nav-sub custom-scroll-bar" style="max-height: 300px;height: 300px;overflow-y: auto;">
-                          <template v-for="category in myCategoriesList">
-                              <li class="menu-item" v-bind:id="'cat_' + category.id">
-                                <a v-on:click="loadTasksFromCategory(category)">{{category.name}}
-                                  <span class="counter-label" v-bind:id="'cat_count_'  + category.id">0</span>
+                          <template v-for="(category, index) in myCategoriesList" :key="index">
+                              <li class="menu-item" v-bind:id="clientFilter === index && 'activeClient'">
+                                <a v-on:click="loadTasksFromCategory(index)">{{category.name}}
+                                  <span class="counter-label" v-bind:id="'cat_count_'  + category.id" style="
+                                  width: 17px;
+                                  height: 17px;
+                                  background: #258bff;
+                                  color: white;
+                                  display: flex;
+                                  justify-content: center;
+                                  border-radius: 11px;
+                                  font-size: 12px;">+</span>
                                 </a>
                               </li>
                           </template>
@@ -123,89 +81,13 @@
         </div>
     </div>
 
+
+
+
+    <!-- Inbox cards -->
+
     <div style="display: flex;flex-basis:90%;;transition: transform .3s linear;">
-      <div  v-show="!isTaskCreationInProcess" class="listOfTasksContainer list-of-tasks-container" >
-
-        <!-- Quick filter content -->
-        <div class="quick_task_filter" v-show="showTaskFilter">
-            <div class="first_column_scrollable custom-scroll-bar" style="padding-right: 5px;font-size: 0.7rem;left: 20px;right: 20px;top: -1px;opacity: 1;z-index: 100;border-radius: 3px;width: 100%;">
-                <div class="filters">
-                  <div class="filter-section" v-show="quickFilterOptions.statusFilter">
-                    <div class="filter-section-label">By Status</div>
-                    <!-- <div class="filter-value" v-on:click="filterByInvolvement('Assigned')">Assigned</div>
-                    <div class="filter-value" v-on:click="filterByInvolvement('Followed')">Followed</div> -->
-                    <div class="filter-value" v-on:click="applyQuickFilter('status', 'Open')">
-                      <span v-show="quickFilterValue === 'Open'" uk-icon="icon:check;ratio:0.85" style="margin-right: 5px;" ></span>
-                      <span v-show="quickFilterValue !== 'Open'" style="margin-right: 10px;" ></span>
-                      Open
-                    </div>
-                    <div class="filter-value" v-on:click="applyQuickFilter('status', 'Started')">
-                      <span v-show="quickFilterValue === 'Started'" uk-icon="icon:check;ratio:0.85" style="margin-right: 5px;" ></span>
-                      <span v-show="quickFilterValue !== 'Started'" style="margin-right: 10px;" ></span>
-                      Started
-                    </div>
-                    <div class="filter-value" v-on:click="applyQuickFilter('status', 'Overdue')">
-                      <span v-show="quickFilterValue === 'Overdue'" uk-icon="icon:check;ratio:0.85" style="margin-right: 5px;" ></span>
-                      <span v-show="quickFilterValue !== 'Overdue'" style="margin-right: 10px;" ></span>
-                      Overdue
-                    </div>
-                    <div class="filter-value" v-on:click="applyQuickFilter('status', 'Closed')">
-                      <span v-show="quickFilterValue === 'Closed'" uk-icon="icon:check;ratio:0.85" style="margin-right: 5px;" ></span>
-                      <span v-show="quickFilterValue !== 'Closed'" style="margin-right: 10px;" ></span>
-                      Closed
-                    </div>
-
-                  </div>
-                  <div class="filter-section" v-show="quickFilterOptions.involvementFilter">
-                    <div class="filter-section-label">By Involvement</div>
-                    <!-- <div class="filter-value" v-on:click="filterByInvolvement('Assigned')">Assigned</div>
-                    <div class="filter-value" v-on:click="filterByInvolvement('Followed')">Followed</div> -->
-                    <div class="filter-value" v-on:click="applyQuickFilter('involvement', 'Assigned / Followed')">
-                      <span v-show="quickFilterValue === 'Assigned / Followed'" uk-icon="icon:check;ratio:0.85" style="margin-right: 5px;" ></span>
-                      <span v-show="quickFilterValue !== 'Assigned / Followed'" style="margin-right: 10px;" ></span>
-                      Assigned / Followed
-                    </div>
-                    <div class="filter-value" v-on:click="applyQuickFilter('involvement', 'Sent')">
-                      <span v-show="quickFilterValue === 'Sent'" uk-icon="icon:check;ratio:0.85" style="margin-right: 5px;" ></span>
-                      <span v-show="quickFilterValue !== 'Sent'" style="margin-right: 10px;" ></span>
-                      Sent</div>
-                  </div>
-                  <div class="filter-section" v-show="quickFilterOptions.priorityFilter">
-                    <div class="filter-section-label">By Priority</div>
-                    <div class="filter-value" v-on:click="applyQuickFilter('priority','Critical')">
-                      <span v-show="quickFilterValue === 'Critical'" uk-icon="icon:check;ratio:0.85" style="margin-right: 5px;" ></span>
-                      <span v-show="quickFilterValue !== 'Critical'" style="margin-right: 10px;" ></span>
-                      Critical</div>
-                    <div class="filter-value" v-on:click="applyQuickFilter('priority','High')">
-                      <span v-show="quickFilterValue === 'High'" uk-icon="icon:check;ratio:0.85" style="margin-right: 5px;" ></span>
-                      <span v-show="quickFilterValue !== 'High'" style="margin-right: 10px;" ></span>
-                      High</div>
-                    <div class="filter-value" v-on:click="applyQuickFilter('priority','Medium')">
-                      <span v-show="quickFilterValue === 'Medium'" uk-icon="icon:check;ratio:0.85" style="margin-right: 5px;" ></span>
-                      <span v-show="quickFilterValue !== 'Medium'" style="margin-right: 10px;" ></span>
-                      Medium</div>
-                    <div class="filter-value" v-on:click="applyQuickFilter('priority','Low')">
-                      <span v-show="quickFilterValue === 'Low'" uk-icon="icon:check;ratio:0.85" style="margin-right: 5px;" ></span>
-                      <span v-show="quickFilterValue !== 'Low'" style="margin-right: 10px;" ></span>
-                      Low</div>
-                  </div>
-                  <div class="filter-section" v-show="quickFilterOptions.categoryFilter">
-                    <div class="filter-section-label">By Category</div>
-                    <template v-for="category in myCategoriesList">
-                        <div class="filter-value" v-on:click="applyQuickFilter('category', category.name, category.id)">
-                          <span v-show="quickFilterValue === category.id" uk-icon="icon:check;ratio:0.85" style="margin-right: 5px;" ></span>
-                          <span v-show="quickFilterValue !== category.id" style="margin-right: 10px;" ></span>
-                          {{category.name}}</div>
-                    </template>
-                  </div>
-                  <div class="filter-section">
-                    <div class="filter-section-label" style="text-align:center"></div>
-                    <div class="filter-value" v-on:click="removeQuickFilter()" style="background: #e91e63c7;align-items: center;text-align: center;display: block;color: white;border-radius: 3px;">Remove Filter</div>
-                  </div>
-
-                </div>
-            </div>
-        </div>
+      <div v-for="(category, index) in myCategoriesList" :key="index" v-show="clientFilter === index" class="listOfTasksContainer list-of-tasks-container" >
 
 
         <div class="adk_grid_toolbar" style="user-select: none;grid-template-columns: auto 1fr;padding: 0px 0px;height:50px">
@@ -214,9 +96,9 @@
               <!-- <a class="uk-navbar-item" style="padding-right: 0px;padding-left: 0px;" v-on:click="toggleSideMenu()">
                 <span class="uk-margin-small-right" style="color: rgb(103 103 103)" uk-icon="icon:menu;ratio:1.25"></span>
               </a> -->
+
+              <!-- Inbox Title -->
               <span id="taskListName" class="task-list-name" style="">{{taskListName}}</span>
-              <span style="font-size: 0.75rem;margin-left: 5px;margin-top: 5px;opacity: 1;max-width: 125px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;" v-bind:uk-tooltip="quickFilterValueLabel" v-show="quickFilterValueLabel !== ''">({{quickFilterValueLabel}})</span>
-              <span style="font-size: 0.75rem;margin-left: 5px;margin-top: 5px;opacity:0">({{taskList.list.length}})</span>
             </div>
           </div>
           <div style="display: grid; gap: 10px; grid-template-columns: auto auto; place-self: center end; text-align: right;">
@@ -224,19 +106,6 @@
             <div style="display: flex;column-gap: 10px;">
               <!--<div style="cursor:pointer"><img src="resources/images/all-activities.svg" style="height:15px;width:15px"></div>-->
               <div v-on:click="refreshPaneList()" class="clickable-btn uk-button" style="cursor: pointer;padding: 0 0px;filter: grayscale(1);"><img src="resources/images/refresh.svg" style="pointer-events: none;height:15px;width:15px"></div>
-
-              <!--
-                Temporarily disabled by Vignesh on Dec 4, 2021
-
-
-              <div v-show="!showTaskFilter" v-on:click="showTaskFilterModal()" class="clickable-btn uk-button" style="cursor: pointer;padding: 0px 5px;filter: grayscale(1);"><img src="resources/images/filter.svg" style="pointer-events: none;height:15px;width:15px"></div>
-              <div v-show="showTaskFilter"  v-on:click="showTaskFilterModal()" class="clickable-btn uk-button" style="cursor: pointer;padding: 0px 5px;background: #1f69bd;border-radius: 3px;">
-                  <svg xmlns="http://www.w3.org/2000/svg" height="394pt" viewBox="-5 0 394 394.00003" width="394pt" style="fill: white;pointer-events: none;height: 15px;width: 15px;color: white;"><path d="m367.820312 0h-351.261718c-6.199219-.0117188-11.878906 3.449219-14.710938 8.960938-2.871094 5.585937-2.367187 12.3125 1.300782 17.414062l128.6875 181.285156c.042968.0625.089843.121094.132812.183594 4.675781 6.3125 7.207031 13.960938 7.21875 21.816406v147.800782c-.027344 4.375 1.691406 8.582031 4.773438 11.6875 3.085937 3.101562 7.28125 4.851562 11.65625 4.851562 2.222656-.003906 4.425781-.445312 6.480468-1.300781l72.3125-27.570313c6.476563-1.980468 10.777344-8.09375 10.777344-15.453125v-120.015625c.011719-7.855468 2.542969-15.503906 7.214844-21.816406.042968-.0625.089844-.121094.132812-.183594l128.691406-181.289062c3.667969-5.097656 4.171876-11.820313 1.300782-17.40625-2.828125-5.515625-8.511719-8.9765628-14.707032-8.964844zm0 0"></path></svg>
-              </div>
-              -->
-
-              <!--<div style="cursor:pointer"><span uk-icon="icon:list;ratio:0.85"></span></div>-->
-              <!--<div style="cursor:pointer"><span uk-icon="icon:more;ratio:0.75"></span></div>-->
             </div>
           </div>
         </div>
@@ -253,53 +122,35 @@
         <div style="flex-grow: 1;overflow-y: hidden;position: relative;padding: 0px;height: 100%;">
                 <div style="display: flex;flex-direction: column;flex-grow: 1;height: 100%;">
                     <div class="task-list" id="tasklist" style="position:relative;font-size: 0.7rem;flex-grow: 1;margin-top: 10px;grid-template-rows: 1fr;background-color:#f2f2f2;background-color:rgb(255, 255, 255, 0)">
-                        <div id="tasklist_loading_spinner" style="display: flex;opacity:1;transition:0.25s linear;position:absolute;top:0px;right:0px;left:0px;bottom:0px;align-items:center;justify-content:center;z-index: 2;">
-                            <div class="spinner-2"></div>
-                        </div>
 
-                        <div class="adk_grid_list_content custom-scroll-bar elastic_scroll_container" >
-                          <div class="task_inbox_list elastic_scroll_list">
-                            <div v-for="item,index in taskList.list"
-                                 :key="item.id"
-                                 v-bind:id="'task_' + item.id"
-                                 v-on:click="showTaskDetails(item.id,index)"
-                                 class="list-row">
-
-                                 <task-list-item-format-2 v-bind:item="item" v-bind:appliedTaskFilter="appliedTaskFilter"/>
-
+                        <div class="adk_grid_list_content custom-scroll-bar" id="taskListIntersectionObserver">
+                          <div class="task_inbox_list elastic_scroll_list" >
+                          
+                            <div v-for="(catItem, catIndex) in category.clients" :key="catIndex">
+                            <div v-for="(catConItem, catConIndex) in catItem.contact" :key="catConIndex" v-on:click="cardActive = catConIndex; cardActiveBlock = catIndex" v-bind:style="((cardActive === catConIndex) && (cardActiveBlock === catIndex)) && 'border-left: 2px solid rgb(37, 139, 255)'">
+                               <people-list-item v-bind:item="catConItem" v-bind:cardActive="cardActive" v-bind:catIndex="catIndex"/>
                             </div>
-                            <div id="taskListIntersectionObserver"
-                                 class="ui_grid_row"
-                                 style="margin-right:0px;padding: 7px 12px; border-bottom: 0em solid rgb(229, 229, 229); display: grid; place-items: center; background: rgb(255, 255, 255); color: rgb(158, 158, 158);">
-                              <span style="">No more available records.</span>
                             </div>
+                       
                           </div>
                         </div>
-
-
                   </div>
                 </div>
             </div>
 
       </div>
-      <div class="taskDetailContainer task-detail-container">
-          <!--<div class="activity_background"></div>-->
-          <div v-show="!isTaskChosen" style="display:grid;grid-template-rows:1fr;display:flex;flex-grow: 1;overflow-y:hidden">
-              <div style="display: flex;grid-template-rows: 1fr;flex-grow: 1;overflow-y: hidden;align-items: center;justify-content: center;background-color:rgb(255, 255, 255, 0.85)">
+      <div class="taskDetailContainer task-detail-container" style="width: 100%; background: rgb(246 246 246)" v-for="(category, index) in myCategoriesList" :key="index" v-show="clientFilter === index">
+          <div v-for="(catItem, catIndex) in category.clients" :key="catIndex" v-show="cardActive === catIndex" style="width: 100%">
+          <div v-for="(catConItem, catConIndex) in catItem.contact" :key="catConIndex" v-show="catIndex === catConIndex" style="width: 100%">
+          <div v-show="catIndex !== catConIndex" style="display:grid;grid-template-rows:1fr;display:flex;flex-grow: 1;overflow-y:hidden">
+              <div style="display: flex;grid-template-rows: 1fr;flex-grow: 1;overflow-y: hidden;align-items: center;justify-content: center;background-color:rgb(255, 255, 255, 0.85), height: 100%;">
                   No Task chosen.
-                  <!-- <br>
-                  <br>
-                  {{quickFilterOptions}} -->
               </div>
           </div>
-          <div v-show="isTaskChosen" style="display:flex;flex-grow: 1;grid-template-rows:1fr;overflow-y:hidden">
-              <taskview-format-2 embeddingViewName="task_inbox"
-                      uniqueComponentId="viewTaskFormFromTaskInbox"
-                      v-bind:loggedInUser="loggedInUser"
-                      v-bind:id="selectedTask.id"
-                      v-bind:selectedTask="selectedTask"
-                      v-on:refreshList="refreshPaneList()"
-              ></taskview-format-2>
+          <div v-show="catIndex === catConIndex" style="display:flex;flex-grow: 1;grid-template-rows:1fr;overflow-y:hidden">
+              <people-view-formate v-bind:catItem="catConItem" v-bind:categoryMain="category"/>
+          </div>
+           </div>
           </div>
       </div>
     </div>
@@ -566,6 +417,16 @@
 
   </div>
 
+
+<!-- ADD client popup -->
+<div id="add-people-modal" class="uk-flex-top" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <add-people/>
+    </div>
+</div>
+
+
 </template>
 
 <script>
@@ -590,7 +451,7 @@
   data: function () {
     return {
       cronBasis: 'Weekly basis',
-      taskListName: 'Inbox', // This is the list's name. Can be ["Inbox", "Sent", "Overdue", "Closed", "Category.."]
+      taskListName: 'People', // This is the list's name. Can be ["Inbox", "Sent", "Overdue", "Closed", "Category.."]
 
       // This is the primary list comprehensive object displaying the tasks.
       taskList: {
@@ -656,13 +517,951 @@
       chosenTaskCategory: null,
       isCategorySubmenuOpened: false,
 
-      myCategoriesList: [],
+     myCategoriesList: [
+        {name: 'USA',
+        clients: [
+          {
+          name: 'Coco-cola',
+          id: '1476',
+          month: 'AUG',
+          contact: [
+            {
+            name: 'Jonatan Cartine',
+            id: '1476',
+            month: 'AUG',
+            role: 'Owner',
+            },
+            {
+            name: 'Sheetal Cartine',
+            id: '1476',
+            month: 'AUG',
+            role: 'Owner',
+            },
+            {
+            name: 'Norries Cartine',
+            id: '1476',
+            month: 'AUG',
+            role: 'Accountant',
+            }
+          ],
+          activity: [
+            {
+              comment: 'There is a comment',
+              name: 'Vignesh Bhasker',
+              time: '07:45PM',
+              date: '01/05/2022'
+            },
+            {
+              comment: 'There is a comment',
+              name: 'Manoj Ponugoti',
+              time: '07:45PM',
+              date: '01/05/2022'
+            },
+            {
+              comment: 'There is a comment',
+              name: 'Vignesh Bhasker',
+              time: '07:45PM',
+              date: '01/05/2022'
+            }
+          ],
+          about: {
+            name: 'coco-cola',
+            mail: 'coco@gmail.com',
+            phone: '9494978553',
+            web: 'www.coco.com',
+            prntOrg: 'USA',
+            provience: 'USA street',
+            Address: 'XYZ street',
+            city: 'XYZ city',
+            country: 'XYZ country',
+            pin: 'xyz'
+          },
+          tasks: [
+            {
+              id: 1736,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+             {
+              id: 1737,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+             {
+              id: 1738,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+             {
+              id: 1739,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+             {
+              id: 1780,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+             {
+              id: 1781,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+             {
+              id: 1782,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+             {
+              id: 1783,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+             {
+              id: 1784,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+             {
+              id: 1785,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+          ]
+          },
+           {
+          name: 'Maza',
+          id: '1376',
+          month: 'AUG',
+          contact: [
+            {
+            name: 'Jonatan Cartine',
+            id: '1476',
+            month: 'AUG',
+            role: 'Owner',
+            },
+            {
+            name: 'Sheetal Cartine',
+            id: '1476',
+            month: 'AUG',
+            role: 'Owner',
+            },
+            {
+            name: 'Norries Cartine',
+            id: '1476',
+            month: 'AUG',
+            role: 'Accountant',
+            }
+          ],
+          activity: [
+            {
+              comment: 'There is a comment',
+              name: 'Vignesh Bhasker',
+              time: '07:45PM',
+              date: '01/05/2022'
+            },
+            {
+              comment: 'There is a comment',
+              name: 'Manoj Ponugoti',
+              time: '07:45PM',
+              date: '01/05/2022'
+            },
+            {
+              comment: 'There is a comment',
+              name: 'Vignesh Bhasker',
+              time: '07:45PM',
+              date: '01/05/2022'
+            }
+          ],
+          about: {
+            name: 'coco-cola',
+            mail: 'coco@gmail.com',
+            phone: '9494978553',
+            web: 'www.coco.com',
+            prntOrg: 'USA',
+            provience: 'USA street',
+            Address: 'XYZ street',
+            city: 'XYZ city',
+            country: 'XYZ country',
+            pin: 'xyz'
+          },
+          tasks: [
+            {
+              id: 1736,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+             {
+              id: 1737,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+             {
+              id: 1738,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+             {
+              id: 1739,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+             {
+              id: 1780,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+          ]
+          },
+           {
+          name: 'Mirinda',
+          id: '1276',
+          month: 'AUG',
+          contact: [
+            {
+            name: 'Jonatan Cartine',
+            id: '1476',
+            month: 'AUG',
+            role: 'Owner',
+            },
+            {
+            name: 'Sheetal Cartine',
+            id: '1476',
+            month: 'AUG',
+            role: 'Owner',
+            },
+            {
+            name: 'Norries Cartine',
+            id: '1476',
+            month: 'AUG',
+            role: 'Accountant',
+            }
+          ],
+          activity: [
+            {
+              comment: 'There is a comment',
+              name: 'Vignesh Bhasker',
+              time: '07:45PM',
+              date: '01/05/2022'
+            },
+            {
+              comment: 'There is a comment',
+              name: 'Manoj Ponugoti',
+              time: '07:45PM',
+              date: '01/05/2022'
+            },
+            {
+              comment: 'There is a comment',
+              name: 'Vignesh Bhasker',
+              time: '07:45PM',
+              date: '01/05/2022'
+            }
+          ],
+          about: {
+            name: 'coco-cola',
+            mail: 'coco@gmail.com',
+            phone: '9494978553',
+            web: 'www.coco.com',
+            prntOrg: 'USA',
+            provience: 'USA street',
+            Address: 'XYZ street',
+            city: 'XYZ city',
+            country: 'XYZ country',
+            pin: 'xyz'
+          },
+          tasks: [
+            {
+              id: 1736,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+             {
+              id: 1737,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+             {
+              id: 1738,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+             {
+              id: 1739,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+             {
+              id: 1780,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+          ]
+          },
+           {
+          name: 'Fizz',
+          id: '1476',
+          month: 'AUG',
+          contact: [
+            {
+            name: 'Jonatan Cartine',
+            id: '1476',
+            month: 'AUG',
+            role: 'Owner',
+            },
+            {
+            name: 'Sheetal Cartine',
+            id: '1476',
+            month: 'AUG',
+            role: 'Owner',
+            },
+            {
+            name: 'Norries Cartine',
+            id: '1476',
+            month: 'AUG',
+            role: 'Accountant',
+            }
+          ],
+          activity: [
+            {
+              comment: 'There is a comment',
+              name: 'Vignesh Bhasker',
+              time: '07:45PM',
+              date: '01/05/2022'
+            },
+            {
+              comment: 'There is a comment',
+              name: 'Manoj Ponugoti',
+              time: '07:45PM',
+              date: '01/05/2022'
+            },
+            {
+              comment: 'There is a comment',
+              name: 'Vignesh Bhasker',
+              time: '07:45PM',
+              date: '01/05/2022'
+            }
+          ],
+          about: {
+            name: 'coco-cola',
+            mail: 'coco@gmail.com',
+            phone: '9494978553',
+            web: 'www.coco.com',
+            prntOrg: 'USA',
+            provience: 'USA street',
+            Address: 'XYZ street',
+            city: 'XYZ city',
+            country: 'XYZ country',
+            pin: 'xyz'
+          },
+          tasks: [
+            {
+              id: 1736,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+             {
+              id: 1737,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+             {
+              id: 1738,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+             {
+              id: 1739,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+             {
+              id: 1780,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+          ]
+          },
+           {
+          name: 'Dite Coke',
+          id: '1476',
+          month: 'AUG',
+          contact: [
+            {
+            name: 'Jonatan Cartine',
+            id: '1476',
+            month: 'AUG',
+            role: 'Owner',
+            },
+            {
+            name: 'Sheetal Cartine',
+            id: '1476',
+            month: 'AUG',
+            role: 'Owner',
+            },
+            {
+            name: 'Norries Cartine',
+            id: '1476',
+            month: 'AUG',
+            role: 'Accountant',
+            }
+          ],
+          activity: [
+            {
+              comment: 'There is a comment',
+              name: 'Vignesh Bhasker',
+              time: '07:45PM',
+              date: '01/05/2022'
+            },
+            {
+              comment: 'There is a comment',
+              name: 'Manoj Ponugoti',
+              time: '07:45PM',
+              date: '01/05/2022'
+            },
+            {
+              comment: 'There is a comment',
+              name: 'Vignesh Bhasker',
+              time: '07:45PM',
+              date: '01/05/2022'
+            }
+          ],
+          about: {
+            name: 'coco-cola',
+            mail: 'coco@gmail.com',
+            phone: '9494978553',
+            web: 'www.coco.com',
+            prntOrg: 'USA',
+            provience: 'USA street',
+            Address: 'XYZ street',
+            city: 'XYZ city',
+            country: 'XYZ country',
+            pin: 'xyz'
+          },
+          tasks: [
+            {
+              id: 1736,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+             {
+              id: 1737,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+             {
+              id: 1738,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+             {
+              id: 1739,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+             {
+              id: 1780,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+          ]
+          },
+          {
+          name: 'Pepsi',
+          id: '1479',
+          month: 'AUG',
+          contact: [
+            {
+            name: 'Pawan Bhojanala',
+            id: '1432',
+            month: 'AUG',
+            role: 'Owner',
+            },
+            {
+            name: 'vignesh',
+            id: '1433',
+            month: 'AUG',
+            role: 'Owner',
+            },
+            {
+            name: 'Manoj Ponugoti',
+            id: '1434',
+            month: 'AUG',
+            role: 'Accountant',
+            }
+          ],
+          activity: [
+            {
+              comment: 'There is a comment',
+              name: 'Vignesh Bhasker',
+              time: '07:45PM',
+              date: '01/05/2022'
+            },
+            {
+              comment: 'There is a comment',
+              name: 'Vignesh Bhasker',
+              time: '07:45PM',
+              date: '01/05/2022'
+            },
+            {
+              comment: 'There is a comment',
+              name: 'Vignesh Bhasker',
+              time: '07:45PM',
+              date: '01/05/2022'
+            }
+          ],
+          about: {
+            name: 'coco-cola',
+            mail: 'coco@gmail.com',
+            phone: '9494978553',
+            web: 'www.coco.com',
+            prntOrg: 'USA',
+            provience: 'USA street',
+            Address: 'XYZ street',
+            city: 'XYZ city',
+            country: 'XYZ country',
+            pin: 'xyz'
+          },
+               tasks: [
+            {
+              id: 1736,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+             {
+              id: 1737,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+             {
+              id: 1738,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+             {
+              id: 1739,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+             {
+              id: 1780,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+          ]
+          }
+        ]
+        },
+        {name: 'France',
+        clients: [
+          {
+          name: 'SipUp',
+          id: '1476',
+          month: 'AUG',
+          contact: [
+            {
+            name: 'Jonatan Cartine',
+            id: '1476',
+            month: 'AUG',
+            role: 'Owner',
+            },
+            {
+            name: 'Sheetal Cartine',
+            id: '1476',
+            month: 'AUG',
+            role: 'Owner',
+            },
+            {
+            name: 'Norries Cartine',
+            id: '1476',
+            month: 'AUG',
+            role: 'Accountant',
+            }
+          ],
+          activity: [
+            {
+              comment: 'There is a comment',
+              name: 'Vignesh Bhasker',
+              time: '07:45PM',
+              date: '01/05/2022'
+            },
+            {
+              comment: 'There is a comment',
+              name: 'Vignesh Bhasker',
+              time: '07:45PM',
+              date: '01/05/2022'
+            },
+            {
+              comment: 'There is a comment',
+              name: 'Vignesh Bhasker',
+              time: '07:45PM',
+              date: '01/05/2022'
+            }
+          ],
+          about: {
+            name: 'coco-cola',
+            mail: 'coco@gmail.com',
+            phone: '9494978553',
+            web: 'www.coco.com',
+            prntOrg: 'USA',
+            provience: 'USA street',
+            Address: 'XYZ street',
+            city: 'XYZ city',
+            country: 'XYZ country',
+            pin: 'xyz'
+          },
+               tasks: [
+            {
+              id: 1736,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+             {
+              id: 1737,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+             {
+              id: 1738,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+             {
+              id: 1739,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+             {
+              id: 1780,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+          ]
+          },
+          {
+          name: 'Fidisys',
+          id: '1479',
+          month: 'AUG',
+          contact: [
+            {
+            name: 'Jonatan Cartine',
+            id: '1476',
+            month: 'AUG',
+            role: 'Owner',
+            },
+            {
+            name: 'Sheetal Cartine',
+            id: '1476',
+            month: 'AUG',
+            role: 'Owner',
+            },
+            {
+            name: 'Norries Cartine',
+            id: '1476',
+            month: 'AUG',
+            role: 'Accountant',
+            }
+          ],
+          activity: [
+            {
+              comment: 'There is a comment',
+              name: 'Vignesh Bhasker',
+              time: '07:45PM',
+              date: '01/05/2022'
+            },
+            {
+              comment: 'There is a comment',
+              name: 'Vignesh Bhasker',
+              time: '07:45PM',
+              date: '01/05/2022'
+            },
+            {
+              comment: 'There is a comment',
+              name: 'Vignesh Bhasker',
+              time: '07:45PM',
+              date: '01/05/2022'
+            }
+          ],
+          about: {
+            name: 'coco-cola',
+            mail: 'coco@gmail.com',
+            phone: '9494978553',
+            web: 'www.coco.com',
+            prntOrg: 'USA',
+            provience: 'USA street',
+            Address: 'XYZ street',
+            city: 'XYZ city',
+            country: 'XYZ country',
+            pin: 'xyz'
+          },
+               tasks: [
+            {
+              id: 1736,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+             {
+              id: 1737,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+             {
+              id: 1738,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+             {
+              id: 1739,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+             {
+              id: 1780,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+          ]
+          },
+          {
+          name: 'Mirinda',
+          id: '1480',
+          month: 'AUG',
+          contact: [
+            {
+            name: 'Jonatan Cartine',
+            id: '1476',
+            month: 'AUG',
+            role: 'Owner',
+            },
+            {
+            name: 'Sheetal Cartine',
+            id: '1476',
+            month: 'AUG',
+            role: 'Owner',
+            },
+            {
+            name: 'Norries Cartine',
+            id: '1476',
+            month: 'AUG',
+            role: 'Accountant',
+            }
+          ],
+          activity: [
+            {
+              comment: 'There is a comment',
+              name: 'Vignesh Bhasker',
+              time: '07:45PM',
+              date: '01/05/2022'
+            },
+            {
+              comment: 'There is a comment',
+              name: 'Vignesh Bhasker',
+              time: '07:45PM',
+              date: '01/05/2022'
+            },
+            {
+              comment: 'There is a comment',
+              name: 'Vignesh Bhasker',
+              time: '07:45PM',
+              date: '01/05/2022'
+            }
+          ],
+          about: {
+            name: 'coco-cola',
+            mail: 'coco@gmail.com',
+            phone: '9494978553',
+            web: 'www.coco.com',
+            prntOrg: 'USA',
+            provience: 'USA street',
+            Address: 'XYZ street',
+            city: 'XYZ city',
+            country: 'XYZ country',
+            pin: 'xyz'
+          },
+               tasks: [
+            {
+              id: 1736,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+             {
+              id: 1737,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+             {
+              id: 1738,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+             {
+              id: 1739,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+             {
+              id: 1780,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+          ]
+          },
+        ]
+        },
+        {name: 'Canada',
+        clients: [{
+          name: 'Coco-cola',
+          id: '1476',
+          month: 'AUG',
+          contact: [
+            {
+            name: 'Jonatan Cartine',
+            id: '1476',
+            month: 'AUG',
+            role: 'Owner',
+            },
+            {
+            name: 'Sheetal Cartine',
+            id: '1476',
+            month: 'AUG',
+            role: 'Owner',
+            },
+            {
+            name: 'Norries Cartine',
+            id: '1476',
+            month: 'AUG',
+            role: 'Accountant',
+            }
+          ],
+          activity: [
+            {
+              comment: 'There is a comment',
+              name: 'Vignesh Bhasker',
+              time: '07:45PM',
+              date: '01/05/2022'
+            },
+            {
+              comment: 'There is a comment',
+              name: 'Vignesh Bhasker',
+              time: '07:45PM',
+              date: '01/05/2022'
+            },
+            {
+              comment: 'There is a comment',
+              name: 'Vignesh Bhasker',
+              time: '07:45PM',
+              date: '01/05/2022'
+            }
+          ],
+          about: {
+            name: 'coco-cola',
+            mail: 'coco@gmail.com',
+            phone: '9494978553',
+            web: 'www.coco.com',
+            prntOrg: 'USA',
+            provience: 'USA street',
+            Address: 'XYZ street',
+            city: 'XYZ city',
+            country: 'XYZ country',
+            pin: 'xyz'
+          },
+               tasks: [
+            {
+              id: 1736,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+             {
+              id: 1737,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+             {
+              id: 1738,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+             {
+              id: 1739,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+             {
+              id: 1780,
+              desc: 'Fixed components at pepsi',
+              date: '15/07/22',
+              creator: 'Pawan'
+            },
+          ]
+        }]
+        }
+      ],
       isNewTaskOptionsOpen: false,
 
       // This is used when we convert a chat message to a task.
       taskFromChatMessageData: {},
       possibleAssignees: [],
-      possibleFollowers: []
+      possibleFollowers: [],
+
+
+
+      // clients
+      clientFilter: '',
+      cardActive: '',
+      cardActiveBlock: ''
     };
   },
   methods: {
@@ -691,10 +1490,6 @@
     toggleSideMenu () {
       document.querySelector("#appSideMenu").classList.toggle("isClosed");
       document.querySelector("#appSideMenuContent").classList.toggle("isClosed");
-    },
-    sendNewTaskEvent (e) {
-      console.log('Event emitted in bus.', new Date());
-      bus.emit('newTaskEvent', { modalKey: "new_task" });
     },
     fetchTaskCounts () {
 
@@ -1117,18 +1912,8 @@
 
 
     // Filter tasks by selected category begins here
-    loadTasksFromCategory (category) {
-      document.querySelectorAll('.menu-item').forEach((el) => { el.classList.remove('uk-active'); el.classList.remove('selected-menu'); });
-      document.querySelector('#cat_' + category.id).classList.add('selected-menu');
-      // bus.emit('filterByCategory', category);
-      this.filterByCategory(category);
-      this.quickFilterOptions = {
-                                  statusFilter: true,
-                                  involvementFilter: true,
-                                  priorityFilter: true,
-                                  categoryFilter: false
-                                };
-
+    loadTasksFromCategory (index) {
+       this.clientFilter = index;
     },
     filterByCategory (data) {
       this.isTaskChosen = false;
@@ -1427,6 +2212,7 @@
     // console.log("Loading Task-Inbox.vue component..");
     // this.getList(); Moved from the confusing ui-list.js functions to the more clearer 'getTaskList()';
     this.getTaskList();
+return false;
     bus.off('show-task-details');
     bus.on('show-task-details', (data) => {
       this.showTaskByTaskId(data.taskId, data.eventType);
@@ -2181,4 +2967,12 @@
     .custom-scroll-bar:hover{
       overflow-y: auto !important;
     }
+</style>
+
+
+
+<style scoped>
+#activeClient {
+  background: #28181808;
+}
 </style>
