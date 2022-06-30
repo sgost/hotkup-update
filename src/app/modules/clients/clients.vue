@@ -1389,7 +1389,7 @@
 
 
       // clients
-      clientFilter: '',
+      clientFilter: 0,
       cardActive: ''
     };
   },

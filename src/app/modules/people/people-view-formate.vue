@@ -399,7 +399,7 @@
               <li v-on:click="displayTab($event, 'activity')" class="activity" uk-tooltip="title:Activity;pos:bottom">
                   <a style="pointer-events: none;user-select: none;align-items: center;justify-content: center;" >
                     <span class="tab_icon"  style="display: flex;column-gap: 5px;align-items: center;position:relative">
-                        <ui-icon name="activity" size="width:15px;height:15px"/>
+                     <ui-icon name="checklist" size="width:15px;height:15px"/>
                     </span>
                     <span class="tab_label">Activity</span>
                   </a>
@@ -407,7 +407,7 @@
               <li v-on:click="displayTab($event, 'information')" class="information" uk-tooltip="title:Information;pos:bottom">
                   <a style="pointer-events: none;user-select: none;align-items: center;justify-content: center;" >
                     <span class="tab_icon"  style="display: flex;column-gap: 5px;align-items: center;position:relative">
-                        <ui-icon name="activity" size="width:15px;height:15px"/>
+                       <ui-icon name="activity" size="width:15px;height:15px"/>
                     </span>
                     <span class="tab_label">Information</span>
                   </a>
@@ -416,7 +416,7 @@
               <li v-on:click="displayTab($event, 'organization')" class="organization" uk-tooltip="title:Organization;pos:bottom">
                   <a style="pointer-events: none;user-select: none;align-items: center;justify-content: center;" >
                     <span class="tab_icon"  style="display: flex;column-gap: 5px;align-items: center;position:relative">
-                        <ui-icon name="activity" size="width:15px;height:15px"/>
+                        <ui-icon name="subtask" size="width:15px;height:15px"/>
                     </span>
                     <span class="tab_label">Organization</span>
                   </a>
@@ -807,7 +807,7 @@
         isSubmenuCustomerContactsSelected: false
       },
 
-      selectedTabKey: 'description',
+      selectedTabKey: 'information',
       isActivityTabInitialized: false,
       isSubtasksTabInitialized: false,
       isChecklistsTabInitialized: false,

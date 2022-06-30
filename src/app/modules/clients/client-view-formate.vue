@@ -407,19 +407,19 @@
               <li v-on:click="displayTab($event, 'activity')" class="activity" uk-tooltip="title:Activities;pos:bottom">
                   <a style="pointer-events: none;user-select: none;align-items: center;justify-content: center;" >
                     <span class="tab_icon"  style="display: flex;column-gap: 5px;align-items: center;position:relative">
-                        <ui-icon name="activity" size="width:15px;height:15px"/>
+                         <ui-icon name="checklist" size="width:15px;height:15px"/>
                     </span>
                     <span class="tab_label">Activity</span>
                   </a>
               </li>
-              <li v-on:click="displayTab($event, 'about')" class="about" uk-tooltip="title:About;pos:bottom">
+              <!-- <li v-on:click="displayTab($event, 'about')" class="about" uk-tooltip="title:About;pos:bottom">
                   <a style="pointer-events: none;user-select: none;align-items: center;justify-content: center;" >
                     <span class="tab_icon"  style="display: flex;column-gap: 5px;align-items: center;position:relative">
-                        <ui-icon name="activity" size="width:15px;height:15px"/>
+                           <ui-icon name="timelog" size="width:15px;height:15px"/>
                     </span>
                     <span class="tab_label">About</span>
                   </a>
-              </li>
+              </li> -->
               <li v-on:click="displayTab($event, 'subtasks')" class="subtasks" uk-tooltip="title:Sub Tasks;pos:bottom">
                   <a style="pointer-events: none;user-select: none;align-items: center;justify-content: center;position:relative" >
                     <span v-show="taskObject.subTasksCount>0" style="position: absolute;right: -10px;top: -5px;background: rgb(241 241 241);color: #868686;border-radius: 15px;text-align: center;padding: 1px 2px;min-width: 20px;font-size: 0.45rem;">{{taskObject.subTasksCount}}</span>
@@ -902,7 +902,7 @@
         isSubmenuCustomerContactsSelected: false
       },
 
-      selectedTabKey: 'description',
+      selectedTabKey: 'Contact',
       isActivityTabInitialized: false,
       isSubtasksTabInitialized: false,
       isChecklistsTabInitialized: false,
