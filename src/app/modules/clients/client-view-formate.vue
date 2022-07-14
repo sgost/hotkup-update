@@ -51,7 +51,7 @@
                 <div style="display:flex;width: 100%;position:relative">
                     <div style="flex-grow: 1;display: flex;gap: 5px;flex-direction: column;justify-content: center;">
                         <div style="color: rgb(129, 129, 129);font-weight: bold;font-size: 0.50rem;border-radius: 2px;letter-spacing: 1px;display: flex;align-items: center;">
-                            <div style="color: rgb(127, 126, 126);color:rgb(126 126 126);font-weight: normal;font-size: 0.5rem;text-transform: uppercase;letter-spacing: 1px;padding: 0px 0px;font-size: 0.75rem;text-transform: capitalize;font-weight: bold;color: #258bfe;color:rgb(112 112 112);letter-spacing: 1px;">Client Id #{{catItem.id}} </div>
+                            <div style="color: rgb(127, 126, 126);color:rgb(126 126 126);font-weight: normal;font-size: 0.5rem;text-transform: uppercase;letter-spacing: 1px;padding: 0px 0px;font-size: 0.75rem;text-transform: capitalize;font-weight: bold;color: #258bfe;color:rgb(112 112 112);letter-spacing: 1px;">Client Id # 14321 </div>
                             <div style="padding-left:10px;">
                                 <div v-if="taskObject.priority!==null && taskObject.dueDateTimeFormatted !==null && taskObject.dueDateTimeFormatted !== undefined && taskObject.priority === 'Critical'" class="task-created-date critical" style="align-items: center;display: flex;overflow: hidden;text-transform: none;white-space: pre;border: 0px solid rgb(239, 239, 239);padding: 2px 10px;border-radius: 20px;background-color: rgba(233, 30, 99, 0.4);color: white;column-gap: 5px;" v-bind:title="taskObject.priority + ' priority, with Due Date - ' + taskObject.dueDateTimeFormatted">
                                     <div>
@@ -276,14 +276,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="task_title">{{catItem.name}}</div>
+                <div class="task_title">{{catItem.firstName}} {{catItem.lastName}}</div>
                 <div style="display:flex;width: 100%;padding-top: 5px;">
                     <div style="flex-grow: 3;display: flex;gap: 20px;flex-direction: row;">
                         <div style="color: rgb(129, 129, 129);font-weight: bold;font-size: 0.5rem;border-radius: 2px;letter-spacing: 1px;display: flex;align-items: center;border: 1px solid #e1e1e1;background-color: rgb(233, 233, 233);">
                             <div style="font-weight: normal;font-size: 0.56rem;text-transform: uppercase;letter-spacing: 1px;padding: 3px 5px 3px 10px;color: #6a6a6a;border-top-left-radius: 3px;border-bottom-left-radius:3px;background-color:rgb(233 233 233)">Category</div>
                             <div>
                                 <div style="font-weight: normal;font-size: 0.6rem;text-transform: capitalize;letter-spacing: 1px;padding: 3px 5px;background: rgb(239 239 239);color: #2196f3;;border-top-right-radius: 3px;border-bottom-right-radius:3px;" v-if="taskObject.category!==null && taskObject.category!==undefined">
-                                    <span> {{categoryMain.name}} </span>
+                                    <span> Organization Name </span>
                                     <span v-if="taskObject.processTemplateInfo!==null && taskObject.processTemplateInfo!==undefined"> / {{taskObject.processTemplateInfo.label}} </span>
                                 </div>
                             </div>

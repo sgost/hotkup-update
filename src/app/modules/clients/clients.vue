@@ -89,15 +89,15 @@
             </div>
 
         </div>
-        <div class="taskDetailContainer task-detail-container" style="width: 100%; background: rgb(246 246 246)" v-for="(category, index) in myCategoriesList" :key="index" v-show="clientFilter === index">
-            <div v-for="(catItem, catIndex) in category.clients" :key="catIndex" v-show="cardActive === catIndex" style="width: 100%">
-                <div v-show="cardActive !== catIndex" style="display:grid;grid-template-rows:1fr;display:flex;flex-grow: 1;overflow-y:hidden">
+        <div class="taskDetailContainer task-detail-container" style="width: 100%; background: rgb(246 246 246)" >
+            <div v-for="(item, index) in myOrgContacts" :key="index" v-show="cardActive === index" style="width: 100%">
+                <div v-show="cardActive !== index" style="display:grid;grid-template-rows:1fr;display:flex;flex-grow: 1;overflow-y:hidden">
                     <div style="display: flex;grid-template-rows: 1fr;flex-grow: 1;overflow-y: hidden;align-items: center;justify-content: center;background-color:rgb(255, 255, 255, 0.85), height: 100%;">
                         No Task chosen.
                     </div>
                 </div>
-                <div v-show="cardActive === catIndex" style="display:flex;flex-grow: 1;grid-template-rows:1fr;overflow-y:hidden">
-                    <client-view-formate v-bind:catItem="catItem" v-bind:categoryMain="category" />
+                <div v-show="cardActive === index" style="display:flex;flex-grow: 1;grid-template-rows:1fr;overflow-y:hidden">
+                    <client-view-formate v-bind:catItem="item" v-bind:categoryMain="category" />
                 </div>
             </div>
         </div>

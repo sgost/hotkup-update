@@ -19,7 +19,7 @@
         </div>
       </div>
       <div class="list-item-row-2 task-name" style="place-items: flex-start flex-start;overflow-x: hidden;">
-        <p style="margin: 0 0 0px 0;text-overflow: ellipsis;overflow-x: hidden;white-space: nowrap;">{{item.firstName}}</p>
+        <p style="margin: 0 0 0px 0;text-overflow: ellipsis;overflow-x: hidden;white-space: nowrap;">{{item.firstName}} {{item.lastName}}</p>
       </div>
       <div class="list-item-row-3" style="place-items: end flex-start;overflow: hidden;">
         <div style="display: flex;column-gap: 5px;width: 100%;justify-content: space-between;">
