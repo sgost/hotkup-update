@@ -1,118 +1,169 @@
 <template>
-    <div id="main_container">
-      <button id="add_client" uk-toggle="target: #modal-center">
-              <span id="add_client_span">+</span>
-         Add Contact
-         </button>
-         <div class="contact_list">
-           <p id="names" v-for="(contact, index) in contact" :key=index>
-             {{contact.name}} <span id="minus">-</span>
-             <span id="designation">{{contact.role}}</span>
-        <span id="plus">+</span></p>
-        </div>
-        </div> 
-
-
-        <div id="modal-center" class="uk-flex-top" uk-modal>
-    <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
-
-        <button class="uk-modal-close-default" type="button" uk-close></button>
-
-        <div id="main_container_form">
-        <div id="form_wrap_total">
-            <div class="form-main">
-                <label class="form_label">First
-                    Name</label>
-                <input class="form_inputs"
-                    placeholder="First Name" />
-
-            </div>
-            <div class="form-main">
-                <label class="form_label">Last
-                    Name</label>
-                <input class="form_inputs"
-                    placeholder="Last Name" />
-            </div>
-            <div class="form-main">
-                <label class="form_label">Email</label>
-                <input class="form_inputs"
-                    placeholder="user@gmail.com" />
-            </div>
-            <div class="form-main">
-                <label class="form_label">Mobile</label>
-                <input class="form_inputs"
-                    placeholder="Mobile" />
-            </div>
-            <div class="form_main_wrapper">
-                <div class="form-main">
-                    <label class="form_label">Telephone</label>
-                    <input class="form_inputs"
-                        placeholder="Telephone" />
-                </div>
-                <div class="form-main">
-                    <label class="form_label">Extension</label>
-                    <input class="form_inputs"
-                        placeholder="Extension" />
-                </div>
-            </div>
-            <div class="form-main">
-                <label class="form_label">Street
-                    Name</label>
-                <input class="form_inputs"
-                    placeholder="Street Name" />
-            </div>
-            <div class="form-main">
-                <label class="form_label">City</label>
-                <input class="form_inputs" placeholder="City" />
-            </div>
-            <div class="form_main_wrapper">
-                <div class="form-main">
-                    <label class="form_label">Provience</label>
-                    <input class="form_inputs"
-                        placeholder="Provience" />
-                </div>
-                <div class="form-main">
-                    <label class="form_label">Pin</label>
-                    <input class="form_inputs"
-                        placeholder="Pin" />
-                </div>
-            </div>
-            <div id="save_can_btns">
-                <button class="save_btn">SAVE</button>
-                <button class="can_btn">CANCEL</button>
-            </div>
-        </div>
-
+<div id="main_container">
+    <button id="add_client" uk-toggle="target: #modal-center" v-on:click="getOrgContacts()">
+        <span id="add_client_span">+</span>
+        Add Contact
+    </button>
+    <div class="contact_list first_column_scrollable custom-scroll-bar activities_list" style="border-top:0px solid gray;margin-top:10px;position:relative;flex-grow: 1; height: 380px; background: #f9f9f9">
+        <p id="names" v-for="(contact, index) in contact" :key="index" >
+            {{contact?.firstName}} {{contact?.lastName}}<span id="minus">-</span>
+            <span id="designation">Owner</span>
+            <span id="plus">+</span></p>
     </div>
+</div>
 
+<div id="modal-center" class="uk-flex-top" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <div id="main_container_form">
+            <div id="form_wrap_total">
+                <div class="form-main">
+                    <label class="form_label" v-bind:style="{'color': disColor}">First
+                        Name</label>
+                    <input class="form_inputs" placeholder="First Name" v-model="firstName" />
+
+                </div>
+                <div class="form-main">
+                    <label class="form_label" v-bind:style="{'color': disColor}">Last
+                        Name</label>
+                    <input class="form_inputs" placeholder="Last Name" v-model="lastName" />
+                </div>
+                <div class="form-main">
+                    <label class="form_label" v-bind:style="{'color': disColor}">Email</label>
+                    <input class="form_inputs" placeholder="user@gmail.com" v-model="email" />
+                </div>
+                <div class="form-main">
+                    <label class="form_label" v-bind:style="{'color': disColor}">Mobile</label>
+                    <input class="form_inputs" placeholder="Mobile" v-model="mobile" />
+                </div>
+                <div class="form_main_wrapper">
+                    <div class="form-main">
+                        <label class="form_label">Telephone</label>
+                        <input class="form_inputs" placeholder="Telephone" v-model="telePhone" />
+                    </div>
+                    <div class="form-main">
+                        <label class="form_label">Extension</label>
+                        <input class="form_inputs" placeholder="Extension" v-model="extension" />
+                    </div>
+                </div>
+                <div class="form-main">
+                    <label class="form_label" v-bind:style="{'color': disColor}">Street
+                        Name</label>
+                    <input class="form_inputs" placeholder="Street Name" v-model="street" />
+                </div>
+                <div class="form-main">
+                    <label class="form_label" v-bind:style="{'color': disColor}">City</label>
+                    <input class="form_inputs" placeholder="City" v-model="city" />
+                </div>
+                <div class="form-main">
+                    <label class="form_label" v-bind:style="{'color': disColor}">Country</label>
+                    <input class="form_inputs" placeholder="City" v-model="country" />
+                </div>
+                <div class="form_main_wrapper">
+                    <div class="form-main">
+                        <label class="form_label" v-bind:style="{'color': disColor}">Provience</label>
+                        <input class="form_inputs" placeholder="Provience" v-model="provience" />
+                    </div>
+                    <div class="form-main">
+                        <label class="form_label">Pin</label>
+                        <input class="form_inputs" placeholder="Pin" v-model="name" />
+                    </div>
+                </div>
+                <div id="save_can_btns">
+                    <button class="save_btn" v-on:click="addContact()" v-bind:disabled="saveDis()">SAVE</button>
+                    <button class="can_btn uk-modal-close" type="button">CANCEL</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 </template>
 
 <script>
 export default {
-  name: "Table",
-  data() {
-  return {
-    contact: [
-            {
-            name: 'Jonatan Cartine',
-            role: 'Owner',
+    name: "Table",
+    props: ['organizationId', 'categoryId'],
+    data() {
+        return {
+            firstName: "",
+            lastName: "",
+            email: "",
+            mobile: "",
+            telePhone: "",
+            extension: "",
+            website: "",
+            organisation: "",
+            address: "",
+            street: "",
+            city: "",
+            country: [],
+            provience: "",
+            pin: "",
+            disColor: "",
+            headers: {
+                Authorization: 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkaXNwbGF5TmFtZSI6IlZpZ25lc2hCaGFza2FyIiwiaXNzIjoiYXV0aDAiLCJyZXFBdXRoVG9rZW4iOiJ7XCJ6elwiOm51bGwsXCJsblwiOlwiQmhhc2thclwiLFwidFwiOlwiNWZkODVmNTViN2JiNjA1ODllM2E5M2RkXCIsXCJmblwiOlwiVmlnbmVzaFwiLFwiZW1cIjpcImNiaGFza2FyYXZpZ25lc2gub2ZmaWNlQGdtYWlsLmNvbVwiLFwicGlkc1wiOltudWxsLFwianZzYiRka2JqXCIsXCJqdnNiJG1hdGl1XCJdLFwidXVpZFwiOlwiNWZkODVmOTdiN2JiNjA1ODllM2E5M2RmXCIsXCJ0YlwiOm51bGx9IiwiZXhwIjoxNjU4MDUwNjA2LCJ1dWlkIjoiNWZkODVmOTdiN2JiNjA1ODllM2E5M2RmIn0.or3xlRbqVM_NeBWskWjsBFl7ZRQx4lHzh6mvMTt4a4E'
             },
-            {
-            name: 'Sheetal Cartine',
-            role: 'Owner',
-            },
-            {
-            name: 'Norries Cartine',
-            role: 'Accountant',
+            contact: []
+        };
+    },
+    methods: {
+        saveDis() {
+            let saveDisBtn;
+            if (!this.firstName && !this.lastName && !this.email && !this.mobile && !this.extension && !this.provience && !this.street && !this.city && !this.country) {
+                saveDisBtn = false;
+                this.disColor = 'red';
+            } else {
+                saveDisBtn = false;
+                this.disColor = '';
             }
-          ],
-  }
-  },
- methods: {
+            return saveDisBtn;
+        },
 
- }
+        // Add contact to the Organization
+        addContact() {
+            // alert(this.categoryId);
+            const newObj = {
+                id: 'new',
+                tenantId: '61dfe560a4d68d08b821e08c',
+                categoryId: this.categoryId,
+                organizationId: this.organizationId,
+                firstName: this.firstName,
+                lastName: this.lastName,
+                email: this.email,
+                mobile: this.mobile,
+                address: {
+                    street: this.street,
+                    city: this.city,
+                    province: this.provience,
+                    zip: this.pin,
+                    country: this.country
+                },
+                status: 'ACTIVE'
+            };
+            axios({
+                method: 'POST',
+                url: 'https://test.hotkup.com/crm/contacts/save',
+                headers: this.headers,
+                data: newObj
+            }).then((res) => {
+                console.log("rescontact", res);
+            }).error((err) => console.log("error", err));
+        },
+
+        // fetch contactDetails
+        getOrgContacts() {
+            axios({
+                    method: 'GET',
+                    url: 'https://test.hotkup.com/crm/contacts/list/1/all',
+                    headers: this.headers
+                })
+                .then((res) => {
+                    alert(this.organizationId);
+                    this.contact = res.data.data;
+                }).error((res) => console.log(res));
+        }
+    },
+    mounted: async function () {}
 };
 </script>
 
@@ -120,6 +171,7 @@ export default {
 #main_container {
     padding: 15px;
 }
+
 #main_container #add_client {
     width: 150px;
     margin: 0 0 45px auto;
@@ -139,10 +191,12 @@ export default {
     outline: none;
     cursor: pointer;
 }
+
 #add_client #add_client_span {
     font-size: 17px;
     margin: 0 10px 0 0;
 }
+
 #main_container .contact_list #names {
     display: grid;
     max-width: 333px;
@@ -151,12 +205,12 @@ export default {
     font-weight: bold;
     grid-template-columns: 174px 33px 98px auto;
 }
+
 #main_container .contact_list #names #designation {
     font-size: 12px;
     font-weight: bold;
     color: #03fcb1;
 }
-
 
 /* contact */
 
@@ -180,8 +234,7 @@ export default {
     color: #03fcb1;
 }
 
-
-#main_container .contact_list #names #plus{
+#main_container .contact_list #names #plus {
     background: rgb(37, 139, 255);
     color: white;
     width: 20px;
@@ -201,29 +254,35 @@ export default {
     background: white;
     border-radius: 30px;
 }
+
 #form_wrap_total {
     display: flex;
     flex-direction: column;
 }
+
 #add_client_modal #form_wrap_total::-webkit-scrollbar {
     display: none;
 }
+
 .form_main_wrapper {
     display: flex;
     width: 100%;
     justify-content: space-evenly;
 }
+
 .form-main {
     display: flex;
     flex-direction: column;
     margin: 23px 0 0 0;
 }
+
 .form_label {
     font-size: 11px;
     line-height: 4px;
     color: #333333;
     font-weight: 500;
 }
+
 .form-main .form_inputs {
     background: #FFFFFF;
     border: 0.5px solid #CCCCCC;
@@ -240,28 +299,31 @@ export default {
 }
 
 .form-main .form_textarea {
-border: 0.5px solid #CCCCCC;
-box-shadow: 0px 0px 5px rgba(25, 39, 67, 0.1);
-border-radius: 8px;
-height: 100px;
-padding: 12px 24px;
-font-size: 16px;
-margin:  10px 0 0 0;
-outline-color: #1E8BED;
+    border: 0.5px solid #CCCCCC;
+    box-shadow: 0px 0px 5px rgba(25, 39, 67, 0.1);
+    border-radius: 8px;
+    height: 100px;
+    padding: 12px 24px;
+    font-size: 16px;
+    margin: 10px 0 0 0;
+    outline-color: #1E8BED;
 }
 
 .form_main_wrapper .form-main {
     width: 49%;
 }
+
 .form_main_wrapper .form-main:nth-child(2) {
     width: 49%;
-    margin-left:1%;
+    margin-left: 1%;
 }
+
 #save_can_btns {
     display: flex;
     width: fit-content;
     margin: 30px 0 0 auto;
 }
+
 #save_can_btns .save_btn {
     background: #1565C0;
     border-radius: 6px;
@@ -273,6 +335,7 @@ outline-color: #1E8BED;
     margin: 0 23px 0 0;
     cursor: pointer;
 }
+
 #save_can_btns .can_btn {
     background: white;
     border-radius: 6px;
@@ -286,21 +349,14 @@ outline-color: #1E8BED;
     cursor: pointer;
 }
 
-
-
-
-
-
-
-
-
-
 #client_container {
-padding: 48px 20px 10px 20px;
+    padding: 48px 20px 10px 20px;
 }
+
 #search_main {
     display: flex;
 }
+
 #search_main .search_button {
     width: 142px;
     /* height: 48px; */
@@ -315,6 +371,7 @@ padding: 48px 20px 10px 20px;
     border: none;
     margin: 0 0 0 18px;
 }
+
 #search_main .search_input {
     width: 100%;
     border-radius: 3px;
@@ -328,6 +385,7 @@ padding: 48px 20px 10px 20px;
     font-size: 17px;
     outline-color: #3751FF;
 }
+
 #client_data_main {
     margin: 64px 0 0 0;
     background-color: #F5FBFF;
@@ -335,6 +393,7 @@ padding: 48px 20px 10px 20px;
     border-radius: 10px;
     padding: 40px 16px;
 }
+
 #client_data_main .clint_name_main {
     font-style: normal;
     font-weight: 700;
@@ -349,8 +408,9 @@ padding: 48px 20px 10px 20px;
     cursor: pointer;
     transition: 0.5s ease-in-out;
 }
+
 #client_data_main .clint_name_main:hover {
-    box-shadow:  0px 0px 1px rgba(0, 0, 0, 0.14);
+    box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.14);
 }
 
 #client_data_main .clint_name_main #no_clint {

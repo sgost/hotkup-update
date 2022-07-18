@@ -22,12 +22,8 @@
     <div class="form-main">
         <label class="form_label">Parent
             Organization</label>
-        <select class="form_inputs" placeholder="Parent
-                        Organization" v-model="organisation">
-            <option>COKE-COLA</option>
-            <option>THUMSUP</option>
-            <option>FANTA</option>
-            <option>PEPSI</option>
+        <select class="form_inputs" placeholder="Parent Organization" v-model="organisation" v-on:click="getAllParent()">
+            <option v-for="(data, i) in AllparentOrg" :key="i" v-bind:value="data.name" v-show="data.name == parentOrg">{{data.name}}</option>
         </select>
     </div>
 
@@ -51,7 +47,6 @@
         <label class="form_label">Pin</label>
         <input class="form_inputs" placeholder="Pin" v-model="pin" />
     </div>
-
     <div id="save_can_btns">
         <button class="save_btn" v-on:click="saveClient()" v-bind:disabled="saveDis()">SAVE</button>
         <button class="can_btn uk-modal-close" type="button">CANCEL</button>
@@ -62,6 +57,7 @@
 <script>
 export default {
     name: "Table",
+    props: ['categoryId', 'getOrgDetails'],
     data() {
         return {
             name: "",
@@ -75,7 +71,13 @@ export default {
             country: "",
             pin: "",
             disColor: "",
+            orgData: "",
+             AllparentOrg: [],
+
             addClient: [],
+            headers: {
+                Authorization: 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkaXNwbGF5TmFtZSI6IlZpZ25lc2hCaGFza2FyIiwiaXNzIjoiYXV0aDAiLCJyZXFBdXRoVG9rZW4iOiJ7XCJ6elwiOm51bGwsXCJsblwiOlwiQmhhc2thclwiLFwidFwiOlwiNWZkODVmNTViN2JiNjA1ODllM2E5M2RkXCIsXCJmblwiOlwiVmlnbmVzaFwiLFwiZW1cIjpcImNiaGFza2FyYXZpZ25lc2gub2ZmaWNlQGdtYWlsLmNvbVwiLFwicGlkc1wiOltudWxsLFwianZzYiRka2JqXCIsXCJqdnNiJG1hdGl1XCJdLFwidXVpZFwiOlwiNWZkODVmOTdiN2JiNjA1ODllM2E5M2RmXCIsXCJ0YlwiOm51bGx9IiwiZXhwIjoxNjU4MDUwNjA2LCJ1dWlkIjoiNWZkODVmOTdiN2JiNjA1ODllM2E5M2RmIn0.or3xlRbqVM_NeBWskWjsBFl7ZRQx4lHzh6mvMTt4a4E'
+            },
         }
     },
     methods: {
@@ -83,21 +85,29 @@ export default {
         saveDis() {
             let saveDisBtn;
             if (!this.name && !this.email && !this.phone && !this.website && !this.organisation && !this.provience && !this.address && !this.city && !this.country && !this.pin) {
-                saveDisBtn = true;
-                this.disColor = 'red'
+                saveDisBtn = false;
+                this.disColor = 'red';
             } else {
                 saveDisBtn = false;
-                this.disColor = ''
+                this.disColor = '';
             }
-            return saveDisBtn
+            return saveDisBtn;
         },
+
+           getAllParent() {
+             axios({
+                    method: 'GET',
+                    url: `https://test.hotkup.com/crm/category/list/1/all`,
+                }).then((res) => this.AllparentOrg = res.data.data)
+        },
+        
 
         // Add All organisation details
         saveClient() {
-            let newObj = {
+            const newObj = {
                 id: 'new',
-                tenantId: '5fd85f55b7bb60589e3a93dd',
-                categoryId: '62c6b24960c9b9318da4200a',
+                tenantId: '61dfe560a4d68d08b821e08c',
+                categoryId: this.categoryId,
                 name: this.name,
                 address: {
                     street: this.address,
@@ -107,7 +117,7 @@ export default {
                     country: this.country
                 },
                 status: 'ACTIVE'
-            }
+            };
             axios({
                     method: 'POST',
                     url: 'https://test.hotkup.com/crm/organizations/save',
@@ -124,8 +134,9 @@ export default {
                         this.address = "",
                         this.city = "",
                         this.country = "",
-                        this.pin = "",
-                        console.log('org', res)
+                        this.pin = ""
+                    alert(`${res.name} added successfully`)
+                    this.getOrgDetails();
                 })
                 .error((res) => console.log(res))
         }

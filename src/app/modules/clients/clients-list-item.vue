@@ -19,7 +19,7 @@
         </div>
       </div>
       <div class="list-item-row-2 task-name" style="place-items: flex-start flex-start;overflow-x: hidden;">
-        <p style="margin: 0 0 0px 0;text-overflow: ellipsis;overflow-x: hidden;white-space: nowrap;">{{item.firstName}} {{item.lastName}}</p>
+        <p style="margin: 0 0 0px 0;text-overflow: ellipsis;overflow-x: hidden;white-space: nowrap;">{{item.name}} {{item.lastName}}</p>
       </div>
       <div class="list-item-row-3" style="place-items: end flex-start;overflow: hidden;">
         <div style="display: flex;column-gap: 5px;width: 100%;justify-content: space-between;">
@@ -31,7 +31,7 @@
               style="border: 1px solid rgb(220, 220, 220);padding: 0px;margin-left: 0px;height: 20px;width: 20px;">
 
               <div>
-                <div class="task-created-date" style="font-size: 0.55rem;letter-spacing:0.75px;text-transform: none;color: rgb(152, 152, 152);">Org Name</div>
+                <div class="task-created-date" style="font-size: 0.55rem;letter-spacing:0.75px;text-transform: none;color: rgb(152, 152, 152);">{{myOrgName}}</div>
               </div>
           </div>
 
@@ -58,7 +58,7 @@
     utilsMixinLib,
     uiListMixinLib
   ],
-  props: ['id', 'appliedTaskFilter', 'item', 'cardActive', 'catIndex', 'uniqueComponentId', 'selectedTask', 'loggedInUser', 'embeddingViewName', 'taskIdToBeViewed', 'isModalViewed'],
+  props: ['id', 'appliedTaskFilter', 'myOrgName', 'item', 'cardActive', 'catIndex', 'uniqueComponentId', 'selectedTask', 'loggedInUser', 'embeddingViewName', 'taskIdToBeViewed', 'isModalViewed'],
   data: function () {
     return {
 
@@ -79,7 +79,6 @@
 
   },
   unmounted: function () {
-
   },
   watch: {
 

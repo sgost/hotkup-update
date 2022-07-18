@@ -21,7 +21,7 @@
                 </div>
                 <ul class="uk-nav uk-nav-default">
                     <li class="uk-nav-header sidebar-category-dropdown" style="margin-top: 15px;">
-                        <a style="color: #333!important;font-weight: normal!important;" v-on:click="getOrgDetails()">
+                        <a style="color: #333!important;font-weight: normal!important;" v-on:click="getCategories()">
                             Client Categories
                             <span class="counter-label">
                                 <span uk-icon="icon:chevron-down;ratio:0.85" id="category-menu-trigger" class="uk-icon" style="transition: 0.25s linear;color: #cdcdcd;"></span>
@@ -32,7 +32,7 @@
                         <ul class="uk-nav-sub custom-scroll-bar" style="max-height: 300px;height: 300px;overflow-y: auto;">
                             <template v-for="(category, index) in myOrganizationCategories" :key="index">
                                 <li class="menu-item" v-bind:id="clientFilter === category.id && 'activeClient'">
-                                    <a v-on:click="loadTasksFromCategory(category.id)">{{category.name}}
+                                    <a v-on:click="loadTasksFromCategory(category.id, category.name)">{{category.name}}
                                         <span class="counter-label" v-bind:id="'cat_count_'  + category.id">03</span>
                                     </a>
                                 </li>
@@ -60,7 +60,7 @@
                 </div>
                 <div style="display: grid; gap: 10px; grid-template-columns: auto auto; place-self: center end; text-align: right;">
                     <div style="display: flex;column-gap: 10px;">
-                        <div v-on:click="getOrgContacts()" class="clickable-btn uk-button" style="cursor: pointer;padding: 0 0px;filter: grayscale(1);"><img src="resources/images/refresh.svg" style="pointer-events: none;height:15px;width:15px"></div>
+                        <div v-on:click="getOrgDetails()" class="clickable-btn uk-button" style="cursor: pointer;padding: 0 0px;filter: grayscale(1);"><img src="resources/images/refresh.svg" style="pointer-events: none;height:15px;width:15px"></div>
                     </div>
                 </div>
             </div>
@@ -76,9 +76,9 @@
                         <div class="adk_grid_list_content custom-scroll-bar" id="taskListIntersectionObserver">
                             <div class="task_inbox_list elastic_scroll_list">
 
-                                <div v-for="(item, index) in myOrgContacts" :key="index" v-show="item.organizationId === clientFilter">
-                                    <div v-on:click="cardActive = index" v-bind:style="cardActive === index && 'border-left: 2px solid rgb(37, 139, 255)'">
-                                        <clients-list-item v-bind:item="item" v-bind:cardActive="cardActive" v-bind:catIndex="index" />
+                                <div v-for="(item, index) in myCategorieOrganizations" :key="index" v-show="item.categoryId === clientFilter">
+                                    <div v-on:click="cardSetItem(index, item)" v-bind:style="cardActive === index && 'border-left: 2px solid rgb(37, 139, 255)'">
+                                        <clients-list-item v-bind:item="item" v-bind:myOrgName="myOrgName" v-bind:cardActive="cardActive" v-bind:catIndex="index" />
                                     </div>
                                 </div>
 
@@ -89,15 +89,15 @@
             </div>
 
         </div>
-        <div class="taskDetailContainer task-detail-container" style="width: 100%; background: rgb(246 246 246)" >
-            <div v-for="(item, index) in myOrgContacts" :key="index" v-show="cardActive === index" style="width: 100%">
-                <div v-show="cardActive !== index" style="display:grid;grid-template-rows:1fr;display:flex;flex-grow: 1;overflow-y:hidden">
+        <div class="taskDetailContainer task-detail-container" style="width: 100%; background: rgb(246 246 246)">
+            <div style="width: 100%">
+                <div v-show="mySelectedOrgDetail.name == ''" style="display:grid;grid-template-rows:1fr;display:flex;flex-grow: 1;overflow-y:hidden">
                     <div style="display: flex;grid-template-rows: 1fr;flex-grow: 1;overflow-y: hidden;align-items: center;justify-content: center;background-color:rgb(255, 255, 255, 0.85), height: 100%;">
                         No Task chosen.
                     </div>
                 </div>
-                <div v-show="cardActive === index" style="display:flex;flex-grow: 1;grid-template-rows:1fr;overflow-y:hidden">
-                    <client-view-formate v-bind:catItem="item" v-bind:categoryMain="category" />
+                <div v-show="mySelectedOrgDetail.name !== ''" style="display:flex;flex-grow: 1;grid-template-rows:1fr;overflow-y:hidden">
+                    <client-view-formate v-bind:item="mySelectedOrgDetail" v-bind:myOrgName="myOrgName" />
                 </div>
             </div>
         </div>
@@ -252,7 +252,7 @@
 <div id="add-client-modal" class="uk-flex-top" uk-modal>
     <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
         <button class="uk-modal-close-default" type="button" uk-close></button>
-        <add-client />
+        <add-client v-bind:categoryId="categoryId" v-bind:getOrgDetails="getOrgDetails" />
     </div>
 </div>
 </template>
@@ -321,860 +321,22 @@ export default {
             chosenTaskCategory: null,
             isCategorySubmenuOpened: false,
 
-            myCategoriesList: [{
-                    name: 'USA',
-                    clients: [{
-                            name: 'Coco-cola',
-                            id: '1476',
-                            month: 'AUG',
-                            contact: [{
-                                    name: 'Jonatan Cartine',
-                                    role: 'Owner',
-                                },
-                                {
-                                    name: 'Sheetal Cartine',
-                                    role: 'Owner',
-                                },
-                                {
-                                    name: 'Norries Cartine',
-                                    role: 'Accountant',
-                                }
-                            ],
-                            activity: [{
-                                    comment: 'There is a comment',
-                                    name: 'Vignesh Bhasker',
-                                    time: '07:45PM',
-                                    date: '01/05/2022'
-                                },
-                                {
-                                    comment: 'There is a comment',
-                                    name: 'Manoj Ponugoti',
-                                    time: '07:45PM',
-                                    date: '01/05/2022'
-                                },
-                                {
-                                    comment: 'There is a comment',
-                                    name: 'Vignesh Bhasker',
-                                    time: '07:45PM',
-                                    date: '01/05/2022'
-                                }
-                            ],
-                            about: {
-                                name: 'coco-cola',
-                                mail: 'coco@gmail.com',
-                                phone: '9494978553',
-                                web: 'www.coco.com',
-                                prntOrg: 'USA',
-                                provience: 'USA street',
-                                Address: 'XYZ street',
-                                city: 'XYZ city',
-                                country: 'XYZ country',
-                                pin: 'xyz'
-                            },
-                            tasks: [{
-                                    id: 1736,
-                                    desc: 'Fixed components at pepsi',
-                                    date: '15/07/22',
-                                    creator: 'Pawan'
-                                },
-                                {
-                                    id: 1737,
-                                    desc: 'Fixed components at pepsi',
-                                    date: '15/07/22',
-                                    creator: 'Pawan'
-                                },
-                                {
-                                    id: 1738,
-                                    desc: 'Fixed components at pepsi',
-                                    date: '15/07/22',
-                                    creator: 'Pawan'
-                                },
-                                {
-                                    id: 1739,
-                                    desc: 'Fixed components at pepsi',
-                                    date: '15/07/22',
-                                    creator: 'Pawan'
-                                },
-                                {
-                                    id: 1780,
-                                    desc: 'Fixed components at pepsi',
-                                    date: '15/07/22',
-                                    creator: 'Pawan'
-                                },
-                                {
-                                    id: 1781,
-                                    desc: 'Fixed components at pepsi',
-                                    date: '15/07/22',
-                                    creator: 'Pawan'
-                                },
-                                {
-                                    id: 1782,
-                                    desc: 'Fixed components at pepsi',
-                                    date: '15/07/22',
-                                    creator: 'Pawan'
-                                },
-                                {
-                                    id: 1783,
-                                    desc: 'Fixed components at pepsi',
-                                    date: '15/07/22',
-                                    creator: 'Pawan'
-                                },
-                                {
-                                    id: 1784,
-                                    desc: 'Fixed components at pepsi',
-                                    date: '15/07/22',
-                                    creator: 'Pawan'
-                                },
-                                {
-                                    id: 1785,
-                                    desc: 'Fixed components at pepsi',
-                                    date: '15/07/22',
-                                    creator: 'Pawan'
-                                },
-                            ]
-                        },
-                        {
-                            name: 'Maza',
-                            id: '1376',
-                            month: 'AUG',
-                            contact: [{
-                                    name: 'Jonatan Cartine',
-                                    role: 'Owner',
-                                },
-                                {
-                                    name: 'Sheetal Cartine',
-                                    role: 'Owner',
-                                },
-                                {
-                                    name: 'Norries Cartine',
-                                    role: 'Accountant',
-                                }
-                            ],
-                            activity: [{
-                                    comment: 'There is a comment',
-                                    name: 'Vignesh Bhasker',
-                                    time: '07:45PM',
-                                    date: '01/05/2022'
-                                },
-                                {
-                                    comment: 'There is a comment',
-                                    name: 'Manoj Ponugoti',
-                                    time: '07:45PM',
-                                    date: '01/05/2022'
-                                },
-                                {
-                                    comment: 'There is a comment',
-                                    name: 'Vignesh Bhasker',
-                                    time: '07:45PM',
-                                    date: '01/05/2022'
-                                }
-                            ],
-                            about: {
-                                name: 'coco-cola',
-                                mail: 'coco@gmail.com',
-                                phone: '9494978553',
-                                web: 'www.coco.com',
-                                prntOrg: 'USA',
-                                provience: 'USA street',
-                                Address: 'XYZ street',
-                                city: 'XYZ city',
-                                country: 'XYZ country',
-                                pin: 'xyz'
-                            },
-                            tasks: [{
-                                    id: 1736,
-                                    desc: 'Fixed components at pepsi',
-                                    date: '15/07/22',
-                                    creator: 'Pawan'
-                                },
-                                {
-                                    id: 1737,
-                                    desc: 'Fixed components at pepsi',
-                                    date: '15/07/22',
-                                    creator: 'Pawan'
-                                },
-                                {
-                                    id: 1738,
-                                    desc: 'Fixed components at pepsi',
-                                    date: '15/07/22',
-                                    creator: 'Pawan'
-                                },
-                                {
-                                    id: 1739,
-                                    desc: 'Fixed components at pepsi',
-                                    date: '15/07/22',
-                                    creator: 'Pawan'
-                                },
-                                {
-                                    id: 1780,
-                                    desc: 'Fixed components at pepsi',
-                                    date: '15/07/22',
-                                    creator: 'Pawan'
-                                },
-                            ]
-                        },
-                        {
-                            name: 'Mirinda',
-                            id: '1276',
-                            month: 'AUG',
-                            contact: [{
-                                    name: 'Jonatan Cartine',
-                                    role: 'Owner',
-                                },
-                                {
-                                    name: 'Sheetal Cartine',
-                                    role: 'Owner',
-                                },
-                                {
-                                    name: 'Norries Cartine',
-                                    role: 'Accountant',
-                                }
-                            ],
-                            activity: [{
-                                    comment: 'There is a comment',
-                                    name: 'Vignesh Bhasker',
-                                    time: '07:45PM',
-                                    date: '01/05/2022'
-                                },
-                                {
-                                    comment: 'There is a comment',
-                                    name: 'Manoj Ponugoti',
-                                    time: '07:45PM',
-                                    date: '01/05/2022'
-                                },
-                                {
-                                    comment: 'There is a comment',
-                                    name: 'Vignesh Bhasker',
-                                    time: '07:45PM',
-                                    date: '01/05/2022'
-                                }
-                            ],
-                            about: {
-                                name: 'coco-cola',
-                                mail: 'coco@gmail.com',
-                                phone: '9494978553',
-                                web: 'www.coco.com',
-                                prntOrg: 'USA',
-                                provience: 'USA street',
-                                Address: 'XYZ street',
-                                city: 'XYZ city',
-                                country: 'XYZ country',
-                                pin: 'xyz'
-                            },
-                            tasks: [{
-                                    id: 1736,
-                                    desc: 'Fixed components at pepsi',
-                                    date: '15/07/22',
-                                    creator: 'Pawan'
-                                },
-                                {
-                                    id: 1737,
-                                    desc: 'Fixed components at pepsi',
-                                    date: '15/07/22',
-                                    creator: 'Pawan'
-                                },
-                                {
-                                    id: 1738,
-                                    desc: 'Fixed components at pepsi',
-                                    date: '15/07/22',
-                                    creator: 'Pawan'
-                                },
-                                {
-                                    id: 1739,
-                                    desc: 'Fixed components at pepsi',
-                                    date: '15/07/22',
-                                    creator: 'Pawan'
-                                },
-                                {
-                                    id: 1780,
-                                    desc: 'Fixed components at pepsi',
-                                    date: '15/07/22',
-                                    creator: 'Pawan'
-                                },
-                            ]
-                        },
-                        {
-                            name: 'Fizz',
-                            id: '1476',
-                            month: 'AUG',
-                            contact: [{
-                                    name: 'Jonatan Cartine',
-                                    role: 'Owner',
-                                },
-                                {
-                                    name: 'Sheetal Cartine',
-                                    role: 'Owner',
-                                },
-                                {
-                                    name: 'Norries Cartine',
-                                    role: 'Accountant',
-                                }
-                            ],
-                            activity: [{
-                                    comment: 'There is a comment',
-                                    name: 'Vignesh Bhasker',
-                                    time: '07:45PM',
-                                    date: '01/05/2022'
-                                },
-                                {
-                                    comment: 'There is a comment',
-                                    name: 'Manoj Ponugoti',
-                                    time: '07:45PM',
-                                    date: '01/05/2022'
-                                },
-                                {
-                                    comment: 'There is a comment',
-                                    name: 'Vignesh Bhasker',
-                                    time: '07:45PM',
-                                    date: '01/05/2022'
-                                }
-                            ],
-                            about: {
-                                name: 'coco-cola',
-                                mail: 'coco@gmail.com',
-                                phone: '9494978553',
-                                web: 'www.coco.com',
-                                prntOrg: 'USA',
-                                provience: 'USA street',
-                                Address: 'XYZ street',
-                                city: 'XYZ city',
-                                country: 'XYZ country',
-                                pin: 'xyz'
-                            },
-                            tasks: [{
-                                    id: 1736,
-                                    desc: 'Fixed components at pepsi',
-                                    date: '15/07/22',
-                                    creator: 'Pawan'
-                                },
-                                {
-                                    id: 1737,
-                                    desc: 'Fixed components at pepsi',
-                                    date: '15/07/22',
-                                    creator: 'Pawan'
-                                },
-                                {
-                                    id: 1738,
-                                    desc: 'Fixed components at pepsi',
-                                    date: '15/07/22',
-                                    creator: 'Pawan'
-                                },
-                                {
-                                    id: 1739,
-                                    desc: 'Fixed components at pepsi',
-                                    date: '15/07/22',
-                                    creator: 'Pawan'
-                                },
-                                {
-                                    id: 1780,
-                                    desc: 'Fixed components at pepsi',
-                                    date: '15/07/22',
-                                    creator: 'Pawan'
-                                },
-                            ]
-                        },
-                        {
-                            name: 'Dite Coke',
-                            id: '1476',
-                            month: 'AUG',
-                            contact: [{
-                                    name: 'Jonatan Cartine',
-                                    role: 'Owner',
-                                },
-                                {
-                                    name: 'Sheetal Cartine',
-                                    role: 'Owner',
-                                },
-                                {
-                                    name: 'Norries Cartine',
-                                    role: 'Accountant',
-                                }
-                            ],
-                            activity: [{
-                                    comment: 'There is a comment',
-                                    name: 'Vignesh Bhasker',
-                                    time: '07:45PM',
-                                    date: '01/05/2022'
-                                },
-                                {
-                                    comment: 'There is a comment',
-                                    name: 'Manoj Ponugoti',
-                                    time: '07:45PM',
-                                    date: '01/05/2022'
-                                },
-                                {
-                                    comment: 'There is a comment',
-                                    name: 'Vignesh Bhasker',
-                                    time: '07:45PM',
-                                    date: '01/05/2022'
-                                }
-                            ],
-                            about: {
-                                name: 'coco-cola',
-                                mail: 'coco@gmail.com',
-                                phone: '9494978553',
-                                web: 'www.coco.com',
-                                prntOrg: 'USA',
-                                provience: 'USA street',
-                                Address: 'XYZ street',
-                                city: 'XYZ city',
-                                country: 'XYZ country',
-                                pin: 'xyz'
-                            },
-                            tasks: [{
-                                    id: 1736,
-                                    desc: 'Fixed components at pepsi',
-                                    date: '15/07/22',
-                                    creator: 'Pawan'
-                                },
-                                {
-                                    id: 1737,
-                                    desc: 'Fixed components at pepsi',
-                                    date: '15/07/22',
-                                    creator: 'Pawan'
-                                },
-                                {
-                                    id: 1738,
-                                    desc: 'Fixed components at pepsi',
-                                    date: '15/07/22',
-                                    creator: 'Pawan'
-                                },
-                                {
-                                    id: 1739,
-                                    desc: 'Fixed components at pepsi',
-                                    date: '15/07/22',
-                                    creator: 'Pawan'
-                                },
-                                {
-                                    id: 1780,
-                                    desc: 'Fixed components at pepsi',
-                                    date: '15/07/22',
-                                    creator: 'Pawan'
-                                },
-                            ]
-                        },
-                        {
-                            name: 'Pepsi',
-                            id: '1479',
-                            month: 'AUG',
-                            contact: [{
-                                    name: 'Jonatan Cartine',
-                                    role: 'Owner',
-                                },
-                                {
-                                    name: 'Sheetal Cartine',
-                                    role: 'Owner',
-                                },
-                                {
-                                    name: 'Norries Cartine',
-                                    role: 'Accountant',
-                                }
-                            ],
-                            activity: [{
-                                    comment: 'There is a comment',
-                                    name: 'Vignesh Bhasker',
-                                    time: '07:45PM',
-                                    date: '01/05/2022'
-                                },
-                                {
-                                    comment: 'There is a comment',
-                                    name: 'Vignesh Bhasker',
-                                    time: '07:45PM',
-                                    date: '01/05/2022'
-                                },
-                                {
-                                    comment: 'There is a comment',
-                                    name: 'Vignesh Bhasker',
-                                    time: '07:45PM',
-                                    date: '01/05/2022'
-                                }
-                            ],
-                            about: {
-                                name: 'coco-cola',
-                                mail: 'coco@gmail.com',
-                                phone: '9494978553',
-                                web: 'www.coco.com',
-                                prntOrg: 'USA',
-                                provience: 'USA street',
-                                Address: 'XYZ street',
-                                city: 'XYZ city',
-                                country: 'XYZ country',
-                                pin: 'xyz'
-                            },
-                            tasks: [{
-                                    id: 1736,
-                                    desc: 'Fixed components at pepsi',
-                                    date: '15/07/22',
-                                    creator: 'Pawan'
-                                },
-                                {
-                                    id: 1737,
-                                    desc: 'Fixed components at pepsi',
-                                    date: '15/07/22',
-                                    creator: 'Pawan'
-                                },
-                                {
-                                    id: 1738,
-                                    desc: 'Fixed components at pepsi',
-                                    date: '15/07/22',
-                                    creator: 'Pawan'
-                                },
-                                {
-                                    id: 1739,
-                                    desc: 'Fixed components at pepsi',
-                                    date: '15/07/22',
-                                    creator: 'Pawan'
-                                },
-                                {
-                                    id: 1780,
-                                    desc: 'Fixed components at pepsi',
-                                    date: '15/07/22',
-                                    creator: 'Pawan'
-                                },
-                            ]
-                        }
-                    ]
-                },
-                {
-                    name: 'France',
-                    clients: [{
-                            name: 'SipUp',
-                            id: '1476',
-                            month: 'AUG',
-                            contact: [{
-                                    name: 'Jonatan Cartine',
-                                    role: 'Owner',
-                                },
-                                {
-                                    name: 'Sheetal Cartine',
-                                    role: 'Owner',
-                                },
-                                {
-                                    name: 'Norries Cartine',
-                                    role: 'Accountant',
-                                }
-                            ],
-                            activity: [{
-                                    comment: 'There is a comment',
-                                    name: 'Vignesh Bhasker',
-                                    time: '07:45PM',
-                                    date: '01/05/2022'
-                                },
-                                {
-                                    comment: 'There is a comment',
-                                    name: 'Vignesh Bhasker',
-                                    time: '07:45PM',
-                                    date: '01/05/2022'
-                                },
-                                {
-                                    comment: 'There is a comment',
-                                    name: 'Vignesh Bhasker',
-                                    time: '07:45PM',
-                                    date: '01/05/2022'
-                                }
-                            ],
-                            about: {
-                                name: 'coco-cola',
-                                mail: 'coco@gmail.com',
-                                phone: '9494978553',
-                                web: 'www.coco.com',
-                                prntOrg: 'USA',
-                                provience: 'USA street',
-                                Address: 'XYZ street',
-                                city: 'XYZ city',
-                                country: 'XYZ country',
-                                pin: 'xyz'
-                            },
-                            tasks: [{
-                                    id: 1736,
-                                    desc: 'Fixed components at pepsi',
-                                    date: '15/07/22',
-                                    creator: 'Pawan'
-                                },
-                                {
-                                    id: 1737,
-                                    desc: 'Fixed components at pepsi',
-                                    date: '15/07/22',
-                                    creator: 'Pawan'
-                                },
-                                {
-                                    id: 1738,
-                                    desc: 'Fixed components at pepsi',
-                                    date: '15/07/22',
-                                    creator: 'Pawan'
-                                },
-                                {
-                                    id: 1739,
-                                    desc: 'Fixed components at pepsi',
-                                    date: '15/07/22',
-                                    creator: 'Pawan'
-                                },
-                                {
-                                    id: 1780,
-                                    desc: 'Fixed components at pepsi',
-                                    date: '15/07/22',
-                                    creator: 'Pawan'
-                                },
-                            ]
-                        },
-                        {
-                            name: 'Fidisys',
-                            id: '1479',
-                            month: 'AUG',
-                            contact: [{
-                                    name: 'Jonatan Cartine',
-                                    role: 'Owner',
-                                },
-                                {
-                                    name: 'Sheetal Cartine',
-                                    role: 'Owner',
-                                },
-                                {
-                                    name: 'Norries Cartine',
-                                    role: 'Accountant',
-                                }
-                            ],
-                            activity: [{
-                                    comment: 'There is a comment',
-                                    name: 'Vignesh Bhasker',
-                                    time: '07:45PM',
-                                    date: '01/05/2022'
-                                },
-                                {
-                                    comment: 'There is a comment',
-                                    name: 'Vignesh Bhasker',
-                                    time: '07:45PM',
-                                    date: '01/05/2022'
-                                },
-                                {
-                                    comment: 'There is a comment',
-                                    name: 'Vignesh Bhasker',
-                                    time: '07:45PM',
-                                    date: '01/05/2022'
-                                }
-                            ],
-                            about: {
-                                name: 'coco-cola',
-                                mail: 'coco@gmail.com',
-                                phone: '9494978553',
-                                web: 'www.coco.com',
-                                prntOrg: 'USA',
-                                provience: 'USA street',
-                                Address: 'XYZ street',
-                                city: 'XYZ city',
-                                country: 'XYZ country',
-                                pin: 'xyz'
-                            },
-                            tasks: [{
-                                    id: 1736,
-                                    desc: 'Fixed components at pepsi',
-                                    date: '15/07/22',
-                                    creator: 'Pawan'
-                                },
-                                {
-                                    id: 1737,
-                                    desc: 'Fixed components at pepsi',
-                                    date: '15/07/22',
-                                    creator: 'Pawan'
-                                },
-                                {
-                                    id: 1738,
-                                    desc: 'Fixed components at pepsi',
-                                    date: '15/07/22',
-                                    creator: 'Pawan'
-                                },
-                                {
-                                    id: 1739,
-                                    desc: 'Fixed components at pepsi',
-                                    date: '15/07/22',
-                                    creator: 'Pawan'
-                                },
-                                {
-                                    id: 1780,
-                                    desc: 'Fixed components at pepsi',
-                                    date: '15/07/22',
-                                    creator: 'Pawan'
-                                },
-                            ]
-                        },
-                        {
-                            name: 'Mirinda',
-                            id: '1480',
-                            month: 'AUG',
-                            contact: [{
-                                    name: 'Jonatan Cartine',
-                                    role: 'Owner',
-                                },
-                                {
-                                    name: 'Sheetal Cartine',
-                                    role: 'Owner',
-                                },
-                                {
-                                    name: 'Norries Cartine',
-                                    role: 'Accountant',
-                                }
-                            ],
-                            activity: [{
-                                    comment: 'There is a comment',
-                                    name: 'Vignesh Bhasker',
-                                    time: '07:45PM',
-                                    date: '01/05/2022'
-                                },
-                                {
-                                    comment: 'There is a comment',
-                                    name: 'Vignesh Bhasker',
-                                    time: '07:45PM',
-                                    date: '01/05/2022'
-                                },
-                                {
-                                    comment: 'There is a comment',
-                                    name: 'Vignesh Bhasker',
-                                    time: '07:45PM',
-                                    date: '01/05/2022'
-                                }
-                            ],
-                            about: {
-                                name: 'coco-cola',
-                                mail: 'coco@gmail.com',
-                                phone: '9494978553',
-                                web: 'www.coco.com',
-                                prntOrg: 'USA',
-                                provience: 'USA street',
-                                Address: 'XYZ street',
-                                city: 'XYZ city',
-                                country: 'XYZ country',
-                                pin: 'xyz'
-                            },
-                            tasks: [{
-                                    id: 1736,
-                                    desc: 'Fixed components at pepsi',
-                                    date: '15/07/22',
-                                    creator: 'Pawan'
-                                },
-                                {
-                                    id: 1737,
-                                    desc: 'Fixed components at pepsi',
-                                    date: '15/07/22',
-                                    creator: 'Pawan'
-                                },
-                                {
-                                    id: 1738,
-                                    desc: 'Fixed components at pepsi',
-                                    date: '15/07/22',
-                                    creator: 'Pawan'
-                                },
-                                {
-                                    id: 1739,
-                                    desc: 'Fixed components at pepsi',
-                                    date: '15/07/22',
-                                    creator: 'Pawan'
-                                },
-                                {
-                                    id: 1780,
-                                    desc: 'Fixed components at pepsi',
-                                    date: '15/07/22',
-                                    creator: 'Pawan'
-                                },
-                            ]
-                        },
-                    ]
-                },
-                {
-                    name: 'Canada',
-                    clients: [{
-                        name: 'Coco-cola',
-                        id: '1476',
-                        month: 'AUG',
-                        contact: [{
-                                name: 'Jonatan Cartine',
-                                role: 'Owner',
-                            },
-                            {
-                                name: 'Sheetal Cartine',
-                                role: 'Owner',
-                            },
-                            {
-                                name: 'Norries Cartine',
-                                role: 'Accountant',
-                            }
-                        ],
-                        activity: [{
-                                comment: 'There is a comment',
-                                name: 'Vignesh Bhasker',
-                                time: '07:45PM',
-                                date: '01/05/2022'
-                            },
-                            {
-                                comment: 'There is a comment',
-                                name: 'Vignesh Bhasker',
-                                time: '07:45PM',
-                                date: '01/05/2022'
-                            },
-                            {
-                                comment: 'There is a comment',
-                                name: 'Vignesh Bhasker',
-                                time: '07:45PM',
-                                date: '01/05/2022'
-                            }
-                        ],
-                        about: {
-                            name: 'coco-cola',
-                            mail: 'coco@gmail.com',
-                            phone: '9494978553',
-                            web: 'www.coco.com',
-                            prntOrg: 'USA',
-                            provience: 'USA street',
-                            Address: 'XYZ street',
-                            city: 'XYZ city',
-                            country: 'XYZ country',
-                            pin: 'xyz'
-                        },
-                        tasks: [{
-                                id: 1736,
-                                desc: 'Fixed components at pepsi',
-                                date: '15/07/22',
-                                creator: 'Pawan'
-                            },
-                            {
-                                id: 1737,
-                                desc: 'Fixed components at pepsi',
-                                date: '15/07/22',
-                                creator: 'Pawan'
-                            },
-                            {
-                                id: 1738,
-                                desc: 'Fixed components at pepsi',
-                                date: '15/07/22',
-                                creator: 'Pawan'
-                            },
-                            {
-                                id: 1739,
-                                desc: 'Fixed components at pepsi',
-                                date: '15/07/22',
-                                creator: 'Pawan'
-                            },
-                            {
-                                id: 1780,
-                                desc: 'Fixed components at pepsi',
-                                date: '15/07/22',
-                                creator: 'Pawan'
-                            },
-                        ]
-                    }]
-                }
-            ],
-
             // clients
             clientFilter: 0,
             cardActive: '',
+            categoryId: '',
             headers: {
-                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkaXNwbGF5TmFtZSI6IlZpZ25lc2hCaGFza2FyIiwiaXNzIjoiYXV0aDAiLCJyZXFBdXRoVG9rZW4iOiJ7XCJ6elwiOm51bGwsXCJsblwiOlwiQmhhc2thclwiLFwidFwiOlwiNWZkODVmNTViN2JiNjA1ODllM2E5M2RkXCIsXCJmblwiOlwiVmlnbmVzaFwiLFwiZW1cIjpcImNiaGFza2FyYXZpZ25lc2gub2ZmaWNlQGdtYWlsLmNvbVwiLFwicGlkc1wiOltudWxsLFwianZzYiRka2JqXCIsXCJqdnNiJG1hdGl1XCJdLFwidXVpZFwiOlwiNWZkODVmOTdiN2JiNjA1ODllM2E5M2RmXCIsXCJ0YlwiOm51bGx9IiwiZXhwIjoxNjU4MDUwNjA2LCJ1dWlkIjoiNWZkODVmOTdiN2JiNjA1ODllM2E5M2RmIn0.or3xlRbqVM_NeBWskWjsBFl7ZRQx4lHzh6mvMTt4a4E',
+                Authorization: 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkaXNwbGF5TmFtZSI6IlZpZ25lc2hCaGFza2FyIiwiaXNzIjoiYXV0aDAiLCJyZXFBdXRoVG9rZW4iOiJ7XCJ6elwiOm51bGwsXCJsblwiOlwiQmhhc2thclwiLFwidFwiOlwiNWZkODVmNTViN2JiNjA1ODllM2E5M2RkXCIsXCJmblwiOlwiVmlnbmVzaFwiLFwiZW1cIjpcImNiaGFza2FyYXZpZ25lc2gub2ZmaWNlQGdtYWlsLmNvbVwiLFwicGlkc1wiOltudWxsLFwianZzYiRka2JqXCIsXCJqdnNiJG1hdGl1XCJdLFwidXVpZFwiOlwiNWZkODVmOTdiN2JiNjA1ODllM2E5M2RmXCIsXCJ0YlwiOm51bGx9IiwiZXhwIjoxNjU4MDUwNjA2LCJ1dWlkIjoiNWZkODVmOTdiN2JiNjA1ODllM2E5M2RmIn0.or3xlRbqVM_NeBWskWjsBFl7ZRQx4lHzh6mvMTt4a4E'
             },
             myOrganizationCategories: [],
+            myCategorieOrganizations: [],
+            myOrgName: '',
+            mySelectedOrgDetail: {
+                name: ''
+            }, // getting one organization detail
 
-            //Client Contact Details
-            myClientContacts: [],
-            myOrgContacts: []
+            // Client Contact Details
+            myClientContacts: []
         };
     },
     methods: {
@@ -1184,44 +346,75 @@ export default {
             document.querySelector("#appSideMenuContent").classList.toggle("isClosed");
         },
 
-        // Getting All organisation details
-        getOrgDetails() {
+        // Add categories
+        addCatrgories() {
+            const obj = {
+                id: "new",
+                tenantId: "61dfe560a4d68d08b821e08c",
+                name: "India",
+                status: "ACTIVE"
+            };
             axios({
-                    method: 'GET',
-                    url: 'https://test.hotkup.com/crm/organizations/list/1/all',
-                    headers: this.headers
-                })
-                .then((res) => {
-                    this.myOrganizationCategories = res.data.data;
-                    this.getOrgContacts();
-                })
-                .error((res) => console.log(res))
+                method: 'POST',
+                url: 'https://test.hotkup.com/crm/category/list/1/save',
+                headers: this.headers,
+                data: obj
+            }).then((res) => {
+                console.log('res', res);
+            });
         },
 
-        loadTasksFromCategory(id) {
+        // Get categories
+        getCategories() {
+            axios({
+                method: 'GET',
+                url: 'https://test.hotkup.com/crm/category/list/1/all',
+                headers: this.headers
+            }).then((res) => {
+                console.log('res', res);
+                this.myOrganizationCategories = res.data.data;
+            });
+        },
+
+        loadTasksFromCategory(id, name) {
             this.clientFilter = id;
+            this.categoryId = id;
+            this.myOrgName = name;
+            this.getOrgDetails(id);
         },
 
-        // fetch contactDetails
-        getOrgContacts() {
+        // Getting All organisation details
+        getOrgDetails(id) {
             axios({
                     method: 'GET',
-                    url: 'https://test.hotkup.com/crm/contacts/list/1/all',
+                    url: `https://test.hotkup.com/crm/organizations/list/1/all`,
                     headers: this.headers
                 })
                 .then((res) => {
-                    console.log('res.data', res.data)
-                    console.log('res.data.data', res.data.data)
-                    this.myOrgContacts = res.data.data
+                    console.log("res", res);
+                    this.myCategorieOrganizations = res.data.data;
                 })
-                .error((res) => console.log(res))
+                .error((res) => console.log(res));
         },
 
+        cardSetItem(index, item) {
+            this.cardActive = index;
+            axios({
+                    method: 'GET',
+                    url: `https://test.hotkup.com/crm/organizations/get/${item.id}`,
+                    headers: this.headers
+                })
+                .then((res) => {
+                    this.mySelectedOrgDetail = res.data;
+                    console.log('this.mySelectedOrgDetail', this.mySelectedOrgDetail);
+                })
+                .error((res) => console.log(res));
+        }
     },
     created: function () {},
     computed: {},
     mounted: async function () {
-        this.getOrgDetails();
+        this.getCategories(); // Fetching categories initaly
     },
     unmounted: function () {},
     beforeUnmount() {
@@ -1230,7 +423,7 @@ export default {
     watch: {
         list: {
             deep: true
-        },
+        }
     }
 };
 </script>

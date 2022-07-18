@@ -16,7 +16,6 @@
                 </div>
                 <div style="text-align: center;padding: 10px 20px 5px 20px;color: rgb(37, 139, 255);place-self: center;">
                     <div style="font-size: .55rem;text-transform: uppercase;font-weight: bold;"> Task </div>
-                    <div> #{{taskObject.sno}}</div>
                 </div>
             </div>
             <div v-show="viewSubTask" style="align-self: center;background: transparent;color: white;margin-left: 10px;padding-right:0px;border-radius: 3px;">
@@ -38,9 +37,6 @@
             <div v-show="!showNewSubTaskForm && !viewSubTask" style="align-self: center;background: transparent;color: white;margin-left: 10px;padding-right:0px;border-radius: 3px;">
                 <div style="text-align: center;padding: 10px 10px 5px 10px;color: rgb(37, 139, 255);place-self: center;">
                     <div style="display:flex;align-items:center;justify-content:center;flex-direction: row;min-width: 80px;">
-                        <!--<div v-if="taskObject.createdBy.split("#")[1]!=='Pawan Bhojanala'" style="letter-spacing: 1px;width: 25px;height: 25px;background-color: rgb(240, 240, 240);padding: 10px;font-weight: bold;color: rgb(51, 51, 51);border-radius: 50%;align-items: center;justify-content: center;display: flex;border: 3px solid rgb(219,235,255);">
-                        {{(taskObject.createdBy.split("#")[1].split(" ")[0])[0]}}{{(taskObject.createdBy.split("#")[1].split(" ")[1])[0]}}
-                     </div>-->
                         <img v-bind:data-img-id="taskObject.createdById" class="uk-border-pill ui-navbar-profile-image" v-bind:src="'/api/us/profile/get/' + taskObject.createdById" onerror="this.onerror=null;this.src='resources/images/male_default_pic.png';" width="25" height="25" xstyle="border: 2px solid rgb(220, 220, 220);margin-left: 0px;height:100px;width:100px;" style="border: 0px solid rgb(227 227 227);margin-left: 0px;height: 80px;width: 80px;padding: 2px;background: #2020202e;">
                     </div>
                 </div>
@@ -174,100 +170,6 @@
                                     <span style="user-select: none;" uk-tooltip="Click to edit this task's basic info" v-show="!showTaskInfoContainer" class="uk-button updateTaskInfoTrigger" uk-icon="icon:pencil;ratio:0.85" v-on:click="showTaskInfoContainerDiv()"></span>
                                     <span style="user-select: none;" uk-tooltip="Click to close this task" v-show="showTaskInfoContainer" class="uk-button updateTaskInfoTrigger" uk-icon="icon:chevron-up;ratio:0.85" v-on:click="hideTaskInfoContainer()"></span>
                                 </div>
-                                <div style="position: relative;">
-                                    <div v-bind:id="'ctx_menu_' + taskObject.id" class="context-menu">
-                                        <div style="user-select: none;display: flex;gap: 0px;flex-direction: column;">
-                                            <div id="menu_container" class="menu_container">
-                                                <div id="menu_slider" class="menu_slider">
-                                                    <div id="menu" class="menu menu_fixed_height">
-                                                        <div v-on:click="onMenuClick('isSubmenuCustomersSelected', 'Customers')">
-                                                            <span uk-icon="ratio:0.7;icon: users" class="uk-icon"></span>
-                                                            <span style="padding-left: 5px;">Customers <span id="selectedHookCustomersBadge" style="color:rgb(159 156 156)"></span></span>
-                                                            <span uk-icon="ratio:0.7;icon: chevron-right" class="uk-icon" style="margin-left:auto"></span>
-                                                        </div>
-                                                        <div v-on:click="onMenuClick('isSubmenuCustomerBranchesSelected', 'Customer Branches')">
-                                                            <span uk-icon="ratio:0.7;icon: location" class="uk-icon"></span>
-                                                            <span style="padding-left: 5px;">Branches <span id="selectedHookCustomerBranchesBadge" style="color:rgb(159 156 156)"></span></span>
-                                                            <span uk-icon="ratio:0.7;icon: chevron-right" class="uk-icon" style="margin-left:auto"></span>
-                                                        </div>
-                                                        <div v-on:click="onMenuClick('isSubmenuCustomerContactsSelected', 'Customer Contacts')">
-                                                            <span uk-icon="ratio:0.7;icon: user" class="uk-icon"></span>
-                                                            <span style="padding-left: 5px;">Contacts <span id="selectedHookCustomerContactsBadge" style="color:rgb(159 156 156)"></span></span>
-                                                            <span uk-icon="ratio:0.7;icon: chevron-right" class="uk-icon" style="margin-left:auto"></span>
-                                                        </div>
-                                                    </div>
-                                                    <div id="submenu" class="submenu_container">
-                                                        <div style="display: flex;gap: 10px;border-bottom: 1px solid #f0f0f0;padding-bottom: 10px;">
-                                                            <button v-bind:uk-tooltip="'Go back'" v-on:click="onSubmenuClick()" class="uk-button uk-button-danger uk-button-small uk-grid-margin uk-first-column end-call-button subtask-back-button" style="border-radius: 3px;">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
-                                                                    <path fill="currentColor" d="M12 4l1.4 1.4L7.8 11H20v2H7.8l5.6 5.6L12 20l-8-8 8-8z"></path>
-                                                                </svg>
-                                                            </button>
-                                                            <div style="padding-right: 1px;position: relative;border: 1px solid rgb(187, 186, 186);border-radius: 3px;display: inline-flex;flex-direction: row-reverse;column-gap: 10px;">
-                                                                <input autocomplete="off" type="text" id="submenu_searchbox" v-on:keyup="searchHooksSubmenu()" v-model="hooksSubmenuSearchQuery" class="dropdown_input" style="border: 0px;padding-right: 30px;width: 98%;height: 30px;">
-                                                                <span uk-icon="icon:search;ratio:0.85" style="display: flex;padding: 5px;user-select: none;align-items: center;justify-content: center;width: 30px;opacity: 0.55;xbackground: #f0f0f0;"></span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="submenu menu_fixed_height">
-
-                                                            <div class="submenu_category" v-show="hookSubmenuCurrentlySelected === 'isSubmenuCustomersSelected'">
-                                                                <template v-for="customer in customers">
-                                                                    <div v-on:click="onCustomerSelect(customer.id)" style="display: flex;-moz-column-gap: 10px;column-gap: 10px;cursor: pointer;">
-                                                                        <div>
-                                                                            <div style="border: 1px solid rgb(85, 85, 85); height: 15px; width: 15px; display: grid;">
-                                                                                <span v-show="customer.isSelected" uk-icon="check" class="uk-icon">
-                                                                                    <svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" data-svg="check">
-                                                                                        <polyline fill="none" stroke="#000" stroke-width="1.1" points="4,10 8,15 17,4"></polyline>
-                                                                                    </svg>
-                                                                                </span>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div style="padding-left: 5px;">{{customer.name}}</div>
-                                                                    </div>
-                                                                </template>
-                                                            </div>
-
-                                                            <div class="submenu_category" v-show="hookSubmenuCurrentlySelected === 'isSubmenuCustomerBranchesSelected'">
-                                                                <template v-for="customerBranch in customerBranches">
-                                                                    <div v-on:click="onCustomerBranchSelect(customerBranch.id)" style="display: flex;-moz-column-gap: 10px;column-gap: 10px;cursor: pointer;">
-                                                                        <div>
-                                                                            <div style="border: 1px solid rgb(85, 85, 85); height: 15px; width: 15px; display: grid;">
-                                                                                <span v-show="customerBranch.isSelected" uk-icon="check" class="uk-icon">
-                                                                                    <svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" data-svg="check">
-                                                                                        <polyline fill="none" stroke="#000" stroke-width="1.1" points="4,10 8,15 17,4"></polyline>
-                                                                                    </svg>
-                                                                                </span>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div style="padding-left: 5px;">{{customerBranch.name}}</div>
-                                                                    </div>
-                                                                </template>
-                                                            </div>
-
-                                                            <div class="submenu_category" v-show="hookSubmenuCurrentlySelected === 'isSubmenuCustomerContactsSelected'">
-                                                                <template v-for="customerContact in customerContacts">
-                                                                    <div v-on:click="onCustomerContactSelect(customerContact.id)" style="display: flex;-moz-column-gap: 10px;column-gap: 10px;cursor: pointer;">
-                                                                        <div>
-                                                                            <div style="border: 1px solid rgb(85, 85, 85); height: 15px; width: 15px; display: grid;">
-                                                                                <span v-show="customerContact.isSelected" uk-icon="check" class="uk-icon">
-                                                                                    <svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" data-svg="check">
-                                                                                        <polyline fill="none" stroke="#000" stroke-width="1.1" points="4,10 8,15 17,4"></polyline>
-                                                                                    </svg>
-                                                                                </span>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div style="padding-left: 5px;">{{customerContact.name}}</div>
-                                                                    </div>
-                                                                </template>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
                                 <div>
                                     <span style="user-select: none;" uk-tooltip="Click to expand this task window" v-show="!isTaskInfoContainerExpanded" class="uk-button updateTaskInfoTrigger" uk-icon="icon:expand;ratio:0.85" v-on:click="expandOrShrinkTaskInfoContainer()"></span>
                                     <span style="user-select: none;" uk-tooltip="Click to shrink this task window" v-show="isTaskInfoContainerExpanded" class="uk-button updateTaskInfoTrigger" uk-icon="icon:shrink;ratio:0.85" v-on:click="expandOrShrinkTaskInfoContainer()"></span>
@@ -276,15 +178,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="task_title">{{catItem.firstName}} {{catItem.lastName}}</div>
+                <div class="task_title">{{item.name}}</div>
                 <div style="display:flex;width: 100%;padding-top: 5px;">
                     <div style="flex-grow: 3;display: flex;gap: 20px;flex-direction: row;">
                         <div style="color: rgb(129, 129, 129);font-weight: bold;font-size: 0.5rem;border-radius: 2px;letter-spacing: 1px;display: flex;align-items: center;border: 1px solid #e1e1e1;background-color: rgb(233, 233, 233);">
                             <div style="font-weight: normal;font-size: 0.56rem;text-transform: uppercase;letter-spacing: 1px;padding: 3px 5px 3px 10px;color: #6a6a6a;border-top-left-radius: 3px;border-bottom-left-radius:3px;background-color:rgb(233 233 233)">Category</div>
                             <div>
                                 <div style="font-weight: normal;font-size: 0.6rem;text-transform: capitalize;letter-spacing: 1px;padding: 3px 5px;background: rgb(239 239 239);color: #2196f3;;border-top-right-radius: 3px;border-bottom-right-radius:3px;" v-if="taskObject.category!==null && taskObject.category!==undefined">
-                                    <span> Organization Name </span>
-                                    <span v-if="taskObject.processTemplateInfo!==null && taskObject.processTemplateInfo!==undefined"> / {{taskObject.processTemplateInfo.label}} </span>
+                                    <span> {{myOrgName}} </span>
                                 </div>
                             </div>
                         </div>
@@ -309,7 +210,7 @@
         <!-- Client Edit -->
         <div v-show="showTaskInfoContainer" style="position:relative" class="task-info-container">
             <div class="first_column_scrollable custom-scroll-bar" style="font-size: 0.7rem;position: absolute;left: 35px;right: 35px;top: -1px;opacity: 1;z-index: 100;background: linear-gradient(rgb(254 254 254), rgb(255, 255, 255));border-width: 0px 1px 1px;border-top-style: initial;border-right-style: solid;border-bottom-style: solid;border-left-style: solid;border-top-color: initial;border-right-color: rgb(226, 226, 226);border-bottom-color: rgb(226, 226, 226);border-left-color: rgb(226, 226, 226);border-image: initial;box-shadow: rgba(0, 0, 0, 0.12) 0px 15px 12px 0px;border-radius: 0px 0px 5px 5px;">
-                <client-info-tab v-bind:taskInfo="taskObject" hideUpdateButton="false" v-on:refreshTaskDetails="getRecord()" />
+                <client-info-tab v-bind:taskInfo="taskObject" v-bind:item="item"/>
             </div>
         </div>
         <div v-show="!showNewSubTaskForm" style="display: grid;grid-template-rows: auto 1fr;display: flex;flex-direction: column;flex-grow: 1;overflow-y: hidden;">
@@ -355,7 +256,7 @@
                 <!-- CONTACT -->
                 <div v-show="selectedTabKey==='Contact'" class="custom-scroll-bar" style="flex-grow: 1;overflow-y: scroll;position: relative;padding: 15px;height: 100%;background: transparent; xbackground:rgba(255, 255, 255, 0.7);box-sizing: border-box;margin-bottom: 10px;">
                     <div class="task-communication" style="min-height:75px">
-                        <clients-contacts v-bind:addContact="addContact" v-bind:contactModal="contactModal" />
+                        <clients-contacts v-bind:organizationId="item.id" v-bind:categoryId="item.categoryId" />
                     </div>
                 </div>
 
@@ -455,7 +356,7 @@
                         </template>
                     </div>
                 </div>
-                <div v-show="selectedTabKey==='reminders'" style="display: flex;flex-direction: column;flex-grow: 1;overflow-y: hidden; position: relative;height: 100%;;background: #ffffffa1;">
+                <div v-show="selectedTabKey === 'reminders'" style="display: flex;flex-direction: column;flex-grow: 1;overflow-y: hidden; position: relative;height: 100%;;background: #ffffffa1;">
                     <div v-if="isRemindersTabInitialized" style="display: flex;padding: 20px;min-height: 300px;flex-direction: column;">
 
                         <div style="padding: 5px 0px;margin-right:20px;margin-bottom: 10px;display: grid;grid-template-rows: 1fr;place-items: flex-start;border-bottom: 1px solid #d0d0d0;">
@@ -470,7 +371,7 @@
                             </button>
                         </div>
                         <div v-if="isRemindersTabInitialized" class="custom-scroll-bar" style="position: relative;flex-grow: 1;">
-                            <div v-show="reminderList.length==0" style="text-align:center;border-bottom: 0px;"> No reminders added </div>
+                            <div v-show="reminderList.length==0" style="text-align:center;border-bottom: 0px;" v-on:click="loadPotentialMembersForReminders()"> No reminders added </div>
                             <div v-show="reminderList.length>0" style="border-radius: 5px;border: 1px solid rgba(128, 128, 128, 0.25);margin-right: 5px;margin-left: 0px;padding: 1px 1px;">
                                 <div style="background:rgb(242 242 242 / 23%);border-width:1px 1px 0px;border-top-style:solid;border-right-style:solid;border-bottom-style:initial;border-left-style:solid;border-top-color:transparent;border-right-color:transparent;border-bottom-color:initial;border-left-color:transparent;border-image:initial;text-transform:uppercase;font-size:.5rem;padding: 10px 0px;display:flex;border-bottom:1px solid #d0d0d0;column-gap:20px;font-weight:bold;letter-spacing:1px;">
 
@@ -482,7 +383,7 @@
                                     <div style="flex:2;">Date/Time</div>
                                     <div style="flex:1;">Actions</div>
                                 </div>
-                                <template v-for="item,index in reminderList">
+                                <template v-for="item,index in reminderList" :key="index">
                                     <div style="position: relative;padding: 10px;min-height: 20px;justify-items: start;column-gap: 20px;background-color: rgb(255 255 255 / 75%);font-size: 0.65rem;display: flex;">
 
                                         <div style="flex:0.25;text-align:right" v-if="item.status==='ELAPSED'">{{index+1}}</div>
@@ -649,17 +550,6 @@
 
                     </div>
                 </div>
-                <div v-show="selectedTabKey==='forms'" style="flex-grow: 1; overflow-y: hidden; position: relative; background: rgba(255, 255, 255, 0.75); display: flex; flex-direction: column;">
-                    <div v-if="isFormsTabInitialized" style="display: grid;padding: 10px;padding-top: 15px;margin-right: 20px;overflow-y: scroll;">
-                        <task-forms-tab v-bind:loggedInUser="loggedInUser" v-bind:taskSNO="'Task #' + taskObject.sno" v-bind:id="taskObject.id" v-bind:assignees="availableMembers" />
-                    </div>
-                </div>
-                <div v-show="selectedTabKey==='files'" style="flex-grow: 1; overflow-y: hidden; position: relative; background: rgba(255, 255, 255, 0.75); display: flex; flex-direction: column;">
-                    <div v-if="isFilesTabInitialized" style="display: grid;padding: 10px;padding-top: 15px;margin-right: 20px;overflow-y: scroll;">
-                        <task-files-tab v-bind:loggedInUser="loggedInUser" v-bind:taskSNO="'Task #' + taskObject.sno" v-bind:id="taskObject.id" v-bind:assignees="availableMembers" />
-                    </div>
-                </div>
-
             </div>
         </div>
 
@@ -672,6 +562,7 @@
 
     </div>
 
+    <!-- Add Remainder Modal  -->
     <div v-bind:id="uniqueComponentId + '_add_reminder_modal'" class="uk-flex-top" uk-modal>
         <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical" style="width: 60%;font-size: 0.65rem;padding: 35px;border-radius: 5px;">
             <button class="uk-modal-close-default" type="button" uk-close></button>
@@ -738,7 +629,7 @@ export default {
         utilsMixinLib,
         uiListMixinLib
     ],
-    props: ['id', 'catItem', 'categoryMain', 'uniqueComponentId', 'selectedTask', 'loggedInUser', 'embeddingViewName', 'taskIdToBeViewed', 'tabToDisplay', 'isModalViewed'],
+    props: ['id', 'item', 'myOrgName', 'uniqueComponentId', 'selectedTask', 'loggedInUser', 'embeddingViewName', 'taskIdToBeViewed', 'tabToDisplay', 'isModalViewed'],
     data: function () {
         return {
             // /loggedInUser :  {},
@@ -816,8 +707,11 @@ export default {
             isFilesTabInitialized: false,
             isHooksTabInitialized: false,
 
-            //CONTACT 
-            contactModal: false
+            // CONTACT 
+            contactModal: false,
+            headers: {
+                Authorization: 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkaXNwbGF5TmFtZSI6IlZpZ25lc2hCaGFza2FyIiwiaXNzIjoiYXV0aDAiLCJyZXFBdXRoVG9rZW4iOiJ7XCJ6elwiOm51bGwsXCJsblwiOlwiQmhhc2thclwiLFwidFwiOlwiNWZkODVmNTViN2JiNjA1ODllM2E5M2RkXCIsXCJmblwiOlwiVmlnbmVzaFwiLFwiZW1cIjpcImNiaGFza2FyYXZpZ25lc2gub2ZmaWNlQGdtYWlsLmNvbVwiLFwicGlkc1wiOltudWxsLFwianZzYiRka2JqXCIsXCJqdnNiJG1hdGl1XCJdLFwidXVpZFwiOlwiNWZkODVmOTdiN2JiNjA1ODllM2E5M2RmXCIsXCJ0YlwiOm51bGx9IiwiZXhwIjoxNjU4MDUwNjA2LCJ1dWlkIjoiNWZkODVmOTdiN2JiNjA1ODllM2E5M2RmIn0.or3xlRbqVM_NeBWskWjsBFl7ZRQx4lHzh6mvMTt4a4E'
+            },
         };
     },
     methods: {
@@ -1491,25 +1385,13 @@ export default {
         // This data will be used to filter both members and admins by merging with the result from 'get-associated-people/{workgroup-id}'
         loadPotentialMembersForReminders() {
             let url = '';
-
-            // if(!this.doesCategoryHasAdvancedSettings)
-            //     url = "./categories/get-category-members/" + this.taskObject.categoryIds[0];          // Fetch all potential members (users)
-            // else
-            //     url = "./categories-stages/get-category-stage-members/" + this.taskObject.status;               // Fetch specific members assigned to handle category-stage.
-
-            // Clarify with the boss if assignee values must be the same as configured in stage-members? or is stage-members only used for permission to take that action via selectbox?
             url = './categories/get-category-members/' + this.taskObject.categoryId; // Fetch all potential members (users)
-            // console.log(" this.taskObject potentialMembers",  this.taskObject);
-            // this.getUnpaginatedList("potentialMembers", url);   // This lib call will fire the callback "handleUnpaginatedListData" when it completes.
-
-            // console.log("Mixin : Retrieving data from : " + url);
 
             try {
                 // VueJS ajax call-1
                 axios.get(process.env.VUE_APP_API_URL + url)
                     .then((dataResponse) => {
                         // console.log("List: " , dataResponse);
-
                         this.handlePotentialReminderMembers(dataResponse);
                     })
                     .catch((error) => {
@@ -1649,21 +1531,22 @@ export default {
                 });
         },
         saveReminder() {
-            const post_url = './reminders/save';
+            alert("hi")
+            const post_url = 'https://test.hotkup.com/crm/org-reminders/save';
 
             const isNew = this.reminderItem.id == 'New';
             const form = {
-                id: this.reminderItem.id,
-                taskId: this.taskId,
-                type: this.reminderItem.type,
-                title: this.reminderItem.title,
-                userIds: this.reminderItem.userIds
-            };
+                "id": this.reminderItem.id,
+                "tenantId": "5fd85f55b7bb60589e3a93dd",
+                "orgId": this.item.id,
+                "title": this.reminderItem.title,
+                "type": this.reminderItem.type,
+                "assigneeId": "5fd85f97b7bb60589e3a93df#Vignesh Bhaskar",
+                "clientTimeZone": "Asia/Calcutta",
+                "reminderTime": this.reminderItem.dateTime
+            }
 
             if (this.reminderItem.dateTime) {
-                // form["dateTime"] = new Date(this.reminderItem.dateTime).toLocaleString();
-
-                // Always convert the inputs from browser into UTC timezone and ISO format.
                 form.dateTime = new Date(this.reminderItem.dateTime).toISOString();
             }
 
@@ -1671,8 +1554,12 @@ export default {
             // return false;
 
             // VueJS ajax call-1
-            axios.post(process.env.VUE_APP_API_URL + post_url, form)
-                .then((dataResponse) => {
+            axios({
+                    method: 'POST',
+                    url: post_url,
+                    headers: this.headers,
+                    data: form
+                }).then((dataResponse) => {
                     // console.log("Reminder save Result : ");
                     // console.log(dataResponse);
 
@@ -1726,7 +1613,7 @@ export default {
         cancelReminderItem(item) {
             // this.reminderItem = item;
 
-            const post_url = './reminders/cancel';
+            const post_url = 'https://test.hotkup.com/crm/organizations/save';
             const form = {
                 id: item.id,
                 status: "CANCELLED"
@@ -2502,11 +2389,6 @@ export default {
                     this.updateCustomerBranchHook(customerBranch);
                 }
             });
-        },
-
-        // CONTACT
-        addContact() {
-
         }
     },
     created: function () {},
