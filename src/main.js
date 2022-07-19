@@ -92,6 +92,7 @@ import PeopleActivity from './app/modules/people/people-activity-tab.vue';
 import PeopleInformation from './app/modules/people/people-information.vue';
 import PeopleOrganization from './app/modules/people/people-organization.vue';
 import PeopleAdd from './app/modules/people/add-people.vue';
+import PeopleRemainders from './app/modules/people/people-view-remainders.vue';
 
 export const bus = mitt();
 
@@ -187,6 +188,7 @@ app.component('people-activity-tab', PeopleActivity);
 app.component('people-information', PeopleInformation);
 app.component('people-organization', PeopleOrganization);
 app.component('add-people', PeopleAdd);
+app.component('people-view-remainders', PeopleRemainders);
 app.use(store)
   .use(router)
   .mount('#app');

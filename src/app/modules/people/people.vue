@@ -10,7 +10,7 @@
                         <div style="position:relative">
                             <button id="new_task_button" uk-toggle="target: #add-client-modal" class="btn clickable-btn uk-button uk-button-danger uk-button-small uk-grid-margin uk-first-column end-call-button" style="background-color: rgb(37, 139, 255);border-radius: 3px 0px 0px 3px;place-self: center;place-items: center;min-width: 100px;font-size: 0.75rem;line-height: 27px;font-weight: normal !important;text-transform: capitalize;">
                                 <span uk-icon="icon:plus;ratio:0.75"></span>
-                                <span style="margin-left:5px" v-on:click="addOrgDetails()"> Add Client</span>
+                                <span style="margin-left:5px" v-on:click="addOrgDetails()"> Add People</span>
                             </button>
                         </div>
                     </div>
@@ -21,8 +21,8 @@
                 </div>
                 <ul class="uk-nav uk-nav-default">
                     <li class="uk-nav-header sidebar-category-dropdown" style="margin-top: 15px;">
-                        <a style="color: #333!important;font-weight: normal!important;" v-on:click="getCategories()">
-                            Prople Categories
+                        <a style="color: #333!important;font-weight: normal!important;" v-on:click="getOrgDetails()">
+                            People Categories
                             <span class="counter-label">
                                 <span uk-icon="icon:chevron-down;ratio:0.85" id="category-menu-trigger" class="uk-icon" style="transition: 0.25s linear;color: #cdcdcd;"></span>
                             </span>
@@ -30,7 +30,7 @@
                     </li>
                     <li class="uk-parent" id="category-submenu">
                         <ul class="uk-nav-sub custom-scroll-bar" style="max-height: 300px;height: 300px;overflow-y: auto;">
-                            <template v-for="(category, index) in myOrganizationCategories" :key="index">
+                            <template v-for="(category, index) in myCategorieOrganizations" :key="index">
                                 <li class="menu-item" v-bind:id="clientFilter === category.id && 'activeClient'">
                                     <a v-on:click="loadTasksFromCategory(category.id, category.name)">{{category.name}}
                                         <span class="counter-label" v-bind:id="'cat_count_'  + category.id">03</span>
@@ -60,7 +60,7 @@
                 </div>
                 <div style="display: grid; gap: 10px; grid-template-columns: auto auto; place-self: center end; text-align: right;">
                     <div style="display: flex;column-gap: 10px;">
-                        <div v-on:click="getOrgDetails()" class="clickable-btn uk-button" style="cursor: pointer;padding: 0 0px;filter: grayscale(1);"><img src="resources/images/refresh.svg" style="pointer-events: none;height:15px;width:15px"></div>
+                        <div v-on:click="getContacts()" class="clickable-btn uk-button" style="cursor: pointer;padding: 0 0px;filter: grayscale(1);"><img src="resources/images/refresh.svg" style="pointer-events: none;height:15px;width:15px"></div>
                     </div>
                 </div>
             </div>
@@ -76,9 +76,9 @@
                         <div class="adk_grid_list_content custom-scroll-bar" id="taskListIntersectionObserver">
                             <div class="task_inbox_list elastic_scroll_list">
 
-                                <div v-for="(item, index) in myCategorieOrganizations" :key="index" v-show="item.categoryId === clientFilter">
+                                <div v-for="(item, index) in myOrganizationContacts" :key="index" v-show="clientFilter == item.organizationId">
                                     <div v-on:click="cardSetItem(index, item)" v-bind:style="cardActive === index && 'border-left: 2px solid rgb(37, 139, 255)'">
-                                        <clients-list-item v-bind:item="item" v-bind:myOrgName="myOrgName" v-bind:cardActive="cardActive" v-bind:catIndex="index" />
+                                        <people-list-item v-bind:item="item" v-bind:myOrgName="myOrgName" v-bind:cardActive="cardActive" v-bind:catIndex="index" />
                                     </div>
                                 </div>
 
@@ -91,13 +91,13 @@
         </div>
         <div class="taskDetailContainer task-detail-container" style="width: 100%; background: rgb(246 246 246)">
             <div style="width: 100%">
-                <div v-show="mySelectedOrgDetail.name == ''" style="display:grid;grid-template-rows:1fr;display:flex;flex-grow: 1;overflow-y:hidden">
+                <div v-show="mySelectedContactDetail.name == ''" style="display:grid;grid-template-rows:1fr;display:flex;flex-grow: 1;overflow-y:hidden">
                     <div style="display: flex;grid-template-rows: 1fr;flex-grow: 1;overflow-y: hidden;align-items: center;justify-content: center;background-color:rgb(255, 255, 255, 0.85), height: 100%;">
                         No Task chosen.
                     </div>
                 </div>
-                <div v-show="mySelectedOrgDetail.name !== ''" style="display:flex;flex-grow: 1;grid-template-rows:1fr;overflow-y:hidden">
-                    <client-view-formate v-bind:item="mySelectedOrgDetail" v-bind:myOrgName="myOrgName" />
+                <div v-show="mySelectedContactDetail.name !== ''" style="display:flex;flex-grow: 1;grid-template-rows:1fr;overflow-y:hidden">
+                    <people-view-formate v-bind:item="mySelectedContactDetail" v-bind:myOrgName="myOrgName" />
                 </div>
             </div>
         </div>
@@ -252,7 +252,7 @@
 <div id="add-client-modal" class="uk-flex-top" uk-modal>
     <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
         <button class="uk-modal-close-default" type="button" uk-close></button>
-        <add-client v-bind:categoryId="categoryId" v-bind:getOrgDetails="getOrgDetails" />
+        <add-people v-bind:categoryId="categoryId" v-bind:getOrgDetails="getOrgDetails" />
     </div>
 </div>
 </template>
@@ -328,10 +328,10 @@ export default {
             headers: {
                 Authorization: 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkaXNwbGF5TmFtZSI6IlZpZ25lc2hCaGFza2FyIiwiaXNzIjoiYXV0aDAiLCJyZXFBdXRoVG9rZW4iOiJ7XCJ6elwiOm51bGwsXCJsblwiOlwiQmhhc2thclwiLFwidFwiOlwiNWZkODVmNTViN2JiNjA1ODllM2E5M2RkXCIsXCJmblwiOlwiVmlnbmVzaFwiLFwiZW1cIjpcImNiaGFza2FyYXZpZ25lc2gub2ZmaWNlQGdtYWlsLmNvbVwiLFwicGlkc1wiOltudWxsLFwianZzYiRka2JqXCIsXCJqdnNiJG1hdGl1XCJdLFwidXVpZFwiOlwiNWZkODVmOTdiN2JiNjA1ODllM2E5M2RmXCIsXCJ0YlwiOm51bGx9IiwiZXhwIjoxNjU4MDUwNjA2LCJ1dWlkIjoiNWZkODVmOTdiN2JiNjA1ODllM2E5M2RmIn0.or3xlRbqVM_NeBWskWjsBFl7ZRQx4lHzh6mvMTt4a4E'
             },
-            myOrganizationCategories: [],
+            myOrganizationContacts: [],
             myCategorieOrganizations: [],
             myOrgName: '',
-            mySelectedOrgDetail: {
+            mySelectedContactDetail: {
                 name: ''
             }, // getting one organization detail
 
@@ -364,27 +364,16 @@ export default {
             });
         },
 
-        // Get categories
-        getCategories() {
-            axios({
-                method: 'GET',
-                url: 'https://test.hotkup.com/crm/category/list/1/all',
-                headers: this.headers
-            }).then((res) => {
-                console.log('res', res);
-                this.myOrganizationCategories = res.data.data;
-            });
-        },
-
         loadTasksFromCategory(id, name) {
+            alert(id)
             this.clientFilter = id;
             this.categoryId = id;
             this.myOrgName = name;
-            this.getOrgDetails(id);
+            this.getContacts();
         },
 
         // Getting All organisation details
-        getOrgDetails(id) {
+        getOrgDetails() {
             axios({
                     method: 'GET',
                     url: `https://test.hotkup.com/crm/organizations/list/1/all`,
@@ -397,25 +386,35 @@ export default {
                 .error((res) => console.log(res));
         },
 
+        // Get Contacts
+        getContacts() {
+            axios({
+                method: 'GET',
+                url: 'https://test.hotkup.com/crm/contacts/list/1/all',
+                headers: this.headers
+            }).then((res) => {
+                console.log('res', res);
+                this.myOrganizationContacts = res.data.data;
+            });
+        },
+
         cardSetItem(index, item) {
             this.cardActive = index;
             axios({
                     method: 'GET',
-                    url: `https://test.hotkup.com/crm/organizations/get/${item.id}`,
+                    url: `https://test.hotkup.com/crm/contacts/get/${item.id}`,
                     headers: this.headers
                 })
                 .then((res) => {
-                    this.mySelectedOrgDetail = res.data;
-                    console.log('this.mySelectedOrgDetail', this.mySelectedOrgDetail);
+                    this.mySelectedContactDetail = res.data;
+                    console.log('this.mySelectedContactDetail', this.mySelectedContactDetail);
                 })
                 .error((res) => console.log(res));
         }
     },
     created: function () {},
     computed: {},
-    mounted: async function () {
-        this.getCategories(); // Fetching categories initaly
-    },
+    mounted: async function () {},
     unmounted: function () {},
     beforeUnmount() {
         bus.all.delete('connected-rsocket');
@@ -989,6 +988,7 @@ export default {
 .custom-scroll-bar:hover {
     overflow-y: auto !important;
 }
+
 #activeClient {
     background: #28181808;
 }
