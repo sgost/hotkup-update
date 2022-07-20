@@ -73,10 +73,10 @@
 export default {
     name: "Table",
     props: ['isRemindersTabInitialized', 'openAddReminderModal', 'loadPotentialMembersForReminders', 'reminderList', 'cancelReminderItem'],
-    data() {
+    data () {
         return {
 
-        }
+        };
     },
     methods: {
 

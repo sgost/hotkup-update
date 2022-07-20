@@ -341,13 +341,13 @@ export default {
     },
     methods: {
 
-        toggleSideMenu() {
+        toggleSideMenu () {
             document.querySelector("#appSideMenu").classList.toggle("isClosed");
             document.querySelector("#appSideMenuContent").classList.toggle("isClosed");
         },
 
         // Add categories
-        addCatrgories() {
+        addCatrgories () {
             const obj = {
                 id: "new",
                 tenantId: "61dfe560a4d68d08b821e08c",
@@ -364,8 +364,8 @@ export default {
             });
         },
 
-        loadTasksFromCategory(id, name) {
-            alert(id)
+        loadTasksFromCategory (id, name) {
+            alert(id);
             this.clientFilter = id;
             this.categoryId = id;
             this.myOrgName = name;
@@ -373,7 +373,7 @@ export default {
         },
 
         // Getting All organisation details
-        getOrgDetails() {
+        getOrgDetails () {
             axios({
                     method: 'GET',
                     url: `https://test.hotkup.com/crm/organizations/list/1/all`,
@@ -387,7 +387,7 @@ export default {
         },
 
         // Get Contacts
-        getContacts() {
+        getContacts () {
             axios({
                 method: 'GET',
                 url: 'https://test.hotkup.com/crm/contacts/list/1/all',
@@ -398,7 +398,7 @@ export default {
             });
         },
 
-        cardSetItem(index, item) {
+        cardSetItem (index, item) {
             this.cardActive = index;
             axios({
                     method: 'GET',
@@ -416,7 +416,7 @@ export default {
     computed: {},
     mounted: async function () {},
     unmounted: function () {},
-    beforeUnmount() {
+    beforeUnmount () {
         bus.all.delete('connected-rsocket');
     },
     watch: {

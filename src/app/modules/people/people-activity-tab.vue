@@ -95,113 +95,12 @@
                             <div v-show="isFileUploading" style="margin-left: 10px;"><img src="/resources/images/processing.gif" style="height: 15px;background: white;"></div>
                           </div>
                         </button>
-                        <!-- <button v-bind:disabled="isFileUploading" tabindex="111" id="sendEmailButton" v-on:click="sendEmailFromTemplate()" class="clickable-btn uk-button uk-button-danger uk-button-small uk-grid-margin uk-first-column end-call-button" style="background-color: #4caf50;border-radius: 3px;place-self: center;place-items: center;min-widthx: 125px;font-size: 0.65rem;line-height: 30px;font-weight: normal !important;color: white;">
-                          <div style="display: flex;justify-content: center;align-items: center;">
-                            <div>
-                              <span uk-icon="icon:comment;ratio:0.75" class="uk-icon"></span>
-                            </div>
-                            <div>&nbsp;&nbsp;&nbsp;Send Email</div>
-                            <div v-show="isFileUploading" style="margin-left: 10px;"><img src="/resources/images/processing.gif" style="height: 15px;background: white;"></div>
-                          </div>
-                        </button> -->
                         <button tabindex="11" id="discardButton" v-on:click="toggleCommentOptions(false, $event)" class="clickable-btn uk-button uk-button-danger uk-button-small uk-grid-margin uk-first-column end-call-button" data-v-2d9397b1="" style="background-color: rgb(234 234 234);border-radius: 3px;place-self: center;place-items: center;min-width: 125px;font-size: 0.65rem;line-height: 30px;font-weight: normal !important;margin-left: 10px;margin-top: 0px;color: #565656;"><div><div >Cancel</div></div></button>
                     </div>
                 </div>
             </form>
 
       </div>
-
-      <!--
-      <div id="post-comment-modal" class="uk-flex-top" uk-modal>
-          <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical" style="width: 60%;font-size: 0.65rem;padding: 35px;border-radius: 5px;">
-              <button class="uk-modal-close-default" type="button" uk-close></button>
-              <form  class="uk-grid-small uk-grid ui-form" uk-grid="" style=";padding-bottom: 50px;width: 100%;place-self: center" onsubmit="console.log('Submitted.');return false;">
-                      <div class="uk-width-1-1" style="margin-top: 0px;position:relative">
-                          <div>
-                            <label class="uk-form-label" for="form-stacked-text" v-on:click="focusOn()">Post a comment <span style="text-transform:none;display:nonex">mentionedPeople are {{mentionedPeopleIds}} and mentionSearchKeyword is {{mentionSearchKeyword}}</span> </label>
-                            <div tabindex="3" id="ce_editor" contenteditable="true" v-on:focus="yoyo()" v-on:keydown="mentionListener($event)" v-on:keyup="storeDescription($event)" class="uk-textarea" rows="3" placeholder="" style="width:100%;border-radius:3px;min-height:75px"></div>
-                            <div id="formattedContent" style="display:none"></div>
-                            <div> {{formattedComment}}</div>
-                          </div>
-                          <div style="display:flex;width:100%;position:absolute" id="mentionListDropdownContainer">
-                            <div class="mentionListDropdown hide_display custom-scroll-bar" v-on:click="handleMentionSelectionByMouseClick($event)">
-                              <div class="mentionListItem" v-for="user in availableAssignees" v-bind:data-user-id="user.id" v-bind:data-user-firstname="user.firstName">
-                                <div>{{user.firstName}} {{user.lastName}}</div>
-                              </div>
-                            </div>
-                          </div>
-                      </div>
-
-                      <div class="uk-width-1-1" style="display:none;margin-top: 5px;">
-                          Description : {{taskActivityComment.description}}
-                      </div>
-
-
-                      <div class="uk-width-1-1" style="margin-top: 5px;">
-                          <div class="attachments">
-
-                            <div style="padding: 0px 0px;display: flex;height: fit-content;column-gap: 15px;">
-
-                                  <span uk-tooltip="Upload Document.<br> Only .csv, .xls, .xlsx, .doc, .docx, .pdf files accepted." v-on:click="uploadFileType('other')" style="cursor:pointer;display: grid; place-self: center flex-start;">
-                                    <i class="fas fa-paperclip" style="padding: 0px;font-size: 18px;color: rgb(141, 124, 124);display: grid;place-self: center;"></i>
-                                  </span>
-                                  <span uk-tooltip="Upload Image" v-on:click="uploadFileType('image')" style="cursor:pointer;display: grid; place-self: flex-start;">
-                                    <i class="fas fa-image" style="padding: 0px;font-size: 22px;color: rgb(141, 124, 124);display: grid;place-self: center;"></i>
-                                  </span>
-                            </div>
-                            <div v-show="isFileChosen" style="overflow-x: hidden;display: flex;flex-direction: column;row-gap: 5px;margin-top: 5px;">
-                                <div v-for="selectedFile,index in chosenFiles" style="display:flex;column-gap:5px;">
-                                    <div style="overflow-x: hidden;" v-on:click="alterArrayObjectValue()">{{selectedFile.name}}</div>
-                                    <div v-show="selectedFile.isUploaded===null || selectedFile.isUploaded===false" uk-tooltip="Remove File" v-on:click="removeAttachedFileAtIndex(index)" style="place-self: center flex-start;">
-                                        <svg width="15" height="15" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" data-svg="close" style="  background: white;border-radius: 50%;padding: 2px;cursor:pointer" >
-                                            <path fill="none" stroke="red" stroke-width="1.06" d="M16,16 L4,4"></path>
-                                            <path fill="none" stroke="red" stroke-width="1.06" d="M16,4 L4,16"></path>
-                                        </svg>
-                                    </div>
-                                    <div v-show="selectedFile.isUploaded!==null && selectedFile.isUploaded" uk-tooltip="File uploaded" v-on:click="removeAttachedFileAtIndex(index)" style="place-self: center flex-start;">
-                                        <svg width="15" height="15" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" data-svg="check"><polyline fill="none" stroke="#47adf9" stroke-width="2" points="4,10 8,15 17,4"></polyline></svg>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div obsolete v-show="uploadActivityFile" style="position: absolute;bottom: 120px;right: 0px;left: 0px;height: 40px;z-index: 3;background: #4040408f;padding: 10px;border-bottom: 1px solid rgb(216, 216, 216);display: grid;grid-gap: 10px;place-content: center;">
-                                <div v-show="!isFileChosen" id="fileUploadContainer" data-text="Choose File"  class="file-upload-wrapper" style="position: relative;height: 30px;width: 200px;">
-                                    <input multiple name="file" type="file" v-bind:id=" uniqueComponentId + '_fileUploadForm'" value="" v-on:change="onFileChosenImpl($event);" class="activity-tab file-upload-field" style="height: 30px;">
-                                </div>
-                                <div v-show="isFileChosen" style="overflow-x: hidden;display: grid;place-items: center;grid-template-columns: 1fr 50px;">
-                                    <div v-for="selectedFile,index in chosenFiles">
-                                      <div style="overflow-x: hidden;width: 100%;">{{selectedFile.name}}</div>
-                                      <div v-on:click="removeAttachedFile(index)">
-                                          <span uk-icon="close" style="font-weight: bold;color: red;background: white;border-radius: 50%;padding: 5px;"></span>
-                                      </div>
-                                      <div >
-                                          <span uk-icon="check" style="font-weight: bold;color: white;background: green;border-radius: 50%;padding: 5px;"></span>
-                                      </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                          </div>
-                      </div>
-                      <div class="uk-width-1-1" style="border-top: 0px solid rgb(241, 241, 241);padding: 20px 0px 0px;margin: 0px 0px 0px 15px;display: flex;flex-direction: column;">
-
-                          <div style="display: flex;width:100%;place-self:center;">
-                              <button v-bind:disabled="isFileUploading" tabindex="111" id="commentButton" v-on:click="saveActivityComment()" class="clickable-btn uk-button uk-button-danger uk-button-small uk-grid-margin uk-first-column end-call-button" style="background-color: #4caf50;border-radius: 3px;place-self: center;place-items: center;min-widthx: 125px;font-size: 0.65rem;line-height: 30px;font-weight: normal !important;color: white;">
-                                <div style="display: flex;justify-content: center;align-items: center;">
-                                  <div>
-                                    <span uk-icon="icon:comment;ratio:0.75" class="uk-icon"></span>
-                                  </div>
-                                  <div>&nbsp;&nbsp;&nbsp;Post Comment</div>
-                                  <div v-show="isFileUploading" style="margin-left: 10px;"><img src="/resources/images/processing.gif" style="height: 15px;background: white;"></div>
-                                </div>
-                              </button>
-                              <button tabindex="11" id="discardButton" v-on:click="closePostCommentModal()" class="clickable-btn uk-button uk-button-danger uk-button-small uk-grid-margin uk-first-column end-call-button" data-v-2d9397b1="" style="background-color: rgb(234 234 234);border-radius: 3px;place-self: center;place-items: center;min-width: 125px;font-size: 0.65rem;line-height: 30px;font-weight: normal !important;margin-left: 10px;margin-top: 0px;color: #565656;"><div><div >Cancel</div></div></button>
-                          </div>
-                      </div>
-                  </form>
-          </div>
-      </div>
-      -->
 
       <div style="display:flex;justify-content:flex-end">
         <div v-on:click="showDetailEvents()" class="hotkup-toggle-btn">
@@ -213,7 +112,7 @@
       </div>
       <div class="first_column_scrollable custom-scroll-bar activities_list" style="border-top:0px solid gray;margin-top:10px;position:relative;flex-grow: 1;" v-on:clickXX="openContextMenu($event)" >
 
-          <template v-for="activity,idx in availableActivities">
+          <template v-for="(activity,idx) in availableActivities" :key="idx">
 
                 <div class="activity_box fade_reveal" >
                     <div style="border-right:1px dashed #cecece"></div>
@@ -245,7 +144,7 @@
                                   <div style="white-space: pre-wrap;word-break: break-word;" v-html="activity.comment"></div>
                               </div>
                               <div class="activity_detail hide_activity_detail" style="font-weight: normal;font-size: 0.75rem;color: rgb(179, 179, 179);margin-top: 15px;margin-bottom: 15px;" v-if="activity.hasAttachments!==null && activity.hasAttachments===true">
-                                  <div v-for="attachment in activity.formAttachments">
+                                  <div v-for="(attachment, index) in activity.formAttachments" :key="index">
                                       <div style="display: flex;column-gap: 5px;align-items: center;">
                                         <span uk-tooltip="Upload Document.<br> Only .csv, .xls, .xlsx, .doc, .docx, .pdf files accepted." data-v-6ad5a684="" style="cursor: pointer; display: grid; place-self: center flex-start;" title="" aria-expanded="false"><svg class="svg-inline--fa fa-paperclip fa-w-14" data-v-6ad5a684="" style="padding: 0px; font-size: 12px; color: rgb(141, 124, 124); display: grid; place-self: center;" aria-hidden="true" data-fa-processed="" data-prefix="fas" data-icon="paperclip" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M43.246 466.142c-58.43-60.289-57.341-157.511 1.386-217.581L254.392 34c44.316-45.332 116.351-45.336 160.671 0 43.89 44.894 43.943 117.329 0 162.276L232.214 383.128c-29.855 30.537-78.633 30.111-107.982-.998-28.275-29.97-27.368-77.473 1.452-106.953l143.743-146.835c6.182-6.314 16.312-6.422 22.626-.241l22.861 22.379c6.315 6.182 6.422 16.312.241 22.626L171.427 319.927c-4.932 5.045-5.236 13.428-.648 18.292 4.372 4.634 11.245 4.711 15.688.165l182.849-186.851c19.613-20.062 19.613-52.725-.011-72.798-19.189-19.627-49.957-19.637-69.154 0L90.39 293.295c-34.763 35.56-35.299 93.12-1.191 128.313 34.01 35.093 88.985 35.137 123.058.286l172.06-175.999c6.177-6.319 16.307-6.433 22.626-.256l22.877 22.364c6.319 6.177 6.434 16.307.256 22.626l-172.06 175.998c-59.576 60.938-155.943 60.216-214.77-.485z"></path></svg><!-- <i class="fas fa-paperclip" data-v-6ad5a684="" style="padding: 0px; font-size: 18px; color: rgb(141, 124, 124); display: grid; place-self: center;"></i> --></span>
                                         <span> <a v-on:click="downloadFile(attachment.name)">{{attachment.name}}</a></span>

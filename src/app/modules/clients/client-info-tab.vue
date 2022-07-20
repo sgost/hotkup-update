@@ -113,33 +113,33 @@ export default {
                 address: 'XYZ, street, 2/93, XYZ location',
                 city: 'XYZ city',
                 country: 'XYZ country',
-                pin: '325468',
+                pin: '325468'
             }
         };
     },
     methods: {
-        fetchData() {
-            console.log('item', this.item)
-            console.log(this.editClient)
+        fetchData () {
+            console.log('item', this.item);
+            console.log(this.editClient);
 
             // API calls here
-            this.getCategory()
+            this.getCategory();
         },
 
-        getCategory() {
+        getCategory () {
              axios({
                     method: 'GET',
-                    url: `https://test.hotkup.com/crm/category/get/${this.item.categoryId}`,
+                    url: `https://test.hotkup.com/crm/category/get/${this.item.categoryId}`
                 }).then((res) => {
-                  this.parentOrg = res.data.data.name
-                })
+                  this.parentOrg = res.data.data.name;
+                });
         },
-         getAllParent() {
+         getAllParent () {
              axios({
                     method: 'GET',
-                    url: `https://test.hotkup.com/crm/category/list/1/all`,
-                }).then((res) => this.AllparentOrg = res.data.data)
-        },
+                    url: `https://test.hotkup.com/crm/category/list/1/all`
+                }).then((res) => this.AllparentOrg = res.data.data);
+        }
     },
     created: function () {},
     computed: {},

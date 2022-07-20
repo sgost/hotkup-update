@@ -67,7 +67,7 @@
 <script>
 export default {
   name: "Table",
-  data() {
+  data () {
   return {
   name: "",
   email: "",
@@ -90,19 +90,19 @@ export default {
             address: 'XYZ, street, 2/93, XYZ location',
             city: 'XYZ city',
             country: 'XYZ country',
-            pin: '325468',
+            pin: '325468'
         }
-  }
+  };
   },
  methods: {
-    saveClient() {
-        console.log('name', this.name)
-        let addObj = editClient
-        this.addClient.push(addObj)
+    saveClient () {
+        console.log('name', this.name);
+        const addObj = editClient;
+        this.addClient.push(addObj);
 
-        console.log('addClient', this.addClient)
-        console.log('addObj', addObj)
-        console.log('editClient', this.editClient)
+        console.log('addClient', this.addClient);
+        console.log('addObj', addObj);
+        console.log('editClient', this.editClient);
     }
  }
 };

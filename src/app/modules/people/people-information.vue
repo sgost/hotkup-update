@@ -64,13 +64,13 @@
 export default {
     name: "Table",
     props: ['item'],
-    data() {
+    data () {
         return {
-            addClient: [],
-        }
+            addClient: []
+        };
     },
     methods: {
-        updateContact() {
+        updateContact () {
         }
     }
 };

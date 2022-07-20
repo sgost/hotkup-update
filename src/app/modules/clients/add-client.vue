@@ -58,7 +58,7 @@
 export default {
     name: "Table",
     props: ['categoryId', 'getOrgDetails'],
-    data() {
+    data () {
         return {
             name: "",
             email: "",
@@ -77,12 +77,12 @@ export default {
             addClient: [],
             headers: {
                 Authorization: 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkaXNwbGF5TmFtZSI6IlZpZ25lc2hCaGFza2FyIiwiaXNzIjoiYXV0aDAiLCJyZXFBdXRoVG9rZW4iOiJ7XCJ6elwiOm51bGwsXCJsblwiOlwiQmhhc2thclwiLFwidFwiOlwiNWZkODVmNTViN2JiNjA1ODllM2E5M2RkXCIsXCJmblwiOlwiVmlnbmVzaFwiLFwiZW1cIjpcImNiaGFza2FyYXZpZ25lc2gub2ZmaWNlQGdtYWlsLmNvbVwiLFwicGlkc1wiOltudWxsLFwianZzYiRka2JqXCIsXCJqdnNiJG1hdGl1XCJdLFwidXVpZFwiOlwiNWZkODVmOTdiN2JiNjA1ODllM2E5M2RmXCIsXCJ0YlwiOm51bGx9IiwiZXhwIjoxNjU4MDUwNjA2LCJ1dWlkIjoiNWZkODVmOTdiN2JiNjA1ODllM2E5M2RmIn0.or3xlRbqVM_NeBWskWjsBFl7ZRQx4lHzh6mvMTt4a4E'
-            },
-        }
+            }
+        };
     },
     methods: {
 
-        saveDis() {
+        saveDis () {
             let saveDisBtn;
             if (!this.name && !this.email && !this.phone && !this.website && !this.organisation && !this.provience && !this.address && !this.city && !this.country && !this.pin) {
                 saveDisBtn = false;
@@ -94,16 +94,16 @@ export default {
             return saveDisBtn;
         },
 
-           getAllParent() {
+           getAllParent () {
              axios({
                     method: 'GET',
-                    url: `https://test.hotkup.com/crm/category/list/1/all`,
-                }).then((res) => this.AllparentOrg = res.data.data)
+                    url: `https://test.hotkup.com/crm/category/list/1/all`
+                }).then((res) => this.AllparentOrg = res.data.data);
         },
         
 
         // Add All organisation details
-        saveClient() {
+        saveClient () {
             const newObj = {
                 id: 'new',
                 tenantId: '61dfe560a4d68d08b821e08c',
@@ -134,11 +134,11 @@ export default {
                         this.address = "",
                         this.city = "",
                         this.country = "",
-                        this.pin = ""
-                    alert(`${res.name} added successfully`)
+                        this.pin = "";
+                    alert(`${res.name} added successfully`);
                     this.getOrgDetails();
                 })
-                .error((res) => console.log(res))
+                .error((res) => console.log(res));
         }
     }
 };

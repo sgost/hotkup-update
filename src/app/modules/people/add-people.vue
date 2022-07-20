@@ -69,7 +69,7 @@
 <script>
 export default {
   name: "Table",
-  data() {
+  data () {
   return {
   firstName: "",
   lastName: "",
@@ -82,10 +82,10 @@ export default {
   provience: "",
   pin: "",
   addClient: []
-  }
+  };
   },
  methods: {
-    saveClient() {
+    saveClient () {
         // let addObj = {
         //     firstName: this.firstName,
         //     lastName: this.lastName,
@@ -101,7 +101,7 @@ export default {
         // }
         // this.addClient.push(addObj)
 
-        alert('people added')
+        alert('people added');
     }
  }
 };

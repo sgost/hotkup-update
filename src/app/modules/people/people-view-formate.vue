@@ -433,14 +433,14 @@ export default {
                 Authorization: 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkaXNwbGF5TmFtZSI6IlZpZ25lc2hCaGFza2FyIiwiaXNzIjoiYXV0aDAiLCJyZXFBdXRoVG9rZW4iOiJ7XCJ6elwiOm51bGwsXCJsblwiOlwiQmhhc2thclwiLFwidFwiOlwiNWZkODVmNTViN2JiNjA1ODllM2E5M2RkXCIsXCJmblwiOlwiVmlnbmVzaFwiLFwiZW1cIjpcImNiaGFza2FyYXZpZ25lc2gub2ZmaWNlQGdtYWlsLmNvbVwiLFwicGlkc1wiOltudWxsLFwianZzYiRka2JqXCIsXCJqdnNiJG1hdGl1XCJdLFwidXVpZFwiOlwiNWZkODVmOTdiN2JiNjA1ODllM2E5M2RmXCIsXCJ0YlwiOm51bGx9IiwiZXhwIjoxNjU4MDUwNjA2LCJ1dWlkIjoiNWZkODVmOTdiN2JiNjA1ODllM2E5M2RmIn0.or3xlRbqVM_NeBWskWjsBFl7ZRQx4lHzh6mvMTt4a4E'
             },
 
-            //People Organization
+            // People Organization
             myOrganizationDetail: {},
             getusersList: []
         };
     },
     methods: {
 
-        expandOrShrinkTaskInfoContainer() {
+        expandOrShrinkTaskInfoContainer () {
 
             if (this.isTaskInfoContainerExpanded) {
 
@@ -453,15 +453,15 @@ export default {
 
         },
 
-        openAddReminderModal() {
+        openAddReminderModal () {
             // Clear these fields before attaching a new form-template.
             this.reminderItem = {};
             UIkit.modal(document.querySelector('#' + this.uniqueComponentId + '_add_reminder_modal')).show();
         },
-        closeAddReminderModal() {
+        closeAddReminderModal () {
             UIkit.modal(document.querySelector('#' + this.uniqueComponentId + '_add_reminder_modal')).hide();
         },
-        loadCustomerHooks() {
+        loadCustomerHooks () {
             // Load customers from local-storage
             this.customers = []; // Reset this otherwise, for every task viewed, the dropdown gets populated resulting in unstable duplicates.
             console.log('Customers before localstorage ', this.customers);
@@ -492,7 +492,7 @@ export default {
 
             this.customersNames = selectedCustomers.map(cust => cust.name).join(', ');
         },
-        loadCustomerBranchesHooks() {
+        loadCustomerBranchesHooks () {
             // Load customers from local-storage
             this.customerBranches = []; // Reset this otherwise, for every task viewed, the dropdown gets populated resulting in unstable duplicates.
             console.log('Customer Branches before localstorage ', this.customerBranches);
@@ -523,7 +523,7 @@ export default {
 
             this.customerBranchesNames = selectedCustomerBranches.map(custBranch => custBranch.name).join(', ');
         },
-        loadCustomerContactsHooks() {
+        loadCustomerContactsHooks () {
             // Load customers from local-storage
             this.customerContacts = []; // Reset this otherwise, for every task viewed, the dropdown gets populated resulting in unstable duplicates.
             console.log('Customer Contacts before localstorage ', this.customerContacts);
@@ -550,7 +550,7 @@ export default {
                 document.getElementById('selectedHookCustomerContactsBadge').innerHTML = '(' + numberOfSelectedCustomerContacts + ' selected)';
             }
         },
-        searchHooksSubmenu() {
+        searchHooksSubmenu () {
             console.log('hooks submenu query for ' + this.hookSubmenuCurrentlySelected + ' is ' + this.hooksSubmenuSearchQuery);
 
             if (this.hookSubmenuCurrentlySelected === 'isSubmenuCustomersSelected') {
@@ -573,7 +573,7 @@ export default {
                 }
             }
         },
-        updateCustomerHook(customer) {
+        updateCustomerHook (customer) {
             const post_url = './tasks/update-customer-hook';
             const action = customer.isSelected ? 'ADD' : 'REMOVE';
 
@@ -685,7 +685,7 @@ export default {
                     return false;
                 });
         },
-        updateCustomerBranchHook(customerBranch) {
+        updateCustomerBranchHook (customerBranch) {
             const post_url = './tasks/update-customer-branch-hook';
             const action = customerBranch.isSelected ? 'ADD' : 'REMOVE';
 
@@ -819,22 +819,22 @@ export default {
                     return false;
                 });
         },
-        showTaskInfoContainerDiv() {
+        showTaskInfoContainerDiv () {
             this.showTaskInfoContainer = true;
             document.querySelector('body').addEventListener('click', this.handleBodyClickEvent, true);
         },
-        hideTaskInfoContainer() {
+        hideTaskInfoContainer () {
             this.showTaskInfoContainer = false;
             document.querySelector('body').removeEventListener('click', this.handleBodyClickEvent, true);
         },
-        handleBodyClickEvent(event) {
+        handleBodyClickEvent (event) {
             const foundTaskInfoContainer = event.target.closest('.task-info-container');
             if (foundTaskInfoContainer === null) {
                 // This means, if target on which the click happened is not within the context-menu div, so you can close the context-menu dropdown.
                 this.hideTaskInfoContainer();
             }
         },
-        onMenuClick(selectedSubmenuName, label) {
+        onMenuClick (selectedSubmenuName, label) {
             // Display the relevant submenu list
             this.hookSubmenuCurrentlySelected = selectedSubmenuName;
             document.getElementById('submenu_searchbox').setAttribute('placeholder', 'Search ' + label);
@@ -843,10 +843,10 @@ export default {
             // If focus is done without settimeout, then the submenu sliding doesn't animate as expected.
             setTimeout(() => document.getElementById('submenu_searchbox').focus(), 300);
         },
-        onSubmenuClick() {
+        onSubmenuClick () {
             document.getElementById('menu_slider').style.left = '0%';
         },
-        cancelChecklistItem(item) {
+        cancelChecklistItem (item) {
             // this.checklistLabel = 'Update Item';
             // this.checklistItem = item;
             // this.checklistItem.actionType = 'UPDATE';
@@ -923,7 +923,7 @@ export default {
                     return false;
                 });
         },
-        updateChecklistItemStatus(item, event) {
+        updateChecklistItemStatus (item, event) {
             const post_url = './tasks/save-checklist-item';
 
             const form = {
@@ -1004,7 +1004,7 @@ export default {
                     return false;
                 });
         },
-        saveChecklistItem() {
+        saveChecklistItem () {
             const post_url = './tasks/save-checklist-item';
 
             const form = {
@@ -1100,14 +1100,14 @@ export default {
         },
 
         // Reminders codes
-        updateReminderItem(item) {
+        updateReminderItem (item) {
             this.reminderLabel = 'Update Reminder';
             this.reminderItem = item;
             this.resetReminderPotentialMembers();
         },
 
         // This data will be used to filter both members and admins by merging with the result from 'get-associated-people/{workgroup-id}'
-        loadPotentialMembersForReminders() {
+        loadPotentialMembersForReminders () {
             try {
                 // VueJS ajax call-1
                 axios.get('https://test.hotkup.com/categories/get-potential-users')
@@ -1123,10 +1123,10 @@ export default {
             }
         },
         // Callbacks
-        handlePotentialReminderMembers(dataResponse) {
+        handlePotentialReminderMembers (dataResponse) {
             // Pass it to the availableAssignees prop to the dropdown.
             // console.log("Potential members to receive reminders relevant to the category: ", dataResponse);
-            alert(1)
+            alert(1);
             const mapFunction = (user) => {
                 return {
                     id: user.id,
@@ -1160,11 +1160,11 @@ export default {
             });
 
             this.availableMembers = potentialMembers;
-            console.log('potentialMembers', potentialMembers)
-            console.log('this.availableMembers', this.availableMembers)
+            console.log('potentialMembers', potentialMembers);
+            console.log('this.availableMembers', this.availableMembers);
             // console.log("this.availableMembers : " , this.availableMembers);
         },
-        resetReminderPotentialMembers() {
+        resetReminderPotentialMembers () {
             const mappedArrayOfUser = this.potentialMembersList;
 
             const potentialMembers = [];
@@ -1190,12 +1190,12 @@ export default {
             this.availableMembers = potentialMembers;
             // console.log("this.availableMembers : " , this.availableMembers);
         },
-        updateReminderReceiversEmitEvent(data) {
+        updateReminderReceiversEmitEvent (data) {
             // console.log("--data--" , data);
             const userIds = Array.from(data).map(item => item.id);
             this.reminderItem.userIds = userIds;
         },
-        updateReminderStatus(item) {
+        updateReminderStatus (item) {
             const post_url = './reminders/save';
 
             const form = {
@@ -1253,23 +1253,23 @@ export default {
                     return false;
                 });
         },
-        saveReminder() {
+        saveReminder () {
             const post_url = 'https://test.hotkup.com/crm/org-reminders/save';
 
             const isNew = this.reminderItem.id == 'New';
             const form = {
-                "id": 'New',
-                "tenantId": "5fd85f55b7bb60589e3a93dd",
-                "orgId": this.item.organizationId,
-                "title": this.reminderItem.title,
-                "type": "email",
-                "assigneeId": "5fd85f97b7bb60589e3a93df#Vignesh Bhaskar",
-                "clientTimeZone": "Asia/Calcutta",
-                "reminderTime": this.reminderItem.dateTime
-            }
+                id: isNew,
+                tenantId: "5fd85f55b7bb60589e3a93dd",
+                orgId: this.item.organizationId,
+                title: this.reminderItem.title,
+                type: "email",
+                userIds: this.reminderItem.userIds,
+                clientTimeZone: "Asia/Calcutta",
+                reminderTime: this.reminderItem.dateTime
+            };
 
             if (this.reminderItem.dateTime) {
-                form.dateTime = new Date(this.reminderItem.dateTime).toISOString();
+                form.reminderTime = new Date(this.reminderItem.dateTime).toISOString();
             }
 
             // console.log(form);
@@ -1279,7 +1279,6 @@ export default {
             axios({
                     method: 'POST',
                     url: post_url,
-                    headers: this.headers,
                     data: form
                 }).then((dataResponse) => {
                     // console.log("Reminder save Result : ");
@@ -1332,7 +1331,7 @@ export default {
                     return false;
                 });
         },
-        cancelReminderItem(item) {
+        cancelReminderItem (item) {
             // this.reminderItem = item;
 
             const post_url = 'https://test.hotkup.com/crm/organizations/save';
@@ -1391,7 +1390,7 @@ export default {
                     return false;
                 });
         },
-        loadReminders() {
+        loadReminders () {
 
             // Attempting to use Comlink Worker
             const get_url = './reminders/list/' + this.taskObject.id; // Fetch all reminders
@@ -1441,7 +1440,7 @@ export default {
                 });
             };
 
-            async function sendTaskToWorker() {
+            async function sendTaskToWorker () {
                 // const remoteFunction = Comlink.wrap(new Worker("resources/js/comlink-worker.js"));
                 console.log("Loading reminders using comlink-worker");
                 await ComlinkWorker.fetch(process.env.VUE_APP_API_URL + get_url,
@@ -1453,7 +1452,7 @@ export default {
             return false;
         },
         // Callbacks of loadPotentialMembersForReminders function.
-        handleUnpaginatedListData(listKey, data) {
+        handleUnpaginatedListData (listKey, data) {
             if (listKey === 'reminders') {
                 this.handleFetchedReminders(data);
             } else if (listKey === 'timelogs') {
@@ -1462,10 +1461,10 @@ export default {
                 this.handleFetchedTaskTransitions(data);
             }
         },
-        handleUnpaginatedListDataError(error) {
+        handleUnpaginatedListDataError (error) {
             console.error('Unpaginated List data fetch error : ', error);
         },
-        displayTab(e, tabKey) {
+        displayTab (e, tabKey) {
 
             // e.preventDefault();
             this.selectedTabKey = tabKey;
@@ -1501,18 +1500,18 @@ export default {
             }
         },
 
-        //Get Organization details
-        getOrgDetails() {
+        // Get Organization details
+        getOrgDetails () {
             axios({
                     method: 'GET',
-                    url: `https://test.hotkup.com/crm/organizations/get/${this.item.organizationId}`,
+                    url: `https://test.hotkup.com/crm/organizations/get/${this.item.organizationId}`
                 })
                 .then((res) => {
                     this.myOrganizationDetail = res.data;
                 })
                 .error((res) => console.log(res));
         },
-        getRecord() {
+        getRecord () {
 
             // Attempting fetch using comlink;
 
@@ -1678,7 +1677,7 @@ export default {
                 });
             };
 
-            async function sendTaskToWorker() {
+            async function sendTaskToWorker () {
                 // const remoteFunction = Comlink.wrap(new Worker("resources/js/comlink-worker.js"));
                 await ComlinkWorker.fetch(process.env.VUE_APP_API_URL + get_url,
                     Comlink.proxy(callbackFunction),
@@ -1699,7 +1698,7 @@ export default {
                     return false;
                 });
         },
-        openContextMenu(msgId, evt) {
+        openContextMenu (msgId, evt) {
             document.getElementById('ctx_menu_' + msgId).style.top = '30px';
 
             if (!document.getElementById('ctx_menu_' + msgId).classList.contains('opened')) {
@@ -1717,7 +1716,7 @@ export default {
 
             // document.getElementById("ctx-menu-trigger-" + msgId).style.opacity=1;
         },
-        hideContextMenu() {
+        hideContextMenu () {
             document.querySelectorAll('.context-menu').forEach((item) => {
                 // item.style.display="none";
                 item.style.transform = null;
@@ -1728,14 +1727,14 @@ export default {
             document.querySelector('body').removeEventListener('click', this.handleClickEventOnBody, false);
             document.getElementById('menu_slider').style.left = '0%';
         },
-        handleClickEventOnBody(event) {
+        handleClickEventOnBody (event) {
             const foundParent = event.target.closest('.context-menu');
             if (foundParent === null) {
                 // This means, if target on which the click happened is not within the context-menu div, so you can close the context-menu dropdown.
                 this.hideContextMenu();
             }
         },
-        onCustomerSelect(customerId) {
+        onCustomerSelect (customerId) {
             // alert("Customer " + customerId + " is selected.");
 
             this.customers.forEach(customer => {
@@ -1745,7 +1744,7 @@ export default {
                 }
             });
         },
-        onCustomerBranchSelect(customerBranchId) {
+        onCustomerBranchSelect (customerBranchId) {
             // alert("Customer " + customerId + " is selected.");
 
             this.customerBranches.forEach(customerBranch => {
@@ -1857,10 +1856,10 @@ export default {
         //     this.taskObject = newTask;
         //     //this.getRecord();
         // },
-        'loggedInUser.userId'(newVal, oldVal) {
+        'loggedInUser.userId' (newVal, oldVal) {
             console.log(this.loggedInUser.userId);
         },
-        'taskIdToBeViewed'(newVal, oldVal) {
+        'taskIdToBeViewed' (newVal, oldVal) {
             this.viewSubTask = false;
             this.showNewSubTaskForm = false;
             this.parentTaskName = null;
@@ -1872,14 +1871,14 @@ export default {
             }
             return false;
         },
-        'tabToDisplay'(newVal, oldVal) {
+        'tabToDisplay' (newVal, oldVal) {
 
             if (this.tabToDisplay !== null && this.tabToDisplay !== undefined) {
                 this.displayTab(null, this.tabToDisplay);
             }
 
         },
-        '$route.params.taskId'(newTaskId, oldTaskId) {
+        '$route.params.taskId' (newTaskId, oldTaskId) {
             console.log('Task ID changed from ' + oldTaskId + ' to ' + newTaskId);
 
             if (newTaskId !== 'none') {
@@ -1902,7 +1901,7 @@ export default {
                 this.getRecord();
             }
         },
-        '$route.params.subtaskId'(newSubTaskId, oldSubTaskId) {
+        '$route.params.subtaskId' (newSubTaskId, oldSubTaskId) {
             console.log('SubTask ID changed from ' + oldSubTaskId + ' to ' + newSubTaskId + ' in the task-view-ms.vue component.');
 
             if (newSubTaskId !== 'none') {

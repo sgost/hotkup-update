@@ -83,7 +83,7 @@
 export default {
     name: "Table",
     props: ['organizationId', 'categoryId'],
-    data() {
+    data () {
         return {
             firstName: "",
             lastName: "",
@@ -107,7 +107,7 @@ export default {
         };
     },
     methods: {
-        saveDis() {
+        saveDis () {
             let saveDisBtn;
             if (!this.firstName && !this.lastName && !this.email && !this.mobile && !this.extension && !this.provience && !this.street && !this.city && !this.country) {
                 saveDisBtn = false;
@@ -120,7 +120,7 @@ export default {
         },
 
         // Add contact to the Organization
-        addContact() {
+        addContact () {
             // alert(this.categoryId);
             const newObj = {
                 id: 'new',
@@ -151,7 +151,7 @@ export default {
         },
 
         // fetch contactDetails
-        getOrgContacts() {
+        getOrgContacts () {
             axios({
                     method: 'GET',
                     url: 'https://test.hotkup.com/crm/contacts/list/1/all',

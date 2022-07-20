@@ -40,7 +40,7 @@
 export default {
     name: "Table",
     props: ['item', 'myOrganizationDetail'],
-    data() {
+    data () {
         return {
             myOrganizationDetailAll: [],
             orgData: {
@@ -50,20 +50,20 @@ export default {
                 telephone: "258141",
                 address: "946 Allison Avenue. City: Newport News. State/province/area: Virginia. Phone number 757-597-8866. Zip code 23601."
             }
-        }
+        };
     },
     methods: {
-        getOrgAllDetails() {
+        getOrgAllDetails () {
             axios({
                     method: 'GET',
-                    url: `https://test.hotkup.com/crm/organizations/list/1/all`,
+                    url: `https://test.hotkup.com/crm/organizations/list/1/all`
                 })
                 .then((res) => {
                     this.myOrganizationDetailAll = res.data.data;
                 })
                 .error((res) => console.log(res));
-        },
-    },
+        }
+    }
 };
 </script>
 
