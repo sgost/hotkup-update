@@ -47,7 +47,7 @@
                 <div style="display:flex;width: 100%;position:relative">
                     <div style="flex-grow: 1;display: flex;gap: 5px;flex-direction: column;justify-content: center;">
                         <div style="color: rgb(129, 129, 129);font-weight: bold;font-size: 0.50rem;border-radius: 2px;letter-spacing: 1px;display: flex;align-items: center;">
-                            <div style="color: rgb(127, 126, 126);color:rgb(126 126 126);font-weight: normal;font-size: 0.5rem;text-transform: uppercase;letter-spacing: 1px;padding: 0px 0px;font-size: 0.75rem;text-transform: capitalize;font-weight: bold;color: #258bfe;color:rgb(112 112 112);letter-spacing: 1px;">Client Id # 14321 </div>
+                            <div style="color: rgb(127, 126, 126);color:rgb(126 126 126);font-weight: normal;font-size: 0.5rem;text-transform: uppercase;letter-spacing: 1px;padding: 0px 0px;font-size: 0.75rem;text-transform: capitalize;font-weight: bold;color: #258bfe;color:rgb(112 112 112);letter-spacing: 1px;">Contact Id # 14321 </div>
                             <div style="padding-left:10px;">
                                 <div v-if="taskObject.priority!==null && taskObject.dueDateTimeFormatted !==null && taskObject.dueDateTimeFormatted !== undefined && taskObject.priority === 'Critical'" class="task-created-date critical" style="align-items: center;display: flex;overflow: hidden;text-transform: none;white-space: pre;border: 0px solid rgb(239, 239, 239);padding: 2px 10px;border-radius: 20px;background-color: rgba(233, 30, 99, 0.4);color: white;column-gap: 5px;" v-bind:title="taskObject.priority + ' priority, with Due Date - ' + taskObject.dueDateTimeFormatted">
                                     <div>
@@ -597,46 +597,6 @@ export default {
 
                         const action = form.action === 'ADD' ? ' added ' : 'removed';
 
-                        /*
-                                    Revisit this code-block later (Commented on March 15, 2021)
-
-                                    if(form.action==="ADD"){
-                                        customer["isSelected"] = true;
-                                        this.currentlySelectedSubtaskForDependencyUpdate["dependencyTaskIds"].push(form.customerId);
-                                    }
-                                    else if(form.action==="REMOVE"){
-
-                                        customer["isSelected"] = false;
-
-                                        this.currentlySelectedSubtaskForDependencyUpdate["dependencyTaskIds"]
-                                            .forEach((dependencyTaskId, index) => {
-                                                if(dependencyTaskId === form.dependencyTaskId)
-                                                {
-                                                    this.currentlySelectedSubtaskForDependencyUpdate["dependencyTaskIds"].splice(index,1);
-                                                }
-                                        });
-                                    }
-
-                                    //Update the labels in the gridrow based on the latest values.
-                                    if(this.currentlySelectedSubtaskForDependencyUpdate.dependencyTaskIds===null)
-                                    {
-                                        this.currentlySelectedSubtaskForDependencyUpdate.dependencyTaskIds=[];
-                                    }
-
-                                    if(this.currentlySelectedSubtaskForDependencyUpdate.dependencyTaskIds!==null)
-                                    {
-                                        let dependencyTasksLabelArray = [];
-                                        let dependencyTasksLabel = "none";
-                                        this.currentlySelectedSubtaskForDependencyUpdate.dependencyTaskIds.forEach((dTaskId) => {
-                                          dependencyTasksLabelArray.push("#" + dTaskId.split("#")[1]);
-                                        });
-
-                                        dependencyTasksLabel = dependencyTasksLabelArray.length>0 ? dependencyTasksLabelArray.join(", ") : "none";
-                                        this.currentlySelectedSubtaskForDependencyUpdate["dependencyTasksLabel"] = dependencyTasksLabel;
-                                    }
-
-                                    */
-
                         UIkit.notification(`<div class="taskone-notification">
                                                 <span uk-icon="icon: check;ratio:1"></span>
                                                 <div>Customer Hook was ${action}.</div>
@@ -884,87 +844,6 @@ export default {
                                         item.updatedOnAgo = dayjs(item.updatedOn + "Z").fromNow();
                                         console.log('checklist-item.updatedOn = ', item.updatedOn);
                                     }
-                                }
-                            });
-                        }
-
-                        UIkit.notification(`<div class="taskone-notification">
-                                                <span uk-icon="icon: check;ratio:1"></span>
-                                                <div> ${notificationLabel} </div>
-                                            </div>`, {
-                            status: 'success',
-                            pos: 'bottom-left',
-                            timeout: 5000
-                        });
-
-                        // this.$emit("refreshList",{});
-                    } else {
-                        const errorMsg = (dataResponse.data).message;
-                        UIkit.notification("<span uk-icon='icon: warning;ratio:1'></span>" + errorMsg, {
-                            status: 'danger',
-                            pos: 'bottom-left',
-                            timeout: 5000
-                        });
-                        return false;
-                    }
-                })
-                .catch(function (errorResponse) {
-                    console.log('ERROR MS - ', errorResponse);
-                    const exceptionMsg = errorResponse.response.data.exception;
-
-                    UIkit.notification("<span uk-icon='icon: warning ;ratio:1'></span> " + exceptionMsg + '.', {
-                        status: 'danger',
-                        pos: 'bottom-left',
-                        timeout: 5000
-                    });
-
-                    document.getElementById('saveButton').innerHTML = btnText;
-                    this.enableHTMLElement(document.getElementById('saveButton'));
-                    return false;
-                });
-        },
-        updateChecklistItemStatus (item, event) {
-            const post_url = './tasks/save-checklist-item';
-
-            const form = {
-                taskId: this.taskId,
-                actionType: 'UPDATE_STATUS',
-                activityName: item.activityName,
-                status: (item.status !== 'COMPLETED') ? 'COMPLETED' : 'PENDING'
-            };
-
-            // VueJS ajax call-1
-            axios.post(process.env.VUE_APP_API_URL + post_url, form)
-                .then((dataResponse) => {
-                    // console.log("Task Save Result : ");
-                    console.log("Checklist Item update : ", dataResponse);
-
-                    if (dataResponse.data.actionResult === 1) {
-                        item.status = form.status;
-                        this.displayTab(null, this.selectedTabKey);
-                        return false;
-                        const notificationLabel = 'Checklist item updated.';
-
-                        if (dataResponse.data.bean.first !== null) {
-                            const updatedItem = dataResponse.data.bean.first;
-
-                            this.taskObject.checklist.forEach(item => {
-                                if (item.activityName === updatedItem.label) {
-                                    item.status = updatedItem.status;
-                                    item.updatedBy = updatedItem.updatedBy;
-                                    if (item.updatedOn !== null) {
-                                        // item.updatedOn = this.convertUTCDateFromServerToLocalDate(item.updatedOn);
-                                        item.updatedOnFormatted = dayjs(item.updatedOn + "Z").format('DD/MM/YYYY HH:mm');
-                                        item.updatedOnAgo = dayjs(item.updatedOn + "Z").fromNow();
-                                        console.log('checklist-item.updatedOn = ', item.updatedOn);
-                                    }
-
-                                    setTimeout(() => {
-                                        event.target.parentElement
-                                            .querySelector(".scaleZero")
-                                            .classList.remove("scaleZero");
-                                    }, 100);
-
                                 }
                             });
                         }
@@ -1262,7 +1141,7 @@ export default {
                 tenantId: "5fd85f55b7bb60589e3a93dd",
                 orgId: this.item.organizationId,
                 title: this.reminderItem.title,
-                type: "email",
+                type: this.reminderItem.type,
                 userIds: this.reminderItem.userIds,
                 clientTimeZone: "Asia/Calcutta",
                 reminderTime: this.reminderItem.dateTime

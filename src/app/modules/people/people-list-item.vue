@@ -38,8 +38,8 @@
           <div style="display: flex;column-gap: 2px;">
               <div class="task-created-date" style="display:none;overflow: hidden;max-width: 50%;text-transform: uppercase;white-space: pre;border: 1px solid rgb(239, 239, 239);padding: 2px 10px;border-radius: 20px;" title="Status" >ssss</div>
 
-              <div class="task-created-date critical" style="display:flex;overflow: hidden;text-transform: none;white-space: pre;border: 1px solid rgb(223, 223, 223);border-radius: 20px;background-color: white;color: gray; padding: 0 6px; font-size: 10px">
-              AUG 27</div>
+              <!-- <div class="task-created-date critical" style="display:flex;overflow: hidden;text-transform: none;white-space: pre;border: 1px solid rgb(223, 223, 223);border-radius: 20px;background-color: white;color: gray; padding: 0 6px; font-size: 10px">
+              AUG 27</div> -->
           </div>
         </div>
       </div>

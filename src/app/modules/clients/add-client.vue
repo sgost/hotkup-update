@@ -5,46 +5,46 @@
         <input class="form_inputs" placeholder="Name" v-model="name" />
     </div>
     <div class="form-main">
-        <label class="form_label">Email</label>
+        <label class="form_label" v-bind:style="{'color': disColor}">Email</label>
         <input class="form_inputs" placeholder="user@gmail.com" v-model="email" />
     </div>
 
     <div class="form-main">
-        <label class="form_label">Phone</label>
+        <label class="form_label" v-bind:style="{'color': disColor}">Phone</label>
         <input class="form_inputs" placeholder="Phone" v-model="phone" />
     </div>
 
     <div class="form-main">
-        <label class="form_label">Website</label>
+        <label class="form_label" v-bind:style="{'color': disColor}">Website</label>
         <input class="form_inputs" placeholder="www.user.com" v-model="website" />
     </div>
 
     <div class="form-main">
         <label class="form_label">Parent
             Organization</label>
-        <select class="form_inputs" placeholder="Parent Organization" v-model="organisation" v-on:click="getAllParent()">
-            <option v-for="(data, i) in AllparentOrg" :key="i" v-bind:value="data.name" v-show="data.name == parentOrg">{{data.name}}</option>
+        <select class="form_inputs" placeholder="Parent Organization" v-model="organisation">
+           <option v-for="(category, index) in  myOrganizationCategories" :key="index" v-bind:value="category.id">{{category.name}}</option>
         </select>
     </div>
 
     <div class="form-main">
-        <label class="form_label">Provience</label>
+        <label class="form_label" v-bind:style="{'color': disColor}">Provience</label>
         <input class="form_inputs" placeholder="Provience" v-model="provience" />
     </div>
     <div class="form-main">
-        <label class="form_label">Address</label>
+        <label class="form_label" v-bind:style="{'color': disColor}">Address</label>
         <input class="form_inputs" placeholder="Address" v-model="address" />
     </div>
     <div class="form-main">
-        <label class="form_label">City</label>
+        <label class="form_label" v-bind:style="{'color': disColor}">City</label>
         <input class="form_inputs" placeholder="City" v-model="city" />
     </div>
     <div class="form-main">
-        <label class="form_label">Country</label>
+        <label class="form_label" v-bind:style="{'color': disColor}">Country</label>
         <input class="form_inputs" placeholder="Country" v-model="country" />
     </div>
     <div class="form-main">
-        <label class="form_label">Pin</label>
+        <label class="form_label" v-bind:style="{'color': disColor}">Pin</label>
         <input class="form_inputs" placeholder="Pin" v-model="pin" />
     </div>
     <div id="save_can_btns">
@@ -57,7 +57,7 @@
 <script>
 export default {
     name: "Table",
-    props: ['categoryId', 'getOrgDetails'],
+    props: ['categoryId', 'getOrgDetails', 'myOrganizationCategories'],
     data () {
         return {
             name: "",
@@ -93,21 +93,16 @@ export default {
             }
             return saveDisBtn;
         },
-
-           getAllParent () {
-             axios({
-                    method: 'GET',
-                    url: `https://test.hotkup.com/crm/category/list/1/all`
-                }).then((res) => this.AllparentOrg = res.data.data);
-        },
         
 
         // Add All organisation details
         saveClient () {
+
+            alert(this.organisation)
             const newObj = {
                 id: 'new',
                 tenantId: '61dfe560a4d68d08b821e08c',
-                categoryId: this.categoryId,
+                categoryId: this.organisation ,
                 name: this.name,
                 address: {
                     street: this.address,
@@ -135,7 +130,7 @@ export default {
                         this.city = "",
                         this.country = "",
                         this.pin = "";
-                    alert(`${res.name} added successfully`);
+                    alert(`${res.data.data.name} added successfully`);
                     this.getOrgDetails();
                 })
                 .error((res) => console.log(res));

@@ -1,6 +1,6 @@
 <template>
 <div style="display: flex;flex-direction: column;flex-grow: 1;max-width: 100%;box-sizing: border-box;">
-
+{{availableActivities}}
     <div style="padding: 5px 0px;margin-right: 20px;margin-bottom: 0px;display: grid;display:none;grid-template-rows: 1fr;place-items: flex-end;border-bottom: 0px solid rgb(208, 208, 208);">
         <button v-on:click="openPostCommentModal()" class="clickable-btn uk-button uk-button-danger uk-button-small uk-grid-margin uk-first-column end-call-button" style="background-color:#2196f3;border-radius: 3px;min-width: 100px;font-size: 0.65rem;line-height: 30px;font-weight: normal !important;display: inline-block;">
             <span uk-icon="icon:plus;ratio:0.65" class="uk-icon" style="">
@@ -85,24 +85,15 @@
             <div v-if="showCommentOptions" class="uk-width-1-1" style="border-top: 0px solid rgb(241, 241, 241);padding: 20px 0px 0px;margin: 0px 0px 0px 15px;display: flex;flex-direction: column;">
 
                 <div style="display: flex;width:100%;place-self:center;">
-                    <button v-bind:disabled="isFileUploading" tabindex="111" id="commentButton" v-on:click="saveActivityComment(null, null, $event)" class="clickable-btn uk-button uk-button-danger uk-button-small uk-grid-margin uk-first-column end-call-button" style="background-color: #4caf50;border-radius: 3px;place-self: center;place-items: center;min-widthx: 125px;font-size: 0.65rem;line-height: 30px;font-weight: normal !important;color: white;">
+                    <button v-bind:disabled="isFileUploading" tabindex="111" id="commentButton" v-on:click="loadTaskActivities()" class="clickable-btn uk-button uk-button-danger uk-button-small uk-grid-margin uk-first-column end-call-button" style="background-color: #4caf50;border-radius: 3px;place-self: center;place-items: center;min-widthx: 125px;font-size: 0.65rem;line-height: 30px;font-weight: normal !important;color: white;">
                         <div style="display: flex;justify-content: center;align-items: center;">
                             <div>
                                 <span uk-icon="icon:comment;ratio:0.75" class="uk-icon"></span>
                             </div>
-                            <div>&nbsp;&nbsp;&nbsp;Post Comment</div>
+                            <div>&nbsp;&nbsp;&nbsp;Post Comments</div>
                             <div v-show="isFileUploading" style="margin-left: 10px;"><img src="/resources/images/processing.gif" style="height: 15px;background: white;"></div>
                         </div>
                     </button>
-                    <!-- <button v-bind:disabled="isFileUploading" tabindex="111" id="sendEmailButton" v-on:click="sendEmailFromTemplate()" class="clickable-btn uk-button uk-button-danger uk-button-small uk-grid-margin uk-first-column end-call-button" style="background-color: #4caf50;border-radius: 3px;place-self: center;place-items: center;min-widthx: 125px;font-size: 0.65rem;line-height: 30px;font-weight: normal !important;color: white;">
-                          <div style="display: flex;justify-content: center;align-items: center;">
-                            <div>
-                              <span uk-icon="icon:comment;ratio:0.75" class="uk-icon"></span>
-                            </div>
-                            <div>&nbsp;&nbsp;&nbsp;Send Email</div>
-                            <div v-show="isFileUploading" style="margin-left: 10px;"><img src="/resources/images/processing.gif" style="height: 15px;background: white;"></div>
-                          </div>
-                        </button> -->
                     <button tabindex="11" id="discardButton" v-on:click="toggleCommentOptions(false, $event)" class="clickable-btn uk-button uk-button-danger uk-button-small uk-grid-margin uk-first-column end-call-button" data-v-2d9397b1="" style="background-color: rgb(234 234 234);border-radius: 3px;place-self: center;place-items: center;min-width: 125px;font-size: 0.65rem;line-height: 30px;font-weight: normal !important;margin-left: 10px;margin-top: 0px;color: #565656;">
                         <div>
                             <div>Cancel</div>
@@ -114,97 +105,6 @@
 
     </div>
 
-    <!--
-      <div id="post-comment-modal" class="uk-flex-top" uk-modal>
-          <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical" style="width: 60%;font-size: 0.65rem;padding: 35px;border-radius: 5px;">
-              <button class="uk-modal-close-default" type="button" uk-close></button>
-              <form  class="uk-grid-small uk-grid ui-form" uk-grid="" style=";padding-bottom: 50px;width: 100%;place-self: center" onsubmit="console.log('Submitted.');return false;">
-                      <div class="uk-width-1-1" style="margin-top: 0px;position:relative">
-                          <div>
-                            <label class="uk-form-label" for="form-stacked-text" v-on:click="focusOn()">Post a comment <span style="text-transform:none;display:nonex">mentionedPeople are {{mentionedPeopleIds}} and mentionSearchKeyword is {{mentionSearchKeyword}}</span> </label>
-                            <div tabindex="3" id="ce_editor" contenteditable="true" v-on:focus="yoyo()" v-on:keydown="mentionListener($event)" v-on:keyup="storeDescription($event)" class="uk-textarea" rows="3" placeholder="" style="width:100%;border-radius:3px;min-height:75px"></div>
-                            <div id="formattedContent" style="display:none"></div>
-                            <div> {{formattedComment}}</div>
-                          </div>
-                          <div style="display:flex;width:100%;position:absolute" id="mentionListDropdownContainer">
-                            <div class="mentionListDropdown hide_display custom-scroll-bar" v-on:click="handleMentionSelectionByMouseClick($event)">
-                              <div class="mentionListItem" v-for="user in availableAssignees" v-bind:data-user-id="user.id" v-bind:data-user-firstname="user.firstName">
-                                <div>{{user.firstName}} {{user.lastName}}</div>
-                              </div>
-                            </div>
-                          </div>
-                      </div>
-
-                      <div class="uk-width-1-1" style="display:none;margin-top: 5px;">
-                          Description : {{taskActivityComment.description}}
-                      </div>
-
-                      <div class="uk-width-1-1" style="margin-top: 5px;">
-                          <div class="attachments">
-
-                            <div style="padding: 0px 0px;display: flex;height: fit-content;column-gap: 15px;">
-
-                                  <span uk-tooltip="Upload Document.<br> Only .csv, .xls, .xlsx, .doc, .docx, .pdf files accepted." v-on:click="uploadFileType('other')" style="cursor:pointer;display: grid; place-self: center flex-start;">
-                                    <i class="fas fa-paperclip" style="padding: 0px;font-size: 18px;color: rgb(141, 124, 124);display: grid;place-self: center;"></i>
-                                  </span>
-                                  <span uk-tooltip="Upload Image" v-on:click="uploadFileType('image')" style="cursor:pointer;display: grid; place-self: flex-start;">
-                                    <i class="fas fa-image" style="padding: 0px;font-size: 22px;color: rgb(141, 124, 124);display: grid;place-self: center;"></i>
-                                  </span>
-                            </div>
-                            <div v-show="isFileChosen" style="overflow-x: hidden;display: flex;flex-direction: column;row-gap: 5px;margin-top: 5px;">
-                                <div v-for="selectedFile,index in chosenFiles" style="display:flex;column-gap:5px;">
-                                    <div style="overflow-x: hidden;" v-on:click="alterArrayObjectValue()">{{selectedFile.name}}</div>
-                                    <div v-show="selectedFile.isUploaded===null || selectedFile.isUploaded===false" uk-tooltip="Remove File" v-on:click="removeAttachedFileAtIndex(index)" style="place-self: center flex-start;">
-                                        <svg width="15" height="15" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" data-svg="close" style="  background: white;border-radius: 50%;padding: 2px;cursor:pointer" >
-                                            <path fill="none" stroke="red" stroke-width="1.06" d="M16,16 L4,4"></path>
-                                            <path fill="none" stroke="red" stroke-width="1.06" d="M16,4 L4,16"></path>
-                                        </svg>
-                                    </div>
-                                    <div v-show="selectedFile.isUploaded!==null && selectedFile.isUploaded" uk-tooltip="File uploaded" v-on:click="removeAttachedFileAtIndex(index)" style="place-self: center flex-start;">
-                                        <svg width="15" height="15" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" data-svg="check"><polyline fill="none" stroke="#47adf9" stroke-width="2" points="4,10 8,15 17,4"></polyline></svg>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div obsolete v-show="uploadActivityFile" style="position: absolute;bottom: 120px;right: 0px;left: 0px;height: 40px;z-index: 3;background: #4040408f;padding: 10px;border-bottom: 1px solid rgb(216, 216, 216);display: grid;grid-gap: 10px;place-content: center;">
-                                <div v-show="!isFileChosen" id="fileUploadContainer" data-text="Choose File"  class="file-upload-wrapper" style="position: relative;height: 30px;width: 200px;">
-                                    <input multiple name="file" type="file" v-bind:id=" uniqueComponentId + '_fileUploadForm'" value="" v-on:change="onFileChosenImpl($event);" class="activity-tab file-upload-field" style="height: 30px;">
-                                </div>
-                                <div v-show="isFileChosen" style="overflow-x: hidden;display: grid;place-items: center;grid-template-columns: 1fr 50px;">
-                                    <div v-for="selectedFile,index in chosenFiles">
-                                      <div style="overflow-x: hidden;width: 100%;">{{selectedFile.name}}</div>
-                                      <div v-on:click="removeAttachedFile(index)">
-                                          <span uk-icon="close" style="font-weight: bold;color: red;background: white;border-radius: 50%;padding: 5px;"></span>
-                                      </div>
-                                      <div >
-                                          <span uk-icon="check" style="font-weight: bold;color: white;background: green;border-radius: 50%;padding: 5px;"></span>
-                                      </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                          </div>
-                      </div>
-                      <div class="uk-width-1-1" style="border-top: 0px solid rgb(241, 241, 241);padding: 20px 0px 0px;margin: 0px 0px 0px 15px;display: flex;flex-direction: column;">
-
-                          <div style="display: flex;width:100%;place-self:center;">
-                              <button v-bind:disabled="isFileUploading" tabindex="111" id="commentButton" v-on:click="saveActivityComment()" class="clickable-btn uk-button uk-button-danger uk-button-small uk-grid-margin uk-first-column end-call-button" style="background-color: #4caf50;border-radius: 3px;place-self: center;place-items: center;min-widthx: 125px;font-size: 0.65rem;line-height: 30px;font-weight: normal !important;color: white;">
-                                <div style="display: flex;justify-content: center;align-items: center;">
-                                  <div>
-                                    <span uk-icon="icon:comment;ratio:0.75" class="uk-icon"></span>
-                                  </div>
-                                  <div>&nbsp;&nbsp;&nbsp;Post Comment</div>
-                                  <div v-show="isFileUploading" style="margin-left: 10px;"><img src="/resources/images/processing.gif" style="height: 15px;background: white;"></div>
-                                </div>
-                              </button>
-                              <button tabindex="11" id="discardButton" v-on:click="closePostCommentModal()" class="clickable-btn uk-button uk-button-danger uk-button-small uk-grid-margin uk-first-column end-call-button" data-v-2d9397b1="" style="background-color: rgb(234 234 234);border-radius: 3px;place-self: center;place-items: center;min-width: 125px;font-size: 0.65rem;line-height: 30px;font-weight: normal !important;margin-left: 10px;margin-top: 0px;color: #565656;"><div><div >Cancel</div></div></button>
-                          </div>
-                      </div>
-                  </form>
-          </div>
-      </div>
-      -->
-
     <div style="display:flex;justify-content:flex-end">
         <div v-on:click="showDetailEvents()" class="hotkup-toggle-btn">
             <div style="text-transform: uppercase;letter-spacing: 0.02rem;font-size: 0.55rem;">Show Details</div>
@@ -215,7 +115,7 @@
     </div>
     <div class="first_column_scrollable custom-scroll-bar activities_list" style="border-top:0px solid gray;margin-top:10px;position:relative;flex-grow: 1;" v-on:clickXX="openContextMenu($event)">
 
-        <template v-for="activity,idx in availableActivities">
+        <template v-for="(activity,idx) in availableActivities" :key="idx">
 
             <div class="activity_box fade_reveal">
                 <div style="border-right:1px dashed #cecece"></div>
@@ -554,19 +454,7 @@
                                 </span>
                             </div>
                             <div class="just_for_debugging">{{activity.formAttachmentInfo}} </div>
-
-                            <!-- This is the new task-form-component for embedding forms within activity tab. -->
-                            <!-- Added by Vignesh on May 27, 2022 -->
                             <task-form-component v-bind:attachmentId="activity.formAttachmentInfo.id" v-bind:activityId="activity.id" v-bind:taskInfo="taskInfo" v-bind:attachmentDataRecordId="activity.formAttachmentInfo.attachmentDataRecordId" />
-
-                            <!--
-                              <activity-form-tab v-bind:loggedInUser="loggedInUser"
-                                                 v-bind:taskId="id"
-                                                 v-bind:activityId="activity.id"
-                                                 v-bind:attachmentId="activity.formAttachmentInfo.id"
-                                                 v-bind:formID="activity.formAttachmentInfo.templateId"
-                                                 v-bind:formName="activity.formAttachmentInfo.name"/>
-                               -->
                         </div>
 
                         <div v-if="activity.replies===null || activity.replies!==undefined" class="replyToTrigger" style="display:none;gap: 10px;position: absolute;right: -60px;top: 10px;">
@@ -1933,6 +1821,7 @@ export default {
 
         // Handling File uploads
         uploadFileType (fileType) {
+            console.log('fileType', fileType)
             if (fileType === 'image') {
                 document.getElementById(this.uniqueComponentId + '_fileUploadForm').setAttribute('accept', 'image/*');
             } else {
@@ -2180,12 +2069,10 @@ export default {
             console.log('Posting comment..');
             let btnText = event.target.innerHTML;
 
-            const post_url = './task-activity/save-comment';
-
             const isNew = this.taskActivityComment.id == 'New';
             const form = {
                 id: this.taskActivityComment.id,
-                taskId: this.organizationId,
+                orgId: this.organizationId,
                 description: this.taskActivityComment.description
                 // attachments to follow. (file docs etc..)
             };
@@ -2356,8 +2243,8 @@ export default {
         loadTaskActivities () {
           alert('load act');
             try {
-                document.querySelector("#" + this.embeddingComponentName + '_spinner').classList.remove('fade_reveal');
-                document.querySelector("#" + this.embeddingComponentName + '_spinner').style.display = "flex";
+                // document.querySelector("#" + this.embeddingComponentName + '_spinner').classList.remove('fade_reveal');
+                // document.querySelector("#" + this.embeddingComponentName + '_spinner').style.display = "flex";
                 const url = `https://test.hotkup.com/crm/org-activities/list/${this.organizationId}/1/all`; // Fetch all task activities
                 // console.log("loading activities : " + url);
 
@@ -2391,379 +2278,18 @@ export default {
         handleFetchedActivities (dataResponse) {
             // Pass it to the availableAssignees prop to the dropdown.
             console.log("availableActivities : ", dataResponse);
-
-            // alert("Before resetting this.availableActivities" + this.availableActivities.length);
-            this.availableActivities = [];
-            // alert("After resetting this.availableActivities" + this.availableActivities.length);
-            const availableActivities = dataResponse.data.bean;
-            let totalActivitiesFetched = availableActivities.length;
-            console.log("totalActivitiesFetched : ", totalActivitiesFetched);
-            availableActivities.forEach((item) => {
-
-                item.createdById = item.createdBy.split('#')[1]; // For profile-pic display of the activity's creator or to compute the 'Cancel Comment' permission.
-
-                if (item.createdOn !== null) {
-                    // item.createdOn = new Date(item.createdOn).toLocaleString()
-                    //                                          .slice(0, 17)
-                    //                                          .replace(',', '')
-                    //                                          .replace('T',' ');
-
-                    // item.createdOn = this.convertUTCDateFromServerToLocalDateForDisplay(item.createdOn);
-                    item.createdOnFormatted = dayjs(item.createdOn + "Z").format('DD/MM/YYYY HH:mm');
-                    item.createdOnAgo = dayjs(item.createdOn + "Z").fromNow();
-                }
-
-                if (item.replies !== null && item.replies.length > 0) {
-                    item.replies.forEach(reply => {
-                        // reply.commentedOn = this.convertUTCDateFromServerToLocalDateForDisplay(reply.commentedOn);
-                        reply.commentedOnFormatted = dayjs(reply.commentedOn + "Z").format('DD/MM/YYYY HH:mm');
-                        reply.commentedOnAgo = dayjs(reply.commentedOn + "Z").fromNow();
-                    });
-                }
-
-                if (item.propertyChanges !== null) {
-                    item.propertyChanges.forEach(propChange => {
-                        if (propChange.toDate !== null) {
-                            // propChange.toDate = new Date(propChange.toDate).toLocaleString()
-                            //                                                .slice(0, 17)
-                            //                                                .replace(',', '')
-                            //                                                .replace('T',' ');
-
-                            propChange.toDate = this.convertUTCDateFromServerToLocalDateForDisplay(propChange.toDate);
-                        }
-
-                        // Since the status will contain the hash splitter, we need to extract only the label.
-                        if (propChange.label === 'status') {
-                            propChange.to = propChange.to.split('#')[1];
-                        }
-                    });
-                }
-
-                item.reversedSno = totalActivitiesFetched;
-                totalActivitiesFetched--;
-                console.log("activity added is ", item);
-
-                // Format the mentions. (14th Feb 2022)
-                if (item.comment !== null) {
-                    const comment = item.comment;
-                    const formattedComment = comment.replaceAll('<mention', '<span class="mentioned-node"').replaceAll('</mention>', '</span>');
-                    item.comment = formattedComment;
-
-                    let tempDiv = document.createElement('div');
-                    tempDiv.innerHTML = item.comment;
-                    item.commentHint = tempDiv.innerText;
-                    tempDiv = null;
-                }
-
-                // Format the file attached size if comment contains any file.
-                if (item.formAttachments && item.formAttachments.length > 0) {
-
-                    const fileAttachments = item.formAttachments;
-                    const fileAttachmentsWithFormattedSize = [];
-
-                    fileAttachments.forEach((item, i) => {
-                        item.formattedSize = this.formatBytes(item.size);
-                        fileAttachmentsWithFormattedSize.push(item);
-                    });
-
-                    item.formAttachments = fileAttachmentsWithFormattedSize;
-                }
-
-                this.availableActivities.push(item);
-            });
-
-            document.querySelector(".activities_list")
-                .addEventListener("click", e => {
-
-                    if (e.target.classList.contains("mentioned-node")) {
-                        const profileId = e.target.getAttribute("id");
-                        e.target.setAttribute("uk-tooltip", e.target.innerHTML);
-                        alert("Profile of " + e.target.innerHTML + " will be loaded.");
-                    }
-                });
-
-            // Wait for 500ms for vue to load the list into the DOM, otherwise the selectors will be empty.
-            // Remove this class so that it fades in into opacity:1
-            setTimeout(() => {
-
-                Array.from(document.querySelectorAll(".activity_box.fade_reveal"))
-                    .forEach(item => item.classList.remove("fade_reveal"));
-
-                if (document.querySelectorAll(".mentioned-node") !== null) {
-
-                    document.querySelectorAll(".mentioned-node")
-                        .forEach(mention => {
-                            mention.setAttribute("uk-tooltip", mention.innerHTML);
-                        });
-                }
-
-            }, 500);
-
-            document.querySelector("#" + this.embeddingComponentName + '_spinner').classList.add('fade_reveal');
-            document.querySelector("#" + this.embeddingComponentName + '_spinner').style.display = "none";
-        },
-        updateTaskActivitiesList (payload, taskId) {
-
-            // alert("taskId at the time of bus registration is :" + taskId);
-
-            if (payload.data) {
-                const item = payload.data;
-
-                item.taskSno = item.taskInfo.split('~')[0];
-                item.taskName = item.taskInfo.split('~')[1];
-                item.taskCreatedBy = item.taskInfo.split('~')[2].split('#')[1];
-
-                if (item.createdOn !== null) {
-                    // item.createdOn = new Date(item.createdOn).toLocaleString()
-                    //   .slice(0, 17)
-                    //   .replace(',', '')
-                    //   .replace('T', ' ');
-                    console.log("item.createdOn = ", item.createdOn);
-                    // item.createdOn = this.convertUTCDateFromServerToLocalDateForDisplay(item.createdOn);
-
-                    item.createdOnFormatted = dayjs(item.createdOn + "Z").format('DD/MM/YYYY HH:mm');
-                    item.createdOnAgo = dayjs(item.createdOn + "Z").fromNow();
-                }
-
-                if (item.propertyChanges !== null) {
-                    item.propertyChanges.forEach(propChange => {
-                        if (propChange.toDate !== null) {
-                            // propChange.toDate = new Date(propChange.toDate).toLocaleString()
-                            //                                                .slice(0, 17)
-                            //                                                .replace(',', '')
-                            //                                                .replace('T',' ');
-                            //
-                            propChange.toDate = this.convertUTCDateFromServerToLocalDateForDisplay(propChange.toDate);
-                        }
-
-                        // Since the status will contain the hash splitter, we need to extract only the label.
-                        if (propChange.label === 'status') {
-                            propChange.to = propChange.to.split('#')[1];
-                        }
-                    });
-                }
-
-                // If this comment was added as a reply to an existing activity item, then add
-                // it to the activity's replies array, instead of attaching it to the availableActivities.
-                if (item.replyToId) {
-                    // item.commentedOn = this.convertUTCDateFromServerToLocalDateForDisplay(item.commentedOn);
-                    item.commentedOnFormatted = dayjs(item.commentedOn + "Z").format('DD/MM/YYYY HH:mm');
-                    item.commentedOnAgo = dayjs(item.commentedOn + "Z").fromNow();
-
-                    item.commentedByName = item.createdBy.split("#")[0];
-
-                    console.log("Existing activities: ", this.availableActivities);
-                    console.log("Looking for activity id to which replies must be added: ", item.replyToId);
-                    console.log("Existing replies in availableActivities: ", this.availableActivities
-                        .find(activity => activity.id === item.replyToId));
-
-                    const matchingActivity = this.availableActivities.find(activity => activity.id === item.replyToId);
-
-                    if (matchingActivity.replies === undefined || matchingActivity.replies === null) {
-                        matchingActivity.replies = [];
-                    }
-
-                    console.log("Existing replies length in availableActivities: ", this.availableActivities
-                        .find(activity => activity.id === item.replyToId)
-                        .replies.length);
-
-                    // Find the activity item and update its 'replies' array.
-                    this.availableActivities
-                        .find(activity => activity.id === item.replyToId)
-                        .replies
-                        .push(item);
-
-                    console.log("Added reply entry to existing activity.");
-                } else {
-
-                    // If this is a newly added activity, then add an empty replies array.
-                    item.replies = [];
-                    item.hide = true;
-
-                    // We are deep-cloning here, because this item gets referred in the activity lists of
-                    // 1. activity-channel.vue
-                    // 2. TaskInbox's taskView's taskActivity-Tab's list
-                    // 3. TaskChannel's taskView's taskActivity-Tab's list
-                    //
-                    // So when adding replies, it gets added 3 times. Even though the lists are different and the components are different,
-                    // it is the same object that gets added across 3 lists. Since its the same object, adding a reply to the item from one component
-                    // from each of the above component makes it 3 additions.
-                    // For example, all the 3 components listening for 'new-activity' update, updates the replies array of this item.
-                    //  So the replies array gets populated 3 times.
-                    // Solution : To fix this, instead of adding the reference that we recieved from the rsocket, we are deep-cloning it.
-
-                    const clonedItem = JSON.parse(JSON.stringify(item));
-                    clonedItem.reversedSno = this.availableActivities.length + 1;
-
-                    let tempDiv = document.createElement('div');
-                    tempDiv.innerHTML = clonedItem.comment;
-                    clonedItem.commentHint = tempDiv.innerText;
-                    tempDiv = null;
-
-                    this.availableActivities.unshift(clonedItem);
-
-                    setTimeout(() => {
-                        Array.from(document.querySelectorAll(".activity_box.fade_reveal"))
-                            .forEach(item => item.classList.remove("fade_reveal"));
-                    }, 500);
-                }
-
-                var newActivitySound = document.querySelector('#new_activity_notification_sound');
-                newActivitySound.volume = 1;
-                newActivitySound.play();
-
-                return false;
-
-                setTimeout(() => {
-                    // item.hide  = false;
-                    // Vue.set(this.availableActivities,0,item);
-                    // this.$set(this.availableActivities, 0, item);
-                    //
-                    // setTimeout(()=>{
-                    //   document.querySelectorAll(".new_activity").forEach((el)=>{
-                    //     el.classList.remove("new_activity");
-                    //   });
-                    //
-                    console.log('Removing new_activity from ' + item.id);
-                    if (document.getElementById('channel_task_activity_' + item.id) !== null) {
-                        // document.getElementById('channel_task_activity_' + item.id).classList.remove('new_activity');
-                        document.getElementById('channel_task_activity_' + item.id).classList.add('pulse_activity');
-                    }
-                    // },2000);
-                }, 1000);
-
-                document.getElementById('activity_channel_counter').style.transform = 'rotateX(360deg)';
-                setTimeout(() => {
-                    document.getElementById('activity_channel_counter').style.transform = null;
-                }, 2000);
-            }
-        },
-
-        // Handling context menu actions
-        handleContextMenuClicked (data) {
-
-            // PROBLEM :
-            // Since the context menu bus events send data to both activity-channel.vue and activity-tab.vue,
-            // this event gets fired twice, whenever a "replyToActivity" context option is clicked. This results in the unhiding
-            // of the activity's reply input box in both activity-channel list and activity-tab-list. This is wrong behavior.
-            // If any activity is replied to within the activity-tab's list, then the reply comment box must open only in that tab
-            // and not in the activity-channel's list.
-            //
-            // SOLUTION :
-            // When we receive events from the bus here, we check for the source and only if the source matches, then we proceed, else
-            // we just ignore the event.
-            if (data.eventSource !== 'activity-tab') {
-                return false;
-            }
-
-            // Don't use state variables such as this.** here within listeners.
-            // Because they don't update when the data changes, but component doesn't get reloaded.
-            // For example, this.clickedActivityId if passed into handleReplyAction as a parameter,
-            //    it only passes the value of this.clickedActivityId when this component was mounted.
-            //    it doesn't update that value. So always fire only functions from listeners and let the fired
-            //    function extract the current data from within its function body.
-
-            console.log("handleContextMenuClicked this.clickedActivityId received in " + this.embeddingComponentName + " : ", this.clickedActivityId);
-            console.log("action data : ", data);
-
-            if (data.action === 'reply') {
-                this.handleReplyAction(data);
-            }
-        },
-        handleReplyAction (data) {
-            console.log("handleReplyAction this.clickedActivityId received in " + this.embeddingComponentName + " : ", this.clickedActivityId);
-            console.log("data received via bus selectedActivityId : ", data.selectedActivityId);
-            this.openActivityCommentBox(data.selectedActivityId);
-            this.closeActivityContextMenu();
-        }
+            this.availableActivities = dataResponse.data.data;
+            console.log("totalActivitiesFetched : ", availableActivities);
     },
     // created: function () {},
     created () {
-
-        // bus.on('task-activity-update-from-adk-app', (data) => {
-        //   console.log('task-activity-update-from-adk-app payload received in task-activity-tab.vue', this.availableActivities);
-        //   alert(this.availableActivities.length);
-        //   this.updateTaskActivitiesList(data, this.id);
-        // });
-
-        bus.on('task-activity-update-from-adk-app', (data) => {
-            // alert("task-activity-update received in task-activity-tab.vue");
-            this.updateTaskActivitiesList(data, this.id);
-        });
     },
     beforeUnmount () {
-        // bus.all.delete('task-activity-update-from-adk-app');
-
-        // bus.all.delete('task-activity-update-from-adk-app', (data) => this.updateTaskActivitiesList(data, this.id));
-        bus.all.delete('task-activity-update-from-adk-app');
     },
     computed: {
-        storeCounter: function () {
-            // console.log('Accessing vuex store ', this.$store)
-            // console.log('Store data accessed from home page : ' + this.$store.getters.count)
-            return this.$store.getters.count;
-        }
     },
-    mounted: function () {
-        // console.log("Mounted task-info-form-tab.vue component");
-        // this.$store.commit('increment');
-        // this.storeCounter();
-        // console.log('Accessing vuex store ', this.$store)
-        // console.log('Store data accessed from home page : ' + this.$store.getters.count)
-        // console.log('Done.........................')
-
-        document.querySelectorAll(".activities_list")
-            .forEach(list => {
-                list.addEventListener("pointerdown", e => this.openContextMenu(e));
-            });
-
-        // this.getUserInfoCookie(); // Load the user-information into this component's loggedInUser-property.
-        this.loadTaskActivities();
-
-        this.loadAssignees();
-
-        bus.all.delete('onTaskActivityTabClicked');
-        bus.on('onTaskActivityTabClicked', data => {
-            alert("Task activities tab was clicked. You can pull the activities list here.");
-        });
-
-        bus.all.delete('onContextMenuClicked');
-        bus.on('onContextMenuClicked', data => this.handleContextMenuClicked(data));
-
-        // Receive the activity update from channel here.
-        // bus.all.delete('task-activity-update-from-adk-app');
-        // bus.on('task-activity-update-from-adk-app', (data) => {
-        //   console.log('task-activity-update-from-adk-app payload received in task-activity-tab.vue', this.availableActivities);
-        //   alert(this.availableActivities.length);
-        //   this.updateTaskActivitiesList(data, this.id);
-        // });
-
-    },
-    watch: {
-        // https://router.vuejs.org/en/advanced/data-fetching.html for more options.
-        /*
-                  // call again the method if the route changes
-                  '$route': 'fetchData' where fetchData is a method defined above.
-              */
-        // Since we are passing an asynced data as 'availableItems', it is necessary to watch this prop when it receives new data.
-        id: function (newId, oldId) {
-            console.log("id in activities tab changed from " + oldId + " to " + newId);
-            this.loadTaskActivities(); // ();
-        },
-        '$route.params.app_name' (newAppName, oldAppName) {
-            console.log('AppName changed from ' + oldAppName + ' to ' + newAppName);
-            this.appName = newAppName;
-        },
-        /* Watch for any new availableActivities items added or updated. */
-        availableActivities: {
-
-            handler (newValue) {
-                // alert("New activity activity-tab component..");
-                console.log('new availableActivities entry : ', newValue);
-
-            },
-            deep: true
-        }
+    mounted: function () {},
+   watch: {}
     }
 };
 </script>

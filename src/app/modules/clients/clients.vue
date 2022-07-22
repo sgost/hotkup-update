@@ -252,7 +252,7 @@
 <div id="add-client-modal" class="uk-flex-top" uk-modal>
     <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
         <button class="uk-modal-close-default" type="button" uk-close></button>
-        <add-client v-bind:categoryId="categoryId" v-bind:getOrgDetails="getOrgDetails" />
+        <add-client v-bind:categoryId="categoryId" v-bind:getOrgDetails="getOrgDetails" v-bind:myOrganizationCategories="myOrganizationCategories"/>
     </div>
 </div>
 </template>
@@ -377,6 +377,7 @@ export default {
         },
 
         loadTasksFromCategory (id, name) {
+            alert(id)
             this.clientFilter = id;
             this.categoryId = id;
             this.myOrgName = name;
