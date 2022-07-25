@@ -2236,7 +2236,7 @@ export default {
       // return false;
 
       // VueJS ajax call-1
-      axios.post(process.env.VUE_APP_API_URL + post_url, form)
+      axios.post(`https://test.hotkup.com/crm/contact-activities/save-comment`, form)
         .then((dataResponse) => {
           console.log('Task Activity comment save Result : ');
           console.log(dataResponse);

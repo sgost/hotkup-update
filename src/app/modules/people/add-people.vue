@@ -31,6 +31,12 @@
             </div>
         </div>
         <div class="form-main">
+            <label class="form_label">Contact Category</label>
+            <select class="form_inputs" placeholder="Contact Category" v-model="category">
+                <option v-for="(category, index) in myContactCategories" :key="index" v-bind:value="category.id">{{category.name}}</option>
+            </select>
+        </div>
+        <div class="form-main">
             <label class="form_label">Street
                 Name</label>
             <input class="form_inputs" placeholder="Street Name" v-model="street" />
@@ -60,7 +66,7 @@
 <script>
 export default {
     name: "Table",
-    props: ['categoryId', 'myCategorieOrganizations'],
+    props: ['getContactCategories', 'myContactCategories'],
     data() {
         return {
             firstName: "",
@@ -69,6 +75,7 @@ export default {
             mobile: "",
             telephone: "",
             extension: "",
+            category: "",
             street: "",
             city: "",
             provience: "",
@@ -81,14 +88,14 @@ export default {
             const obj = {
                 id: "new",
                 tenantId: "61dfe560a4d68d08b821e08c",
-                categoryId: this.categoryId,
+                categoryId: this.category,
                 organizationId: "",
                 firstName: this.firstName,
                 lastName: this.lastName,
                 email: this.email,
                 mobile: this.telephone,
                 address: {
-                    street:this.street,
+                    street: this.street,
                     city: this.city,
                     province: this.provience,
                     zip: this.pin,
@@ -100,8 +107,25 @@ export default {
                 url: 'https://test.hotkup.com/crm/contacts/save',
                 data: obj
             }).then((res) => {
-                console.log('res', res);
+                if (res) {
+                    this.firstName = "",
+                        this.lastName = "",
+                        this.email = "",
+                        this.mobile = "",
+                        this.telephone = "",
+                        this.extension = "",
+                        this.category = "",
+                        this.street = "",
+                        this.city = "",
+                        this.provience = "",
+                        this.pin = ""
+                }
+
             });
+        },
+
+        conAlert() {
+            alert(this.organisation)
         }
     }
 };

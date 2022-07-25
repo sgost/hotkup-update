@@ -9,54 +9,54 @@ export default {
   methods: {
 
     // Elastic scroll begins here..
-    handleScroll (e) {
-          // console.log(e);
-          // console.log(e.target.scrollTop, e.target.clientHeight, e.target.scrollHeight);
+    handleScroll(e) {
+      // console.log(e);
+      // console.log(e.target.scrollTop, e.target.clientHeight, e.target.scrollHeight);
 
-          const list = e.target.querySelector(".elastic_scroll_list");
+      const list = e.target.querySelector(".elastic_scroll_list");
 
-          if ((e.target.scrollTop + e.target.offsetHeight) >= (e.target.scrollHeight - 0)) {
-            console.log("\t Scroll reached the end formula : (e.target.scrollTop + e.target.clientHeight) >= e.target.scrollHeight");
-            console.log("\t Scroll reached the end : ", e.target.scrollTop, e.target.clientHeight, e.target.scrollHeight);
-            list.classList.add("moveUp");
-            setTimeout(() => list.classList.remove("moveUp"), 150);
-          }
+      if ((e.target.scrollTop + e.target.offsetHeight) >= (e.target.scrollHeight - 0)) {
+        console.log("\t Scroll reached the end formula : (e.target.scrollTop + e.target.clientHeight) >= e.target.scrollHeight");
+        console.log("\t Scroll reached the end : ", e.target.scrollTop, e.target.clientHeight, e.target.scrollHeight);
+        list.classList.add("moveUp");
+        setTimeout(() => list.classList.remove("moveUp"), 150);
+      }
 
-          if (e.target.scrollTop === 0) {
-            console.log("\t Scroll reached the top : ", e.target.scrollTop, e.target.clientHeight, e.target.scrollHeight);
-            list.classList.add("moveDown");
-            setTimeout(() => list.classList.remove("moveDown"), 150);
-          }
+      if (e.target.scrollTop === 0) {
+        console.log("\t Scroll reached the top : ", e.target.scrollTop, e.target.clientHeight, e.target.scrollHeight);
+        list.classList.add("moveDown");
+        setTimeout(() => list.classList.remove("moveDown"), 150);
+      }
     },
-    addRippleEffect (e) {
+    addRippleEffect(e) {
 
-        console.log("Rippling..");
+      console.log("Rippling..");
 
       // Create span element
-        const ripple = document.createElement("span");
+      const ripple = document.createElement("span");
 
-        // Add ripple class to span
-        ripple.classList.add("ripple");
+      // Add ripple class to span
+      ripple.classList.add("ripple");
 
-        // Add span to the button
-        e.target.appendChild(ripple);
+      // Add span to the button
+      e.target.appendChild(ripple);
 
-        // Get position of X
-        const x = e.clientX - e.target.offsetLeft;
+      // Get position of X
+      const x = e.clientX - e.target.offsetLeft;
 
-        // Get position of Y
-        const y = e.clientY - e.target.offsetTop;
+      // Get position of Y
+      const y = e.clientY - e.target.offsetTop;
 
-        // Position the span element
-        ripple.style.left = `${x}px`;
-        ripple.style.top = `${y}px`;
+      // Position the span element
+      ripple.style.left = `${x}px`;
+      ripple.style.top = `${y}px`;
 
-        // Remove span after 0.3s
-        setTimeout(() => {
-            // ripple.remove();
-        }, 300);
+      // Remove span after 0.3s
+      setTimeout(() => {
+        // ripple.remove();
+      }, 300);
     },
-    convertUTCDateFromServerToLocalDateForDisplayAsDateOnly (utcDateString) {
+    convertUTCDateFromServerToLocalDateForDisplayAsDateOnly(utcDateString) {
 
       const utcFormattedString = utcDateString
         .replace(',', '')
@@ -75,7 +75,7 @@ export default {
         '-' +
         dateString.split('/')[0];
     },
-    convertUTCDateFromServerToLocalDateForDisplay (utcDateString) {
+    convertUTCDateFromServerToLocalDateForDisplay(utcDateString) {
 
       const utcFormattedString = utcDateString
         .replace(',', '')
@@ -96,7 +96,7 @@ export default {
         ' ' +
         timeString;
     },
-    convertUTCDateFromServerToLocalDate (utcDateString) { // 2021-09-23 13:31:54
+    convertUTCDateFromServerToLocalDate(utcDateString) { // 2021-09-23 13:31:54
 
       console.log("\t\t utcDateString = ", utcDateString);
       const utcFormattedString = utcDateString
@@ -122,7 +122,7 @@ export default {
         'T' +
         timeString;
     },
-    checkIfMobile () {
+    checkIfMobile() {
       const ua = navigator.userAgent;
       const browser = /Edge\/\d+/.test(ua)
         ? 'ed'

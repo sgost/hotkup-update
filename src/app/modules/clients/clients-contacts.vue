@@ -1,18 +1,19 @@
 <template>
 <div id="main_container">
-    <button id="add_client" uk-toggle="target: #modal-center" v-on:click="getOrgContacts()">
+    <button id="add_client" uk-toggle="target: #modal-center" v-on:click="getOrgContacts()" disabled>
         <span id="add_client_span">+</span>
         Add Contact
     </button>
     <div class="contact_list first_column_scrollable custom-scroll-bar activities_list" style="border-top:0px solid gray;margin-top:10px;position:relative;flex-grow: 1; height: 380px; background: #f9f9f9">
-        <p id="names" v-for="(contact, index) in contact" :key="index" >
-            {{contact?.firstName}} {{contact?.lastName}}<span id="minus">-</span>
+    <p v-show="contact.length === 0">No contacts under this Organization...</p>
+        <p id="names" v-for="(kk, index) in contact" :key="index">
+            {{kk?.firstName}} {{kk?.lastName}}<span id="minus">-</span>
             <span id="designation">Owner</span>
             <span id="plus">+</span></p>
     </div>
 </div>
 
-<div id="modal-center" class="uk-flex-top" uk-modal>
+<!-- <div id="modal-center" class="uk-flex-top" uk-modal>
     <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
         <button class="uk-modal-close-default" type="button" uk-close></button>
         <div id="main_container_form">
@@ -47,6 +48,12 @@
                     </div>
                 </div>
                 <div class="form-main">
+                    <label class="form_label">Contacts</label>
+                    <select class="form_inputs" placeholder="Parent Organization" v-model="organisation">
+                        <option v-for="(category, index) in  allContacts" :key="index" v-bind:value="category.id">{{category.firstName}}</option>
+                    </select>
+                </div>
+                <div class="form-main">
                     <label class="form_label" v-bind:style="{'color': disColor}">Street
                         Name</label>
                     <input class="form_inputs" placeholder="Street Name" v-model="street" />
@@ -76,14 +83,14 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 </template>
 
 <script>
 export default {
     name: "Table",
-    props: ['organizationId', 'categoryId'],
-    data () {
+    props: ['organizationId', 'categoryId', 'contact', 'getOrgContacts'],
+    data() {
         return {
             firstName: "",
             lastName: "",
@@ -103,11 +110,11 @@ export default {
             headers: {
                 Authorization: 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkaXNwbGF5TmFtZSI6IlZpZ25lc2hCaGFza2FyIiwiaXNzIjoiYXV0aDAiLCJyZXFBdXRoVG9rZW4iOiJ7XCJ6elwiOm51bGwsXCJsblwiOlwiQmhhc2thclwiLFwidFwiOlwiNWZkODVmNTViN2JiNjA1ODllM2E5M2RkXCIsXCJmblwiOlwiVmlnbmVzaFwiLFwiZW1cIjpcImNiaGFza2FyYXZpZ25lc2gub2ZmaWNlQGdtYWlsLmNvbVwiLFwicGlkc1wiOltudWxsLFwianZzYiRka2JqXCIsXCJqdnNiJG1hdGl1XCJdLFwidXVpZFwiOlwiNWZkODVmOTdiN2JiNjA1ODllM2E5M2RmXCIsXCJ0YlwiOm51bGx9IiwiZXhwIjoxNjU4MDUwNjA2LCJ1dWlkIjoiNWZkODVmOTdiN2JiNjA1ODllM2E5M2RmIn0.or3xlRbqVM_NeBWskWjsBFl7ZRQx4lHzh6mvMTt4a4E'
             },
-            contact: []
+            allContacts: []
         };
     },
     methods: {
-        saveDis () {
+        saveDis() {
             let saveDisBtn;
             if (!this.firstName && !this.lastName && !this.email && !this.mobile && !this.extension && !this.provience && !this.street && !this.city && !this.country) {
                 saveDisBtn = false;
@@ -120,48 +127,46 @@ export default {
         },
 
         // Add contact to the Organization
-        addContact () {
-            // alert(this.categoryId);
-            const newObj = {
-                id: 'new',
-                tenantId: '61dfe560a4d68d08b821e08c',
-                categoryId: this.categoryId,
-                organizationId: this.organizationId,
-                firstName: this.firstName,
-                lastName: this.lastName,
-                email: this.email,
-                mobile: this.mobile,
-                address: {
-                    street: this.street,
-                    city: this.city,
-                    province: this.provience,
-                    zip: this.pin,
-                    country: this.country
-                },
-                status: 'ACTIVE'
-            };
-            axios({
-                method: 'POST',
-                url: 'https://test.hotkup.com/crm/contacts/save',
-                headers: this.headers,
-                data: newObj
-            }).then((res) => {
-                console.log("rescontact", res);
-            }).error((err) => console.log("error", err));
-        },
+        // addContact() {
+        //     // alert(this.categoryId);
+        //     const newObj = {
+        //         id: 'new',
+        //         tenantId: '61dfe560a4d68d08b821e08c',
+        //         categoryId: this.categoryId,
+        //         organizationId: this.organizationId,
+        //         firstName: this.firstName,
+        //         lastName: this.lastName,
+        //         email: this.email,
+        //         mobile: this.mobile,
+        //         address: {
+        //             street: this.street,
+        //             city: this.city,
+        //             province: this.provience,
+        //             zip: this.pin,
+        //             country: this.country
+        //         },
+        //         status: 'ACTIVE'
+        //     };
+        //     axios({
+        //         method: 'POST',
+        //         url: 'https://test.hotkup.com/crm/contacts/save',
+        //         data: newObj
+        //     }).then((res) => {
+        //         console.log("rescontact", res);
+        //     }).error((err) => console.log("error", err));
+        // },
 
         // fetch contactDetails
-        getOrgContacts () {
-            axios({
-                    method: 'GET',
-                    url: 'https://test.hotkup.com/crm/contacts/list/1/all',
-                    headers: this.headers
-                })
-                .then((res) => {
-                    alert(this.organizationId);
-                    this.contact = res.data.data;
-                }).error((res) => console.log(res));
-        }
+        // getOrgContacts() {
+        //     axios({
+        //             method: 'GET',
+        //             url: `https://test.hotkup.com/crm/org-contact-link/list-contacts/${this.organizationId}/1/all`,
+        //         })
+        //         .then((res) => {
+        //             console.log(res.data.data)
+        //             this.allContacts = res.data.data;
+        //         }).error((res) => console.log(res));
+        // }
     },
     mounted: async function () {}
 };

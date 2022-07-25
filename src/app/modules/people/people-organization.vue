@@ -2,7 +2,7 @@
 <div class="first_column_scrollable custom-scroll-bar activities_list" style="border-top:0px solid gray;margin-top:10px;position:relative;flex-grow: 1; height: 500px">
     <div id="form_wrap_total">
         <div class="form-main">
-            <label class="form_label">Hotkup
+            <label class="form_label">Hotkup CRM
                 List</label>
             <select class="form_inputs" placeholder="Hotkup List" v-on:click="getOrgAllDetails()">
                 <option v-for="(orgDetails, index) in myOrganizationDetailAll" :key="index">{{orgDetails.name}}</option>

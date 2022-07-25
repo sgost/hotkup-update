@@ -3,7 +3,7 @@ export default {
   methods: {
 
     // OBSOLETE logout
-    logout () {
+    logout() {
 
 
 
@@ -103,8 +103,8 @@ export default {
         // $('#body').fadeIn(300).css('display', 'grid');
         console.error(
           'Unable to identify user session : error - ' +
-            e +
-            ', redirecting to login page'
+          e +
+          ', redirecting to login page'
         );
 
         // If we are unable to identify the user session, then we do a post logout manually since this form displays only if a valid user session is found. this.logout() expects formElement with id:loform, For invalid sessions, this returns null, so we inject the form here.
@@ -119,7 +119,7 @@ export default {
 
       }
     },
-    getSessionInformation () {
+    getSessionInformation() {
       return new Promise(resolve => {
 
         // if (window.location.origin !== "https://app.lazygenes.com" && window.location.origin !== "https://app.hotkup.com")
@@ -342,11 +342,11 @@ export default {
         console.log('ALERT: Closing Notifications Socket Connection...');
         _this.logOrange(
           'NSocket ID : ' +
-            socketOpenTime.getTime() +
-            ', opened @ ' +
-            socketOpenTime.toLocaleString() +
-            ', closed at : ' +
-            new Date().toLocaleString()
+          socketOpenTime.getTime() +
+          ', opened @ ' +
+          socketOpenTime.toLocaleString() +
+          ', closed at : ' +
+          new Date().toLocaleString()
         );
         // document.getElementById("speed_indicator").innerHTML = "socket closed";
         if (!_this.isLoggingOut)

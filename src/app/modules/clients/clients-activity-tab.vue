@@ -1,6 +1,6 @@
 <template>
 <div style="display: flex;flex-direction: column;flex-grow: 1;max-width: 100%;box-sizing: border-box;">
-{{availableActivities}}
+    {{availableActivities}}
     <div style="padding: 5px 0px;margin-right: 20px;margin-bottom: 0px;display: grid;display:none;grid-template-rows: 1fr;place-items: flex-end;border-bottom: 0px solid rgb(208, 208, 208);">
         <button v-on:click="openPostCommentModal()" class="clickable-btn uk-button uk-button-danger uk-button-small uk-grid-margin uk-first-column end-call-button" style="background-color:#2196f3;border-radius: 3px;min-width: 100px;font-size: 0.65rem;line-height: 30px;font-weight: normal !important;display: inline-block;">
             <span uk-icon="icon:plus;ratio:0.65" class="uk-icon" style="">
@@ -85,7 +85,7 @@
             <div v-if="showCommentOptions" class="uk-width-1-1" style="border-top: 0px solid rgb(241, 241, 241);padding: 20px 0px 0px;margin: 0px 0px 0px 15px;display: flex;flex-direction: column;">
 
                 <div style="display: flex;width:100%;place-self:center;">
-                    <button v-bind:disabled="isFileUploading" tabindex="111" id="commentButton" v-on:click="loadTaskActivities()" class="clickable-btn uk-button uk-button-danger uk-button-small uk-grid-margin uk-first-column end-call-button" style="background-color: #4caf50;border-radius: 3px;place-self: center;place-items: center;min-widthx: 125px;font-size: 0.65rem;line-height: 30px;font-weight: normal !important;color: white;">
+                    <button v-bind:disabled="isFileUploading" tabindex="111" id="commentButton" v-on:click="saveActivityComment(null, null, null)" class="clickable-btn uk-button uk-button-danger uk-button-small uk-grid-margin uk-first-column end-call-button" style="background-color: #4caf50;border-radius: 3px;place-self: center;place-items: center;min-widthx: 125px;font-size: 0.65rem;line-height: 30px;font-weight: normal !important;color: white;">
                         <div style="display: flex;justify-content: center;align-items: center;">
                             <div>
                                 <span uk-icon="icon:comment;ratio:0.75" class="uk-icon"></span>
@@ -127,7 +127,7 @@
                         <!-- <div> {{activity.id}} </div> -->
 
                         <div v-if="activity.type=='NEW_COMMENT'">
-                            <span class="activity-sno">{{activity.reversedSno}}</span>
+                            <span class="activity-sno">55</span>
 
                             <div v-on:click="toggleActivityDetail($event)" style="cursor:pointer;user-select:none;font-weight: normal;position: relative;min-height: 35px;display: flex;justify-content:flex-start;align-items: center;">
                                 <span style="font-weight: normal;color: #2196F3;">{{activity.createdBy.split("#")[0]}}</span> &nbsp; commented
@@ -547,9 +547,6 @@
 </template>
 
 <script>
-import userMixinLib from './../../mixins/lib/user_mixin_lib';
-import utilsMixinLib from './../../mixins/lib/utils_lib';
-import uiListMixinLib from './../../mixins/lib/ui-list.js';
 import {
     bus
 } from './../../../main.js';
@@ -558,11 +555,6 @@ import {
 } from 'vue';
 
 export default {
-    mixins: [
-        userMixinLib,
-        utilsMixinLib,
-        uiListMixinLib
-    ],
     props: ['id', 'organizationId', 'uniqueComponentId', 'embeddingComponentName', 'loggedInUser', 'taskInfo'],
     data: function () {
         return {
@@ -602,7 +594,7 @@ export default {
     },
     methods: {
 
-        showDetailEvents () {
+        showDetailEvents() {
 
             this.showActivityDetails = !this.showActivityDetails;
             const btn = document.querySelector(".activity_details_toggle_button");
@@ -616,7 +608,7 @@ export default {
         },
 
         // /get-one-to-one-chat
-        async getOneToOneChatOrCreateNew (withUserId) {
+        async getOneToOneChatOrCreateNew(withUserId) {
 
             const form = {
                 id: "new",
@@ -650,7 +642,7 @@ export default {
             });
 
         },
-        toggleCommentOptions (showOption, event) {
+        toggleCommentOptions(showOption, event) {
 
             const parentContainer = event.target.closest(".activity-comment-container");
 
@@ -672,7 +664,7 @@ export default {
             }
 
         },
-        yoyo () {
+        yoyo() {
 
             return false;
 
@@ -696,7 +688,7 @@ export default {
                 this.currentFocusOnDOMText = "invalid-selection" + " -- " + new Date();
             }
         },
-        focusOn () {
+        focusOn() {
             const p = document.getElementById("ce_editor");
             // p.focus();
             // alternatively use setTimeout(() => { p.focus(); }, 0);
@@ -715,12 +707,12 @@ export default {
                 // spaceNode.focus();
             }
         },
-        updateMentionedPeople () {
+        updateMentionedPeople() {
             this.mentionedPeopleIds = Array.from(document.querySelector("#ce_editor").querySelectorAll(".mention-node"))
                 .map(el => el.getAttribute("data-user-id"))
                 .map(id => id.split("#")[0]);
         },
-        mentionListener (event) {
+        mentionListener(event) {
             const description = event;
             // console.log(description);
 
@@ -924,12 +916,12 @@ export default {
             this.formatContent();
 
         },
-        storeDescription (event) {
+        storeDescription(event) {
             // Use this at the end when u want to save this comment
             // this.taskActivityComment.description = event.target.innerHTML;
             this.taskActivityComment.description = this.formattedComment;
         },
-        handleKeyPressV1 (event) {
+        handleKeyPressV1(event) {
 
             // Keep this function for reference
             const insertNodeAtCaret = function (node) {
@@ -1120,7 +1112,7 @@ export default {
 
             event.stopPropagation();
         },
-        handleKeyPress (event) {
+        handleKeyPress(event) {
 
             console.log('Key pressed..', event);
             event.preventDefault();
@@ -1311,7 +1303,7 @@ export default {
             event.stopPropagation();
 
         },
-        formatContent () {
+        formatContent() {
 
             const editor = document.getElementById("ce_editor");
             const editorHTML = editor.innerHTML;
@@ -1328,7 +1320,7 @@ export default {
             this.formattedComment = formattedContent.innerText;
             return false;
         },
-        highlightMentionedOption (event) {
+        highlightMentionedOption(event) {
 
             if (event.target.classList.contains("mentionListItem")) {
 
@@ -1360,7 +1352,7 @@ export default {
                 this.currentlyHighlightedOptionName = document.querySelector(".mentionListDropdown > div.highlighted").getAttribute("data-user-firstname");
             }
         },
-        handleMentionSelectionByMouseClick (event) {
+        handleMentionSelectionByMouseClick(event) {
 
             const editor = document.getElementById("ce_editor");
             // alert("Selected option is index : " + this.currentlyHighlightedOptionItem);
@@ -1523,7 +1515,7 @@ export default {
 
         },
 
-        handleMentionSelectionByMouseClickObsolete (event) {
+        handleMentionSelectionByMouseClickObsolete(event) {
 
             // console.log("window.getSelection on mouse click = ", window.getSelection());
             // return false;
@@ -1646,7 +1638,7 @@ export default {
                 return false;
             }
         },
-        loadAssignees () {
+        loadAssignees() {
 
             // Attempting to use Comlink Worker
             const get_url = './categories/get-potential-users'; // Fetch all reminders
@@ -1666,7 +1658,7 @@ export default {
                 });
             };
 
-            async function sendTaskToWorker () {
+            async function sendTaskToWorker() {
                 // const remoteFunction = Comlink.wrap(new Worker("resources/js/comlink-worker.js"));
                 console.log("Loading reminders using comlink-worker");
                 await ComlinkWorker.fetch(process.env.VUE_APP_API_URL + get_url,
@@ -1679,30 +1671,30 @@ export default {
             // Comlink worker ends here
         },
 
-        showReplies (event) {
+        showReplies(event) {
             event.target.parentElement.parentElement.querySelector('.replies').classList.toggle('hidden');
         },
-        openActivityCommentBox (activityId) {
+        openActivityCommentBox(activityId) {
             console.log("Opening comment box for activityId : ", activityId, document.querySelector('#activity_reply_comment_box_' + activityId));
             document.querySelector('#activity_reply_comment_box_' + activityId).classList.remove('hide_display');
             document.querySelector('#activity_reply_comment_textarea_' + activityId).focus();
         },
-        closeActivityCommentBox (activityId) {
+        closeActivityCommentBox(activityId) {
             if (document.querySelector('#activity_reply_comment_box_' + activityId) !== null) {
                 document.querySelector('#activity_reply_comment_box_' + activityId).classList.add('hide_display');
             }
         },
 
-        openPostCommentModal () {
+        openPostCommentModal() {
             // Clear these fields before attaching a new form-template.
             this.taskActivityComment = {};
             this.loadAssignees();
             UIkit.modal(document.querySelector('#post-comment-modal')).show();
         },
-        closePostCommentModal () {
+        closePostCommentModal() {
             UIkit.modal(document.querySelector('#post-comment-modal')).hide();
         },
-        toggleActivityDetail (event) {
+        toggleActivityDetail(event) {
             const trigger = event.target;
 
             // If the dropdown trigger was clicked, then ignore opening the details
@@ -1724,13 +1716,13 @@ export default {
 
             }
         },
-        closeActivityContextMenu () {
+        closeActivityContextMenu() {
 
             const primaryButtonOptions = document.querySelector('.activity_item_context_menu');
             primaryButtonOptions.classList.remove("opened");
             primaryButtonOptions.style.transform = null;
         },
-        openContextMenu (event) {
+        openContextMenu(event) {
 
             const availableActivitiesContainer = event.target.closest('.activities_list');
 
@@ -1815,12 +1807,12 @@ export default {
             }
 
         },
-        alterArrayObjectValue () {
+        alterArrayObjectValue() {
             // this.chosenFiles[0].isUploaded = true;
         },
 
         // Handling File uploads
-        uploadFileType (fileType) {
+        uploadFileType(fileType) {
             console.log('fileType', fileType)
             if (fileType === 'image') {
                 document.getElementById(this.uniqueComponentId + '_fileUploadForm').setAttribute('accept', 'image/*');
@@ -1832,13 +1824,13 @@ export default {
             document.getElementById(this.uniqueComponentId + '_fileUploadForm').click();
         },
 
-        removeAttachedFile () {
+        removeAttachedFile() {
             this.uploadActivityFile = false;
             this.isFileChosen = false;
             this.chosenFileName = 'Not chosen';
             this.isFileUploading = false;
         },
-        removeAttachedFileAtIndex (index) {
+        removeAttachedFileAtIndex(index) {
             this.chosenFiles.splice(index, 1);
 
             if (this.chosenFiles.length === 0) {
@@ -1849,7 +1841,7 @@ export default {
             }
         },
 
-        onFileChosenImpl (event) {
+        onFileChosenImpl(event) {
             this.chosenFiles = [];
 
             const fileList = event.target.files; // document.getElementById(this.uniqueComponentId + '_fileUploadForm').files;
@@ -1878,7 +1870,7 @@ export default {
             });
         },
 
-        async uploadFileBeforePostingComment () {
+        async uploadFileBeforePostingComment() {
             // Don't activate this button if a file is being uploaded, this is to prevent user from clickjacking while a file is being uploaded.
             if (this.isFileUploading) {
                 alert('File upload is in progress, pls wait.');
@@ -1950,7 +1942,7 @@ export default {
                 });
             }
         },
-        uploadFile (fileToUpload) {
+        uploadFile(fileToUpload) {
             return new Promise(resolve => {
                 const _this_component = this;
                 // handle file changes
@@ -1999,17 +1991,17 @@ export default {
             });
         },
 
-        someFunction (elem) {
+        someFunction(elem) {
             console.log(elem);
         },
-        goToHomePage () {
+        goToHomePage() {
             this.$router.push({
                 name: 'home',
                 params: {}
             });
         },
 
-        sendEmailFromTemplate () {
+        sendEmailFromTemplate() {
             const form = {
                 template: document.getElementById("ce_editor").innerText
             };
@@ -2026,7 +2018,7 @@ export default {
                     alert(errorResponse);
                 });
         },
-        async sendToChatConversation (mentionedPeopleIds, activityInfo) {
+        async sendToChatConversation(mentionedPeopleIds, activityInfo) {
 
             for (const idx in mentionedPeopleIds) {
                 const mentionedPeopleId = mentionedPeopleIds[idx];
@@ -2047,7 +2039,7 @@ export default {
             };
 
         },
-        async saveActivityComment (activityId, taskId, event) {
+        async saveActivityComment() {
 
             // setTimeout(() => {
             //   this.closePostCommentModal(); // If opened.
@@ -2077,76 +2069,18 @@ export default {
                 // attachments to follow. (file docs etc..)
             };
 
-            // Attach the mentioned people in this comment.
-            if (this.mentionedPeopleIds !== null && this.mentionedPeopleIds.length > 0) {
-                form["mentionedPeopleIds"] = this.mentionedPeopleIds;
-            }
-
-            // If the reply was made to a specific activity, then add it here.
-            if (activityId) {
-                const comment = document.querySelector('#activity_reply_comment_textarea_' + activityId).value;
-                btnText = document.querySelector('#activity_reply_btn_' + activityId).innerHTML;
-                form.replyToId = activityId;
-                form.description = comment;
-            }
-
-            if (form.description.trim() === "") {
-                return false;
-            }
-
-            if (this.chosenFiles !== null && this.chosenFiles.length > 0) {
-                form.attachments = [];
-
-                this.chosenFiles.forEach((uploadedFile) => {
-                    const attachment = {
-                        id: uploadedFile.attachment.id,
-                        name: uploadedFile.attachment.fileName,
-                        size: uploadedFile.attachment.fileSize,
-                        type: uploadedFile.attachment.fileType
-                    };
-
-                    form.attachments.push(attachment); // Later cater for multiple-file uploads.
-                });
-            }
-
             console.log(form);
             // return false;
 
             // VueJS ajax call-1
             axios.post('https://test.hotkup.com/crm/org-activities/save-comment', form)
                 .then((dataResponse) => {
-                  this.loadTaskActivities();
+                    this.loadTaskActivities();
                     console.log('Task Activity comment save Result : ');
                     console.log(dataResponse);
 
                     if (dataResponse.data.id !== null) {
                         const item = dataResponse.data;
-
-                        /*
-                        This gets updated via the listener from realtime-socket.
-
-                        // If this comment was added as a reply to an existing activity item, then add
-                        // it to the activity's replies array, instead of attaching it to the availableActivities.
-                        if (activityId) {
-                          item.commentedOn = this.convertUTCDateFromServerToLocalDateForDisplay(item.createdOn);
-                          item.commentedByName = item.createdBy.split("#")[0];
-
-                          // Find the activity item and update its 'replies' array.
-                          this.availableActivities
-                              .find(activity => activity.id === activityId)
-                              .replies
-                              .push(item);
-
-                          console.log("Added reply");
-                        }
-                        else {
-                          // If this is a newly added activity, then add an empty replies array.
-                          item.replies = [];
-                          item.reversedSno = this.availableActivities.length + 1;
-                          this.availableActivities.unshift(item);
-                        }
-
-                        */
 
                         if (document.querySelector('#activity_reply_comment_textarea_' + activityId) !== null && document.querySelector('#activity_reply_comment_textarea_' + activityId) !== undefined) {
                             document.querySelector('#activity_reply_comment_textarea_' + activityId).value = "";
@@ -2213,7 +2147,7 @@ export default {
                     return false;
                 });
         },
-        formatBytes (bytes, decimals = 2) {
+        formatBytes(bytes, decimals = 2) {
 
             if (bytes === 0) return '0 Bytes';
 
@@ -2226,7 +2160,7 @@ export default {
             return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
         },
 
-        downloadFile (doc_id) {
+        downloadFile(doc_id) {
             if (true) // has file download permissions check
             {
                 try {
@@ -2240,8 +2174,7 @@ export default {
                 }
             }
         },
-        loadTaskActivities () {
-          alert('load act');
+        loadTaskActivities() {
             try {
                 // document.querySelector("#" + this.embeddingComponentName + '_spinner').classList.remove('fade_reveal');
                 // document.querySelector("#" + this.embeddingComponentName + '_spinner').style.display = "flex";
@@ -2252,8 +2185,8 @@ export default {
                     // VueJS ajax call-1
                     axios.get(url)
                         .then((dataResponse) => {
-                            //                  console.log("List: " , dataResponse);
-                            this.handleUnpaginatedListData('activities', dataResponse);
+                            const arrayData = dataResponse.data.data;
+                            this.availableActivities = arrayData;
                         })
                         .catch((error) => {
                             this.handleUnpaginatedListDataError(error);
@@ -2267,29 +2200,20 @@ export default {
         },
 
         // Callbacks of loadPotentialUsers function.
-        handleUnpaginatedListData (listKey, data) {
+        handleUnpaginatedListData(listKey, data) {
             if (listKey === 'activities') {
-                this.handleFetchedActivities(data);
+                // this.handleFetchedActivities(data);
             }
         },
-        handleUnpaginatedListDataError (error) {
+        handleUnpaginatedListDataError(error) {
             console.error('Unpaginated List data fetch error : ', error);
         },
-        handleFetchedActivities (dataResponse) {
-            // Pass it to the availableAssignees prop to the dropdown.
-            console.log("availableActivities : ", dataResponse);
-            this.availableActivities = dataResponse.data.data;
-            console.log("totalActivitiesFetched : ", availableActivities);
-    },
-    // created: function () {},
-    created () {
-    },
-    beforeUnmount () {
-    },
-    computed: {
-    },
-    mounted: function () {},
-   watch: {}
+        // created: function () {},
+        created() {},
+        beforeUnmount() {},
+        computed: {},
+        mounted: function () {},
+        watch: {}
     }
 };
 </script>

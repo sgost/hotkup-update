@@ -210,7 +210,7 @@
         <!-- Client Edit -->
         <div v-show="showTaskInfoContainer" style="position:relative" class="task-info-container">
             <div class="first_column_scrollable custom-scroll-bar" style="font-size: 0.7rem;position: absolute;left: 35px;right: 35px;top: -1px;opacity: 1;z-index: 100;background: linear-gradient(rgb(254 254 254), rgb(255, 255, 255));border-width: 0px 1px 1px;border-top-style: initial;border-right-style: solid;border-bottom-style: solid;border-left-style: solid;border-top-color: initial;border-right-color: rgb(226, 226, 226);border-bottom-color: rgb(226, 226, 226);border-left-color: rgb(226, 226, 226);border-image: initial;box-shadow: rgba(0, 0, 0, 0.12) 0px 15px 12px 0px;border-radius: 0px 0px 5px 5px;">
-                <client-info-tab v-bind:taskInfo="taskObject" v-bind:item="item"/>
+                <client-info-tab v-bind:taskInfo="taskObject" v-bind:item="item" />
             </div>
         </div>
         <div v-show="!showNewSubTaskForm" style="display: grid;grid-template-rows: auto 1fr;display: flex;flex-direction: column;flex-grow: 1;overflow-y: hidden;">
@@ -218,7 +218,7 @@
                 <li v-on:click="displayTab($event, 'Contact')" class="contact" uk-tooltip="title:Contact;pos:bottom">
                     <a style="pointer-events: none;user-select: none;align-items: center;justify-content: center;">
                         <span class="tab_icon" style="display: flex;column-gap: 5px;align-items: center;position:relative">
-                            <ui-icon name="activity" size="width:15px;height:15px" />
+                            <ui-icon name="checklist" size="width:15px;height:15px" />
                         </span>
                         <span class="tab_label">Contact</span>
                     </a>
@@ -226,12 +226,12 @@
                 <li v-on:click="displayTab($event, 'activity')" class="activity" uk-tooltip="title:Activities;pos:bottom">
                     <a style="pointer-events: none;user-select: none;align-items: center;justify-content: center;">
                         <span class="tab_icon" style="display: flex;column-gap: 5px;align-items: center;position:relative">
-                            <ui-icon name="checklist" size="width:15px;height:15px" />
+                            <ui-icon name="activity" size="width:15px;height:15px" />
                         </span>
                         <span class="tab_label">Activity</span>
                     </a>
                 </li>
-                <li v-on:click="displayTab($event, 'subtasks')" class="subtasks" uk-tooltip="title:Sub Tasks;pos:bottom">
+                <li v-on:click="displayTab($event, 'tasks')" class="subtasks" uk-tooltip="title:Tasks;pos:bottom">
                     <a style="pointer-events: none;user-select: none;align-items: center;justify-content: center;position:relative">
                         <span v-show="taskObject.subTasksCount>0" style="position: absolute;right: -10px;top: -5px;background: rgb(241 241 241);color: #868686;border-radius: 15px;text-align: center;padding: 1px 2px;min-width: 20px;font-size: 0.45rem;">{{taskObject.subTasksCount}}</span>
                         <span class="tab_icon" style="display: flex;column-gap: 5px;align-items: center;position:relative">
@@ -253,10 +253,13 @@
 
             <div v-bind:id="embeddingViewName + '_switcherTabsContent'" class="xuk-switcher xuk-switcher-component" style="margin-top: 0px;font-size: 0.7rem;padding:5px 10px;overflow-y: hidden;display: flex;flex-grow: 1;background: rgb(255, 255, 255, 0);touch-action: pan-y pinch-zoom;box-sizing: border-box; min-height: 40rem">
 
+                <div v-show="selectedTabKey===''" class="custom-scroll-bar" style="flex-grow: 1;overflow-y: scroll;position: relative;padding: 15px;height: 100%;background: transparent; xbackground:rgba(255, 255, 255, 0.7);box-sizing: border-box;margin-bottom: 10px;">
+                    Select the tab
+                </div>
                 <!-- CONTACT -->
                 <div v-show="selectedTabKey==='Contact'" class="custom-scroll-bar" style="flex-grow: 1;overflow-y: scroll;position: relative;padding: 15px;height: 100%;background: transparent; xbackground:rgba(255, 255, 255, 0.7);box-sizing: border-box;margin-bottom: 10px;">
                     <div class="task-communication" style="min-height:75px">
-                        <clients-contacts v-bind:organizationId="item.id" v-bind:categoryId="item.categoryId" />
+                        <clients-contacts v-bind:organizationId="item.id" v-bind:categoryId="item.categoryId" v-bind:contact="contact" v-bind:getOrgContacts="getOrgContacts" />
                     </div>
                 </div>
 
@@ -270,7 +273,7 @@
                     <clients-activity-tab v-bind:organizationId="item.id" v-bind:embeddingComponentName="embeddingViewName" v-bind:uniqueComponentId=" uniqueComponentId + '_activity_tab'" v-bind:id="taskObject.id" v-bind:taskInfo="taskObject" v-bind:loggedInUser="loggedInUser" />
                 </div>
 
-                <div v-show="selectedTabKey==='subtasks'" style=";flex-grow: 1;overflow-y: hidden; position: relative;    padding: 20px;;background: #ffffffa1;">
+                <div v-show="selectedTabKey==='tasks'" style=";flex-grow: 1;overflow-y: hidden; position: relative;    padding: 20px;;background: #ffffffa1;">
                     <div style="padding: 5px 0px;margin-right:20px;margin-bottom: 10px;display: grid;grid-template-rows: 1fr;place-items: start;border-bottom: 1px solid #d0d0d0;">
                         <button v-on:click="addNewSubTask()" class="clickable-btn uk-button uk-button-danger uk-button-small uk-grid-margin uk-first-column end-call-button" style="background-color:#2196f3;border-radius: 3px;min-width: 100px;font-size: 0.65rem;line-height: 30px;font-weight: normal !important;display: inline-block;">
                             <span uk-icon="icon:plus;ratio:0.65" class="uk-icon" style="">
@@ -283,7 +286,7 @@
                         </button>
                     </div>
                     <div v-if="isSubtasksTabInitialized" style="display:grid;padding-top:15px;margin-right:20px;">
-                        <clients-subtasks-tab v-bind:id="taskObject.id" />
+                        <clients-subtasks-tab v-bind:item="item" />
                     </div>
                 </div>
                 <div v-show="selectedTabKey === 'reminders'" style="display: flex;flex-direction: column;flex-grow: 1;overflow-y: hidden; position: relative;height: 100%;;background: #ffffffa1;">
@@ -318,26 +321,26 @@
 
                                         <div style="flex:0.25;text-align:right">{{index+1}}</div>
 
-                                        <div style="flex:4;" v-if="item.status==='ELAPSED'">
-                                            <div><span style="text-decoration: line-through red;">{{item.title}}</span></div>
-                                            <div style="color: rgb(188 188 188); font-size: 0.55rem;">Reminder set for {{item.usersString}}</div>
+                                        <div style="flex:4;">
+                                            <div><span>{{item.title}}</span></div>
+                                            <div style="color: rgb(188 188 188); font-size: 0.55rem;">Reminder set for Sabari</div>
                                         </div>
-                                        <div style="flex:4;" v-if="item.status!=='ELAPSED' && item.status!=='CANCELLED'">
+                                        <!-- <div style="flex:4;" v-if="item.status!=='ELAPSED' && item.status!=='CANCELLED'">
                                             <div>{{item.title}} &nbsp; &nbsp; &nbsp; &nbsp; </div>
                                             <div style="color: rgb(188 188 188); font-size: 0.55rem;">Reminder set for {{item.usersString}}</div>
                                         </div>
                                         <div style="flex:4;filter: brightness(1.75);" v-if="item.status==='CANCELLED'">
                                             <div>{{item.title}} &nbsp; &nbsp; &nbsp; &nbsp;</div>
                                             <div style="color: rgb(101, 101, 101); font-size: 0.55rem;">Reminder set for {{item.usersString}}</div>
-                                        </div>
+                                        </div> -->
 
-                                        <div style="flex:1;" v-if="item.status==='ELAPSED'">{{item.type}}</div>
-                                        <div style="flex:1;" v-if="item.status!=='ELAPSED' && item.status!=='CANCELLED'">{{item.type}}</div>
-                                        <div style="flex:1;filter: brightness(1.75);" v-if="item.status==='CANCELLED'">{{item.type}}</div>
+                                        <div style="flex:1;">{{item.type}}</div>
+                                        <!-- <div style="flex:1;" v-if="item.status!=='ELAPSED' && item.status!=='CANCELLED'">{{item.type}}</div>
+                                        <div style="flex:1;filter: brightness(1.75);" v-if="item.status==='CANCELLED'">{{item.type}}</div> -->
 
-                                        <div style="flex:2;" v-if="item.status==='ELAPSED'">{{item.dateTimeFormatted}}</div>
-                                        <div style="flex:2;" v-if="item.status!=='ELAPSED' && item.status!=='CANCELLED'">{{item.dateTimeFormatted}}</div>
-                                        <div style="flex:2;filter: brightness(1.75);" v-if="item.status==='CANCELLED'">{{item.dateTimeFormatted}}</div>
+                                        <div style="flex:2;">{{item.reminderTime}}</div>
+                                        <!-- <div style="flex:2;" v-if="item.status!=='ELAPSED' && item.status!=='CANCELLED'">{{item.dateTimeFormatted}}</div>
+                                        <div style="flex:2;filter: brightness(1.75);" v-if="item.status==='CANCELLED'">{{item.dateTimeFormatted}}</div> -->
 
                                         <!-- <div style="flex:1;" v-if="item.status!=='ELAPSED'"><a v-on:click="updateReminderItem(item)">Edit</a>  |  <a v-on:click="removeReminder(item)">Remove</a></div> Removing after Pawan said 'Cancel will do, no edits required' -->
                                         <div style="flex:1;text-align:center;" v-if="item.status!=='ELAPSED' && item.status!=='CANCELLED'"><a v-on:click="cancelReminderItem(item)">Cancel</a></div>
@@ -397,7 +400,7 @@
                 </div>
                 <div style="display: flex;padding: 5px 0px;column-gap: 30px;;margin-right:15px;margin-left:15px;">
                     <div style="">
-                        <button v-on:click="loadReminders()" class="clickable-btn uk-button uk-button-danger uk-button-small uk-grid-margin uk-first-column end-call-button" style="background-color:#2196f3;border-radius: 3px;min-width: 100px;font-size: 0.65rem;line-height: 30px;font-weight: normal !important;display: inline-block;">
+                        <button v-on:click="saveReminder()" class="clickable-btn uk-button uk-button-danger uk-button-small uk-grid-margin uk-first-column end-call-button" style="background-color:#2196f3;border-radius: 3px;min-width: 100px;font-size: 0.65rem;line-height: 30px;font-weight: normal !important;display: inline-block;">
                             <span style="padding-left: 10px;">{{reminderLabel}}</span>
                         </button>
                     </div>
@@ -494,7 +497,8 @@ export default {
                 isSubmenuCustomerContactsSelected: false
             },
 
-            selectedTabKey: 'Contact',
+            selectedTabKey: '',
+            isContactTabInitialized: false,
             isActivityTabInitialized: false,
             isSubtasksTabInitialized: false,
             isChecklistsTabInitialized: false,
@@ -509,12 +513,13 @@ export default {
             contactModal: false,
             headers: {
                 Authorization: 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkaXNwbGF5TmFtZSI6IlZpZ25lc2hCaGFza2FyIiwiaXNzIjoiYXV0aDAiLCJyZXFBdXRoVG9rZW4iOiJ7XCJ6elwiOm51bGwsXCJsblwiOlwiQmhhc2thclwiLFwidFwiOlwiNWZkODVmNTViN2JiNjA1ODllM2E5M2RkXCIsXCJmblwiOlwiVmlnbmVzaFwiLFwiZW1cIjpcImNiaGFza2FyYXZpZ25lc2gub2ZmaWNlQGdtYWlsLmNvbVwiLFwicGlkc1wiOltudWxsLFwianZzYiRka2JqXCIsXCJqdnNiJG1hdGl1XCJdLFwidXVpZFwiOlwiNWZkODVmOTdiN2JiNjA1ODllM2E5M2RmXCIsXCJ0YlwiOm51bGx9IiwiZXhwIjoxNjU4MDUwNjA2LCJ1dWlkIjoiNWZkODVmOTdiN2JiNjA1ODllM2E5M2RmIn0.or3xlRbqVM_NeBWskWjsBFl7ZRQx4lHzh6mvMTt4a4E'
-            }
+            },
+            contact: []
         };
     },
     methods: {
 
-        expandOrShrinkTaskInfoContainer () {
+        expandOrShrinkTaskInfoContainer() {
 
             if (this.isTaskInfoContainerExpanded) {
 
@@ -527,15 +532,15 @@ export default {
 
         },
 
-        openAddReminderModal () {
+        openAddReminderModal() {
             // Clear these fields before attaching a new form-template.
             this.reminderItem = {};
             UIkit.modal(document.querySelector('#' + this.uniqueComponentId + '_add_reminder_modal')).show();
         },
-        closeAddReminderModal () {
+        closeAddReminderModal() {
             UIkit.modal(document.querySelector('#' + this.uniqueComponentId + '_add_reminder_modal')).hide();
         },
-        loadCustomerHooks () {
+        loadCustomerHooks() {
             // Load customers from local-storage
             this.customers = []; // Reset this otherwise, for every task viewed, the dropdown gets populated resulting in unstable duplicates.
             console.log('Customers before localstorage ', this.customers);
@@ -566,7 +571,7 @@ export default {
 
             this.customersNames = selectedCustomers.map(cust => cust.name).join(', ');
         },
-        loadCustomerBranchesHooks () {
+        loadCustomerBranchesHooks() {
             // Load customers from local-storage
             this.customerBranches = []; // Reset this otherwise, for every task viewed, the dropdown gets populated resulting in unstable duplicates.
             console.log('Customer Branches before localstorage ', this.customerBranches);
@@ -597,7 +602,7 @@ export default {
 
             this.customerBranchesNames = selectedCustomerBranches.map(custBranch => custBranch.name).join(', ');
         },
-        loadCustomerContactsHooks () {
+        loadCustomerContactsHooks() {
             // Load customers from local-storage
             this.customerContacts = []; // Reset this otherwise, for every task viewed, the dropdown gets populated resulting in unstable duplicates.
             console.log('Customer Contacts before localstorage ', this.customerContacts);
@@ -624,7 +629,7 @@ export default {
                 document.getElementById('selectedHookCustomerContactsBadge').innerHTML = '(' + numberOfSelectedCustomerContacts + ' selected)';
             }
         },
-        searchHooksSubmenu () {
+        searchHooksSubmenu() {
             console.log('hooks submenu query for ' + this.hookSubmenuCurrentlySelected + ' is ' + this.hooksSubmenuSearchQuery);
 
             if (this.hookSubmenuCurrentlySelected === 'isSubmenuCustomersSelected') {
@@ -647,7 +652,7 @@ export default {
                 }
             }
         },
-        updateCustomerHook (customer) {
+        updateCustomerHook(customer) {
             const post_url = './tasks/update-customer-hook';
             const action = customer.isSelected ? 'ADD' : 'REMOVE';
 
@@ -719,7 +724,7 @@ export default {
                     return false;
                 });
         },
-        updateCustomerBranchHook (customerBranch) {
+        updateCustomerBranchHook(customerBranch) {
             const post_url = './tasks/update-customer-branch-hook';
             const action = customerBranch.isSelected ? 'ADD' : 'REMOVE';
 
@@ -792,22 +797,22 @@ export default {
                     return false;
                 });
         },
-        showTaskInfoContainerDiv () {
+        showTaskInfoContainerDiv() {
             this.showTaskInfoContainer = true;
             document.querySelector('body').addEventListener('click', this.handleBodyClickEvent, true);
         },
-        hideTaskInfoContainer () {
+        hideTaskInfoContainer() {
             this.showTaskInfoContainer = false;
             document.querySelector('body').removeEventListener('click', this.handleBodyClickEvent, true);
         },
-        handleBodyClickEvent (event) {
+        handleBodyClickEvent(event) {
             const foundTaskInfoContainer = event.target.closest('.task-info-container');
             if (foundTaskInfoContainer === null) {
                 // This means, if target on which the click happened is not within the context-menu div, so you can close the context-menu dropdown.
                 this.hideTaskInfoContainer();
             }
         },
-        onMenuClick (selectedSubmenuName, label) {
+        onMenuClick(selectedSubmenuName, label) {
             // Display the relevant submenu list
             this.hookSubmenuCurrentlySelected = selectedSubmenuName;
             document.getElementById('submenu_searchbox').setAttribute('placeholder', 'Search ' + label);
@@ -816,10 +821,10 @@ export default {
             // If focus is done without settimeout, then the submenu sliding doesn't animate as expected.
             setTimeout(() => document.getElementById('submenu_searchbox').focus(), 300);
         },
-        onSubmenuClick () {
+        onSubmenuClick() {
             document.getElementById('menu_slider').style.left = '0%';
         },
-        cancelChecklistItem (item) {
+        cancelChecklistItem(item) {
             // this.checklistLabel = 'Update Item';
             // this.checklistItem = item;
             // this.checklistItem.actionType = 'UPDATE';
@@ -896,7 +901,7 @@ export default {
                     return false;
                 });
         },
-        updateChecklistItemStatus (item, event) {
+        updateChecklistItemStatus(item, event) {
             const post_url = './tasks/save-checklist-item';
 
             const form = {
@@ -977,7 +982,7 @@ export default {
                     return false;
                 });
         },
-        saveChecklistItem () {
+        saveChecklistItem() {
             const post_url = './tasks/save-checklist-item';
 
             const form = {
@@ -1073,14 +1078,14 @@ export default {
         },
 
         // Reminders codes
-        updateReminderItem (item) {
+        updateReminderItem(item) {
             this.reminderLabel = 'Update Reminder';
             this.reminderItem = item;
             this.resetReminderPotentialMembers();
         },
 
         // This data will be used to filter both members and admins by merging with the result from 'get-associated-people/{workgroup-id}'
-        loadPotentialMembersForReminders () {
+        loadPotentialMembersForReminders() {
             try {
                 // VueJS ajax call-1
                 axios.get('https://test.hotkup.com/categories/get-potential-users')
@@ -1096,7 +1101,7 @@ export default {
             }
         },
         // Callbacks
-        handlePotentialReminderMembers (dataResponse) {
+        handlePotentialReminderMembers(dataResponse) {
             // Pass it to the availableAssignees prop to the dropdown.
             // console.log("Potential members to receive reminders relevant to the category: ", dataResponse);
 
@@ -1135,7 +1140,7 @@ export default {
             this.availableMembers = potentialMembers;
             // console.log("this.availableMembers : " , this.availableMembers);
         },
-        resetReminderPotentialMembers () {
+        resetReminderPotentialMembers() {
             const mappedArrayOfUser = this.potentialMembersList;
 
             const potentialMembers = [];
@@ -1161,12 +1166,12 @@ export default {
             this.availableMembers = potentialMembers;
             // console.log("this.availableMembers : " , this.availableMembers);
         },
-        updateReminderReceiversEmitEvent (data) {
+        updateReminderReceiversEmitEvent(data) {
             // console.log("--data--" , data);
             const userIds = Array.from(data).map(item => item.id);
             this.reminderItem.userIds = userIds;
         },
-        updateReminderStatus (item) {
+        updateReminderStatus(item) {
             const post_url = './reminders/save';
 
             const form = {
@@ -1224,12 +1229,12 @@ export default {
                     return false;
                 });
         },
-        saveReminder () {
-            alert("hi");
+        saveReminder() {
+            alert("Add alert")
             const post_url = 'https://test.hotkup.com/crm/org-reminders/save';
 
             const isNew = this.reminderItem.id == 'New';
-             const form = {
+            const form = {
                 id: isNew,
                 tenantId: "5fd85f55b7bb60589e3a93dd",
                 orgId: this.item.id,
@@ -1254,9 +1259,7 @@ export default {
                     headers: this.headers,
                     data: form
                 }).then((dataResponse) => {
-                    // console.log("Reminder save Result : ");
-                    // console.log(dataResponse);
-
+                    this.loadReminders();
                     if (dataResponse.data.actionResult === 1) {
                         this.reminderItem = {
                             id: 'New'
@@ -1264,11 +1267,8 @@ export default {
                         // this.reminderItem = {"actionType" : "NEW"};
                         this.reminderLabel = 'Add Reminder';
                         this.resetReminderPotentialMembers();
-                        this.loadReminders();
                         this.closeAddReminderModal();
-
                         const notificationLabel = (isNew) ? 'New Reminder added.' : 'Reminder updated.';
-
                         UIkit.notification(`<div class="taskone-notification">
                                                   <span uk-icon="icon: check;ratio:1"></span>
                                                   <div> ${notificationLabel} </div>
@@ -1304,7 +1304,7 @@ export default {
                     return false;
                 });
         },
-        cancelReminderItem (item) {
+        cancelReminderItem(item) {
             // this.reminderItem = item;
 
             const post_url = 'https://test.hotkup.com/crm/organizations/save';
@@ -1363,17 +1363,16 @@ export default {
                     return false;
                 });
         },
-        loadReminders () {
-
+        loadReminders() {
             // Attempting to use Comlink Worker
             const get_url = `https://test.hotkup.com/crm/org-reminders/list/${this.item.id}/1/all`; // Fetch all reminders
             const callbackFunction = (dataResponse) => {
-console.log(';dataResponse', dataResponse)
-                dataResponse.data = dataResponse;
-
+                console.log(';dataResponse', dataResponse)
                 // Pass it to the availableAssignees prop to the dropdown.
-                this.reminderList = [];
-                const reminders = dataResponse.data.data;
+                const reminders = dataResponse.data;
+                this.reminderList = reminders;
+                console.log("resss", reminders)
+                console.log('this.reminderList', this.reminderList)
             };
             const callbackError = (error) => {
                 console.error('Error in task-view-ms.loadReminders()');
@@ -1385,7 +1384,7 @@ console.log(';dataResponse', dataResponse)
                 });
             };
 
-            async function sendTaskToWorker () {
+            async function sendTaskToWorker() {
                 // const remoteFunction = Comlink.wrap(new Worker("resources/js/comlink-worker.js"));
                 console.log("Loading reminders using comlink-worker");
                 await ComlinkWorker.fetch(get_url,
@@ -1408,11 +1407,11 @@ console.log(';dataResponse', dataResponse)
 
         // Timelogs codes
 
-        updateTimelogItem (item) {
+        updateTimelogItem(item) {
             this.timelogLabel = 'Update Timelog';
             this.timelogItem = item;
         },
-        saveTimelog () {
+        saveTimelog() {
             const post_url = './timelogs/save';
 
             const isNew = this.timelogItem.id == 'New';
@@ -1514,7 +1513,7 @@ console.log(';dataResponse', dataResponse)
                     return false;
                 });
         },
-        cancelTimelogItem (item) {
+        cancelTimelogItem(item) {
             // this.timelogItem = item;
 
             const post_url = './timelogs/cancel';
@@ -1572,7 +1571,7 @@ console.log(';dataResponse', dataResponse)
                     return false;
                 });
         },
-        loadTimelogs () {
+        loadTimelogs() {
             try {
                 const url = './timelogs/list/' + this.taskObject.id; // Fetch all subtasks
                 // console.log("loading timelogs : " + url);
@@ -1581,7 +1580,7 @@ console.log(';dataResponse', dataResponse)
                 alert(e);
             }
         },
-        loadTaskTransitions () {
+        loadTaskTransitions() {
             try {
                 const url = './task-transitions/list/' + this.taskObject.id; // Fetch all task transitions
                 // console.log("loading transitions : " + url);
@@ -1592,7 +1591,7 @@ console.log(';dataResponse', dataResponse)
         },
 
         // Callbacks of loadPotentialMembersForReminders function.
-        handleUnpaginatedListData (listKey, data) {
+        handleUnpaginatedListData(listKey, data) {
             if (listKey === 'reminders') {
                 this.handleFetchedReminders(data);
             } else if (listKey === 'timelogs') {
@@ -1601,13 +1600,13 @@ console.log(';dataResponse', dataResponse)
                 this.handleFetchedTaskTransitions(data);
             }
         },
-        handleUnpaginatedListDataError (error) {
+        handleUnpaginatedListDataError(error) {
             console.error('Unpaginated List data fetch error : ', error);
         },
-        handleFetchedReminders (dataResponse) {
+        handleFetchedReminders(dataResponse) {
 
         },
-        handleFetchedTimelogs (dataResponse) {
+        handleFetchedTimelogs(dataResponse) {
             // Pass it to the availableAssignees prop to the dropdown.
             // console.log("Potential transitions : ", dataResponse);
 
@@ -1647,7 +1646,7 @@ console.log(';dataResponse', dataResponse)
             });
         },
 
-        handleFetchedTaskTransitions (dataResponse) {
+        handleFetchedTaskTransitions(dataResponse) {
             // Pass it to the availableAssignees prop to the dropdown.
             // console.log("Potential transitions : ", dataResponse);
 
@@ -1683,21 +1682,21 @@ console.log(';dataResponse', dataResponse)
             });
         },
 
-        someFunction (elem) {
+        someFunction(elem) {
             console.log(elem);
         },
-        goToHomePage () {
+        goToHomePage() {
             this.$router.push({
                 name: 'home',
                 params: {}
             });
         },
-        refreshSubTasksList () {
+        refreshSubTasksList() {
             // console.log("Refresh refresh SubTasks list");
             this.$emit('refreshSubTasksList', {});
         },
 
-        sendNewSubTaskEvent () {
+        sendNewSubTaskEvent() {
             // console.log("Event emitted in bus.", new Date());
             bus.emit('newSubTaskEvent', {
                 parentTask: this.taskObject,
@@ -1705,7 +1704,7 @@ console.log(';dataResponse', dataResponse)
             });
         },
         /* This addNewSubTask method will be substituted by sendNewSubTaskEvent method which keeps the 'new-task' and 'new-subtask' flows as same. */
-        addNewSubTask () {
+        addNewSubTask() {
             // Altered code to link components and actions with their appropriate routes. (Dec 5th 2020 by Bhaskara vignesh)
             this.sendNewSubTaskEvent();
             return false;
@@ -1715,11 +1714,11 @@ console.log(';dataResponse', dataResponse)
             this.showNewSubTaskForm = true;
             this.viewSubTask = false;
         },
-        exitNewSubTaskView () {
+        exitNewSubTaskView() {
             this.showNewSubTaskForm = false;
             // this.viewSubTask=true;
         },
-        exitSubTaskView () {
+        exitSubTaskView() {
             this.$router.push({
                 name: 'view-task-inbox',
                 params: {
@@ -1735,12 +1734,11 @@ console.log(';dataResponse', dataResponse)
             this.getRecord();
             UIkit.switcher(document.getElementById(this.embeddingViewName + '_switcherTabs')).show(3); // Show the subtasks tab
         },
-        displayRelevantTab () {
+        displayRelevantTab() {
 
             // Show the existing opened tab, even if the task chosen on list changes.
             // In this way, when we are on "Activity Tab", we can see activities of different tasks with less clicks.
             this.displayTab(null, this.selectedTabKey);
-            return false;
 
             if (this.preferredTab === 'Contact') {
                 this.displayTab(null, 'contact');
@@ -1748,8 +1746,8 @@ console.log(';dataResponse', dataResponse)
             } else if (this.preferredTab === 'Activity') {
                 this.displayTab(null, 'activity');
                 UIkit.switcher(document.getElementById(this.embeddingViewName + '_switcherTabs')).show(1);
-            } else if (this.preferredTab === 'Subtasks') {
-                this.displayTab(null, 'subtasks');
+            } else if (this.preferredTab === 'tasks') {
+                this.displayTab(null, 'tasks');
                 UIkit.switcher(document.getElementById(this.embeddingViewName + '_switcherTabs')).show(2);
             } else if (this.preferredTab === 'About') {
                 this.displayTab(null, 'about');
@@ -1760,7 +1758,7 @@ console.log(';dataResponse', dataResponse)
                 UIkit.switcher(document.getElementById(this.embeddingViewName + '_switcherTabs')).show(4);
             }
         },
-        displayTab (e, tabKey) {
+        displayTab(e, tabKey) {
             // e.preventDefault();
             this.selectedTabKey = tabKey;
 
@@ -1770,50 +1768,22 @@ console.log(';dataResponse', dataResponse)
             Array.from(document.querySelectorAll('#' + this.embeddingViewName + '_switcherTabs > li'))
                 .forEach(item => item.classList.remove("uk-active"));
 
-            try {
-                if (e !== null) {
-                    e.target.classList.add("uk-active");
-                } else if (e === null && this.selectedTabKey !== null) {
-                    document.querySelector('#' + this.embeddingViewName + '_switcherTabs > li.' + this.selectedTabKey)
-                        .classList.add("uk-active");
-                } else {
-                    console.log("No active tab, so making the first one active");
-                    (Array.from(document.querySelectorAll('#' + this.embeddingViewName + '_switcherTabs > li'))[0]).classList.add("uk-active");
-                }
-
-                if (this.selectedTabKey === 'activity' && !this.isActivityTabInitialized) {
-                    this.isActivityTabInitialized = true;
-                } else if (this.selectedTabKey === 'subtasks' && !this.isSubtasksTabInitialized) {
-                    this.isSubtasksTabInitialized = true;
-                } else if (this.selectedTabKey === 'checklist' && !this.isChecklistsTabInitialized) {
-                    this.isChecklistsTabInitialized = true;
-                    // Animate show the checkboxes.
-                    setTimeout(() => {
-                        Array.from(document.querySelectorAll(".scaleZero"))
-                            .forEach(checklist => {
-                                checklist.classList.remove("scaleZero");
-                            });
-                    }, 500);
-                } else if (this.selectedTabKey === 'reminders' && !this.isRemindersTabInitialized) {
-                    this.isRemindersTabInitialized = true;
-                } else if (this.selectedTabKey === 'timelogs' && !this.isTimelogsTabInitialized) {
-                    this.isTimelogsTabInitialized = true;
-                } else if (this.selectedTabKey === 'transitions' && !this.isTransitionsTabInitialized) {
-                    this.isTransitionsTabInitialized = true;
-                } else if (this.selectedTabKey === 'forms' && !this.isFormsTabInitialized) {
-                    this.isFormsTabInitialized = true;
-                } else if (this.selectedTabKey === 'files' && !this.isFilesTabInitialized) {
-                    this.isFilesTabInitialized = true;
-                }
-            } catch (error) {
-                console.error("ERROR Info : embeddingViewName=" + this.embeddingViewName + ", tab=" + this.selectedTabKey);
-                console.error("error in displayTab :: ", error);
+            if (this.selectedTabKey === 'Contact') {
+                this.getOrgContacts();
+                this.isContactTabInitialized = true;
+            } 
+            if (this.selectedTabKey === 'activity') {
+                this.isActivityTabInitialized = true;
+            } 
+            if (this.selectedTabKey === 'tasks') {
+                this.isSubtasksTabInitialized = true;
+            } 
+            if (this.selectedTabKey === 'reminders') {
+                this.loadReminders();
+                this.isRemindersTabInitialized = true;
             }
-
-            // alert("Going to activity Tab");
-            // UIkit.switcher(document.getElementById(this.embeddingViewName + '_switcherTabs')).show(6);
         },
-        getRecord () {
+        getRecord() {
 
             // Attempting fetch using comlink;
 
@@ -1979,7 +1949,7 @@ console.log(';dataResponse', dataResponse)
                 });
             };
 
-            async function sendTaskToWorker () {
+            async function sendTaskToWorker() {
                 // const remoteFunction = Comlink.wrap(new Worker("resources/js/comlink-worker.js"));
                 await ComlinkWorker.fetch(process.env.VUE_APP_API_URL + get_url,
                     Comlink.proxy(callbackFunction),
@@ -2000,7 +1970,7 @@ console.log(';dataResponse', dataResponse)
                     return false;
                 });
         },
-        openContextMenu (msgId, evt) {
+        openContextMenu(msgId, evt) {
             document.getElementById('ctx_menu_' + msgId).style.top = '30px';
 
             if (!document.getElementById('ctx_menu_' + msgId).classList.contains('opened')) {
@@ -2018,7 +1988,7 @@ console.log(';dataResponse', dataResponse)
 
             // document.getElementById("ctx-menu-trigger-" + msgId).style.opacity=1;
         },
-        hideContextMenu () {
+        hideContextMenu() {
             document.querySelectorAll('.context-menu').forEach((item) => {
                 // item.style.display="none";
                 item.style.transform = null;
@@ -2029,14 +1999,14 @@ console.log(';dataResponse', dataResponse)
             document.querySelector('body').removeEventListener('click', this.handleClickEventOnBody, false);
             document.getElementById('menu_slider').style.left = '0%';
         },
-        handleClickEventOnBody (event) {
+        handleClickEventOnBody(event) {
             const foundParent = event.target.closest('.context-menu');
             if (foundParent === null) {
                 // This means, if target on which the click happened is not within the context-menu div, so you can close the context-menu dropdown.
                 this.hideContextMenu();
             }
         },
-        onCustomerSelect (customerId) {
+        onCustomerSelect(customerId) {
             // alert("Customer " + customerId + " is selected.");
 
             this.customers.forEach(customer => {
@@ -2046,7 +2016,7 @@ console.log(';dataResponse', dataResponse)
                 }
             });
         },
-        onCustomerBranchSelect (customerBranchId) {
+        onCustomerBranchSelect(customerBranchId) {
             // alert("Customer " + customerId + " is selected.");
 
             this.customerBranches.forEach(customerBranch => {
@@ -2055,6 +2025,18 @@ console.log(';dataResponse', dataResponse)
                     this.updateCustomerBranchHook(customerBranch);
                 }
             });
+        },
+
+        // fetch contactDetails
+        getOrgContacts() {
+            axios({
+                    method: 'GET',
+                    url: `https://test.hotkup.com/crm/org-contact-link/list-contacts/${this.item.id}/1/all`,
+                })
+                .then((res) => {
+                    alert(this.organizationId);
+                    this.contact = res.data.data;
+                }).error((res) => console.log(res));
         }
     },
     created: function () {},
@@ -2158,10 +2140,10 @@ console.log(';dataResponse', dataResponse)
         //     this.taskObject = newTask;
         //     //this.getRecord();
         // },
-        'loggedInUser.userId' (newVal, oldVal) {
+        'loggedInUser.userId'(newVal, oldVal) {
             console.log(this.loggedInUser.userId);
         },
-        'taskIdToBeViewed' (newVal, oldVal) {
+        'taskIdToBeViewed'(newVal, oldVal) {
             this.viewSubTask = false;
             this.showNewSubTaskForm = false;
             this.parentTaskName = null;
@@ -2173,14 +2155,14 @@ console.log(';dataResponse', dataResponse)
             }
             return false;
         },
-        'tabToDisplay' (newVal, oldVal) {
+        'tabToDisplay'(newVal, oldVal) {
 
             if (this.tabToDisplay !== null && this.tabToDisplay !== undefined) {
                 this.displayTab(null, this.tabToDisplay);
             }
 
         },
-        '$route.params.taskId' (newTaskId, oldTaskId) {
+        '$route.params.taskId'(newTaskId, oldTaskId) {
             console.log('Task ID changed from ' + oldTaskId + ' to ' + newTaskId);
 
             if (newTaskId !== 'none') {
@@ -2204,7 +2186,7 @@ console.log(';dataResponse', dataResponse)
                 this.getRecord();
             }
         },
-        '$route.params.subtaskId' (newSubTaskId, oldSubTaskId) {
+        '$route.params.subtaskId'(newSubTaskId, oldSubTaskId) {
             console.log('SubTask ID changed from ' + oldSubTaskId + ' to ' + newSubTaskId + ' in the task-view-ms.vue component.');
 
             if (newSubTaskId !== 'none') {
