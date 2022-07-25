@@ -1230,7 +1230,7 @@ export default {
                 });
         },
         saveReminder() {
-            alert("Add alert")
+            alert("Add alert");
             const post_url = 'https://test.hotkup.com/crm/org-reminders/save';
 
             const isNew = this.reminderItem.id == 'New';
@@ -1367,12 +1367,12 @@ export default {
             // Attempting to use Comlink Worker
             const get_url = `https://test.hotkup.com/crm/org-reminders/list/${this.item.id}/1/all`; // Fetch all reminders
             const callbackFunction = (dataResponse) => {
-                console.log(';dataResponse', dataResponse)
+                console.log(';dataResponse', dataResponse);
                 // Pass it to the availableAssignees prop to the dropdown.
                 const reminders = dataResponse.data;
                 this.reminderList = reminders;
-                console.log("resss", reminders)
-                console.log('this.reminderList', this.reminderList)
+                console.log("resss", reminders);
+                console.log('this.reminderList', this.reminderList);
             };
             const callbackError = (error) => {
                 console.error('Error in task-view-ms.loadReminders()');
@@ -1400,191 +1400,6 @@ export default {
                 const url = './reminders/list/' + this.taskObject.id; // Fetch all subtasks
                 // console.log("loading reminders : " + url);
                 this.getUnpaginatedList('reminders', url); // This lib call will fire the callback "handleUnpaginatedListData" when it completes.
-            } catch (e) {
-                alert(e);
-            }
-        },
-
-        // Timelogs codes
-
-        updateTimelogItem(item) {
-            this.timelogLabel = 'Update Timelog';
-            this.timelogItem = item;
-        },
-        saveTimelog() {
-            const post_url = './timelogs/save';
-
-            const isNew = this.timelogItem.id == 'New';
-            const form = {
-                id: this.timelogItem.id,
-                taskId: this.taskId,
-                description: this.timelogItem.description,
-                duration: this.timelogItem.duration,
-                durationUnit: this.timelogItem.durationUnit
-            };
-
-            // do validations here
-
-            if (form.description === undefined || form.description === null || form.description === "") {
-                alert("Please enter a valid description.");
-                return false;
-            }
-
-            if (form.duration === undefined || form.duration === null || form.duration === "") {
-                alert("Please add a valid duration.");
-                return false;
-            }
-
-            if (form.durationUnit === undefined || form.durationUnit === null || form.durationUnit === "") {
-                alert("Please select a valid duration unit.");
-                return false;
-            }
-
-            /*
-
-              Pawan wanted this as 'duration and durationUnits'
-
-            if (this.timelogItem.startDateTime) {
-              // form["startDateTime"] = new Date(this.timelogItem.startDateTime).toLocaleString();
-
-              // Always convert the inputs from browser into UTC timezone and ISO format.
-              form.startDateTime = new Date(this.timelogItem.startDateTime).toISOString();
-            }
-
-            if (this.timelogItem.endDateTime) {
-              // form["endDateTime"] = new Date(this.timelogItem.endDateTime).toLocaleString();
-
-              // Always convert the inputs from browser into UTC timezone and ISO format.
-              form.endDateTime = new Date(this.timelogItem.endDateTime).toISOString();
-            }
-            */
-
-            // console.log(form);
-            // return false;
-
-            // VueJS ajax call-1
-            axios.post(process.env.VUE_APP_API_URL + post_url, form)
-                .then((dataResponse) => {
-                    // console.log("Timelog save Result : ");
-                    // console.log(dataResponse);
-
-                    if (dataResponse.data.actionResult === 1) {
-                        this.timelogItem = {
-                            id: 'New'
-                        };
-                        // this.reminderItem = {"actionType" : "NEW"};
-                        this.timelogLabel = 'Add Timelog';
-                        this.loadTimelogs();
-
-                        const notificationLabel = (isNew) ? 'New Timelog added.' : 'Timelog updated.';
-
-                        UIkit.notification(`<div class="taskone-notification">
-                                                  <span uk-icon="icon: check;ratio:1"></span>
-                                                  <div> ${notificationLabel} </div>
-                                              </div>`, {
-                            status: 'success',
-                            pos: 'bottom-left',
-                            timeout: 5000
-                        });
-
-                        // this.$emit("refreshList",{});
-                    } else {
-                        const errorMsg = (dataResponse.data).message;
-                        UIkit.notification("<span uk-icon='icon: warning;ratio:1'></span>" + errorMsg, {
-                            status: 'danger',
-                            pos: 'bottom-left',
-                            timeout: 5000
-                        });
-                        return false;
-                    }
-                })
-                .catch(function (errorResponse) {
-                    console.log('ERROR MS - ', errorResponse);
-                    const exceptionMsg = errorResponse.response.data.exception;
-
-                    UIkit.notification("<span uk-icon='icon: warning ;ratio:1'></span> " + exceptionMsg + '.', {
-                        status: 'danger',
-                        pos: 'bottom-left',
-                        timeout: 5000
-                    });
-
-                    document.getElementById('saveButton').innerHTML = btnText;
-                    this.enableHTMLElement(document.getElementById('saveButton'));
-                    return false;
-                });
-        },
-        cancelTimelogItem(item) {
-            // this.timelogItem = item;
-
-            const post_url = './timelogs/cancel';
-            const form = {
-                id: item.id,
-                status: "CANCELLED"
-            };
-
-            // VueJS ajax call-1
-            axios.post(process.env.VUE_APP_API_URL + post_url, form)
-                .then((dataResponse) => {
-                    // console.log("Reminder save Result : ");
-                    // console.log(dataResponse);
-
-                    if (dataResponse.data.status === "SUCCESS") {
-                        this.timelogItem = {
-                            id: 'New'
-                        };
-                        this.loadTimelogs();
-
-                        const notificationLabel = 'Timelog entry cancelled.';
-
-                        UIkit.notification(`<div class="taskone-notification">
-                                                  <span uk-icon="icon: check;ratio:1"></span>
-                                                  <div> ${notificationLabel} </div>
-                                              </div>`, {
-                            status: 'success',
-                            pos: 'bottom-left',
-                            timeout: 5000
-                        });
-
-                        // this.$emit("refreshList",{});
-                    } else {
-                        const errorMsg = (dataResponse.data).message;
-                        UIkit.notification("<span uk-icon='icon: warning;ratio:1'></span>" + errorMsg, {
-                            status: 'danger',
-                            pos: 'bottom-left',
-                            timeout: 5000
-                        });
-                        return false;
-                    }
-                })
-                .catch(function (errorResponse) {
-                    console.log('ERROR MS - ', errorResponse);
-                    const exceptionMsg = errorResponse.response.data.exception;
-
-                    UIkit.notification("<span uk-icon='icon: warning ;ratio:1'></span> " + exceptionMsg + '.', {
-                        status: 'danger',
-                        pos: 'bottom-left',
-                        timeout: 5000
-                    });
-
-                    document.getElementById('saveButton').innerHTML = btnText;
-                    this.enableHTMLElement(document.getElementById('saveButton'));
-                    return false;
-                });
-        },
-        loadTimelogs() {
-            try {
-                const url = './timelogs/list/' + this.taskObject.id; // Fetch all subtasks
-                // console.log("loading timelogs : " + url);
-                this.getUnpaginatedList('timelogs', url); // This lib call will fire the callback "handleUnpaginatedListData" when it completes.
-            } catch (e) {
-                alert(e);
-            }
-        },
-        loadTaskTransitions() {
-            try {
-                const url = './task-transitions/list/' + this.taskObject.id; // Fetch all task transitions
-                // console.log("loading transitions : " + url);
-                this.getUnpaginatedList('task_transitions', url); // This lib call will fire the callback "handleUnpaginatedListData" when it completes.
             } catch (e) {
                 alert(e);
             }
@@ -1785,16 +1600,6 @@ export default {
         },
         getRecord() {
 
-            // Attempting fetch using comlink;
-
-            // Developer notes regarding the usage of Comlink.
-            // In the main.js, we are importing Comlink using 'import * as Comlink from "comlink"'
-            // After importing, we are storing the Comlink object into the window object
-            //    in the following code line
-            //    window.Comlink = Comlink
-            // Secondly, we are storing a reference of the worker into the window object as well.
-            //    window.ComlinkWorker = Comlink.wrap(new Worker("resources/js/comlink-worker.js"));
-
             if (this.taskObject === undefined || this.taskObject === null) {
                 return false;
             } else if (this.taskObject.id === undefined || this.taskObject.id === null) {
@@ -1923,7 +1728,6 @@ export default {
                     this.loadPotentialMembersForReminders();
                     this.loadReminders();
                     this.loadTimelogs();
-                    this.loadTaskTransitions();
 
                     // Load Hooks
                     this.loadCustomerHooks();
@@ -2031,7 +1835,7 @@ export default {
         getOrgContacts() {
             axios({
                     method: 'GET',
-                    url: `https://test.hotkup.com/crm/org-contact-link/list-contacts/${this.item.id}/1/all`,
+                    url: `https://test.hotkup.com/crm/org-contact-link/list-contacts/${this.item.id}/1/all`
                 })
                 .then((res) => {
                     alert(this.organizationId);

@@ -108,24 +108,24 @@ export default {
                 data: obj
             }).then((res) => {
                 if (res) {
-                    this.firstName = "",
-                        this.lastName = "",
-                        this.email = "",
-                        this.mobile = "",
-                        this.telephone = "",
-                        this.extension = "",
-                        this.category = "",
-                        this.street = "",
-                        this.city = "",
-                        this.provience = "",
-                        this.pin = ""
+                    this.firstName = "";
+                    this.lastName = "";
+                    this.email = "";
+                    this.mobile = "";
+                    this.telephone = "";
+                    this.extension = "";
+                    this.category = "";
+                    this.street = "";
+                    this.city = "";
+                    this.provience = "";
+                    this.pin = "";
                 }
 
             });
         },
 
         conAlert() {
-            alert(this.organisation)
+            alert(this.organisation);
         }
     }
 };

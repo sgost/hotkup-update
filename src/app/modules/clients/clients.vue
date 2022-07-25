@@ -75,7 +75,7 @@
 
                         <div class="adk_grid_list_content custom-scroll-bar" id="taskListIntersectionObserver">
                             <div class="task_inbox_list elastic_scroll_list">
-                            <p v-show="myCategorieOrganizations.length === 0">No Organizations...</p>
+                                <p v-show="myCategorieOrganizations.length === 0">No Organizations...</p>
                                 <div v-for="(item, index) in myCategorieOrganizations" :key="index">
                                     <div v-on:click="cardSetItem(index, item)" v-bind:style="cardActive === index && 'border-left: 2px solid rgb(37, 139, 255)'">
                                         <clients-list-item v-bind:item="item" v-bind:myOrgName="myOrgName" v-bind:cardActive="cardActive" v-bind:catIndex="index" />
@@ -252,7 +252,7 @@
 <div id="add-client-modal" class="uk-flex-top" uk-modal>
     <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
         <button class="uk-modal-close-default" type="button" uk-close></button>
-        <add-client v-bind:categoryId="categoryId" v-bind:getOrgDetails="getOrgDetails" v-bind:myOrganizationCategories="myOrganizationCategories"/>
+        <add-client v-bind:categoryId="categoryId" v-bind:getOrgDetails="getOrgDetails" v-bind:myOrganizationCategories="myOrganizationCategories" />
     </div>
 </div>
 </template>
@@ -341,13 +341,13 @@ export default {
     },
     methods: {
 
-        toggleSideMenu () {
+        toggleSideMenu() {
             document.querySelector("#appSideMenu").classList.toggle("isClosed");
             document.querySelector("#appSideMenuContent").classList.toggle("isClosed");
         },
 
         // Add categories
-        addCatrgories () {
+        addCatrgories() {
             const obj = {
                 id: "new",
                 tenantId: "61dfe560a4d68d08b821e08c",
@@ -365,7 +365,7 @@ export default {
         },
 
         // Get categories
-        getCategories () {
+        getCategories() {
             axios({
                 method: 'GET',
                 url: 'https://test.hotkup.com/crm/category/list/1/all',
@@ -376,8 +376,8 @@ export default {
             });
         },
 
-        loadTasksFromCategory (id, name) {
-            alert(id)
+        loadTasksFromCategory(id, name) {
+            alert(id);
             this.clientFilter = id;
             this.categoryId = id;
             this.myOrgName = name;
@@ -385,10 +385,10 @@ export default {
         },
 
         // Getting All organisation details
-        getOrgDetails (id) {
+        getOrgDetails(id) {
             axios({
                     method: 'GET',
-                    url: `https://test.hotkup.com/crm/organizations/list/${id}/1/all`,
+                    url: `https://test.hotkup.com/crm/organizations/list/${id}/1/all`
                 })
                 .then((res) => {
                     console.log("res", res);
@@ -397,7 +397,7 @@ export default {
                 .error((res) => console.log(res));
         },
 
-        cardSetItem (index, item) {
+        cardSetItem(index, item) {
             this.cardActive = index;
             axios({
                     method: 'GET',
@@ -417,7 +417,7 @@ export default {
         this.getCategories(); // Fetching categories initaly
     },
     unmounted: function () {},
-    beforeUnmount () {
+    beforeUnmount() {
         bus.all.delete('connected-rsocket');
     },
     watch: {

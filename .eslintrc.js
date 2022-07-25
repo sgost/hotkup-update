@@ -42,7 +42,8 @@ module.exports = {
     indent: 'off',
     quotes: 'off',
     'padded-blocks': 'off',
-    'dot-notation': 'off'
+    'dot-notation': 'off',
+    'space-before-function-paren': 'off'
 
   }
 };

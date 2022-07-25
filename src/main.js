@@ -189,7 +189,7 @@ app.component('people-activity-tab', PeopleActivity);
 app.component('people-information', PeopleInformation);
 app.component('people-organization', PeopleOrganization);
 app.component('add-people', PeopleAdd);
-app.component('people-info-tab', PeopleInfo)
+app.component('people-info-tab', PeopleInfo);
 app.component('people-view-remainders', PeopleRemainders);
 app.use(store)
   .use(router)

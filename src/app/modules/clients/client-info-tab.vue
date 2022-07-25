@@ -101,8 +101,8 @@ export default {
     props: ['taskInfo', 'hideUpdateButton', 'item', 'myOrgName'],
     data: function () {
         return {
-          parentOrg: '',
-          AllparentOrg: [],
+            parentOrg: '',
+            AllparentOrg: [],
             editClient: {
                 name: "COCO-COLA",
                 email: 'coco@gmail.com',
@@ -118,7 +118,7 @@ export default {
         };
     },
     methods: {
-        fetchData () {
+        fetchData() {
             console.log('item', this.item);
             console.log(this.editClient);
 
@@ -126,19 +126,21 @@ export default {
             this.getCategory();
         },
 
-        getCategory () {
-             axios({
-                    method: 'GET',
-                    url: `https://test.hotkup.com/crm/category/get/${this.item.categoryId}`
-                }).then((res) => {
-                  this.parentOrg = res.data.data.name;
-                });
+        getCategory() {
+            axios({
+                method: 'GET',
+                url: `https://test.hotkup.com/crm/category/get/${this.item.categoryId}`
+            }).then((res) => {
+                this.parentOrg = res.data.data.name;
+            });
         },
-         getAllParent () {
-             axios({
-                    method: 'GET',
-                    url: `https://test.hotkup.com/crm/category/list/1/all`
-                }).then((res) => this.AllparentOrg = res.data.data);
+        getAllParent() {
+            axios({
+                method: 'GET',
+                url: `https://test.hotkup.com/crm/category/list/1/all`
+            }).then((res) => {
+                this.AllparentOrg = res.data.data;
+            });
         }
     },
     created: function () {},

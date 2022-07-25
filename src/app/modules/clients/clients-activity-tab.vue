@@ -1,6 +1,6 @@
 <template>
 <div style="display: flex;flex-direction: column;flex-grow: 1;max-width: 100%;box-sizing: border-box;">
-    {{availableActivities}}
+    {{newavailableActivities}}
     <div style="padding: 5px 0px;margin-right: 20px;margin-bottom: 0px;display: grid;display:none;grid-template-rows: 1fr;place-items: flex-end;border-bottom: 0px solid rgb(208, 208, 208);">
         <button v-on:click="openPostCommentModal()" class="clickable-btn uk-button uk-button-danger uk-button-small uk-grid-margin uk-first-column end-call-button" style="background-color:#2196f3;border-radius: 3px;min-width: 100px;font-size: 0.65rem;line-height: 30px;font-weight: normal !important;display: inline-block;">
             <span uk-icon="icon:plus;ratio:0.65" class="uk-icon" style="">
@@ -85,7 +85,7 @@
             <div v-if="showCommentOptions" class="uk-width-1-1" style="border-top: 0px solid rgb(241, 241, 241);padding: 20px 0px 0px;margin: 0px 0px 0px 15px;display: flex;flex-direction: column;">
 
                 <div style="display: flex;width:100%;place-self:center;">
-                    <button v-bind:disabled="isFileUploading" tabindex="111" id="commentButton" v-on:click="saveActivityComment(null, null, null)" class="clickable-btn uk-button uk-button-danger uk-button-small uk-grid-margin uk-first-column end-call-button" style="background-color: #4caf50;border-radius: 3px;place-self: center;place-items: center;min-widthx: 125px;font-size: 0.65rem;line-height: 30px;font-weight: normal !important;color: white;">
+                    <button v-bind:disabled="isFileUploading" tabindex="111" id="commentButton" v-on:click="loadTaskActivities(null, null, null)" class="clickable-btn uk-button uk-button-danger uk-button-small uk-grid-margin uk-first-column end-call-button" style="background-color: #4caf50;border-radius: 3px;place-self: center;place-items: center;min-widthx: 125px;font-size: 0.65rem;line-height: 30px;font-weight: normal !important;color: white;">
                         <div style="display: flex;justify-content: center;align-items: center;">
                             <div>
                                 <span uk-icon="icon:comment;ratio:0.75" class="uk-icon"></span>
@@ -115,7 +115,7 @@
     </div>
     <div class="first_column_scrollable custom-scroll-bar activities_list" style="border-top:0px solid gray;margin-top:10px;position:relative;flex-grow: 1;" v-on:clickXX="openContextMenu($event)">
 
-        <template v-for="(activity,idx) in availableActivities" :key="idx">
+        <template v-for="(activity,idx) in newavailableActivities" :key="idx">
 
             <div class="activity_box fade_reveal">
                 <div style="border-right:1px dashed #cecece"></div>
@@ -562,6 +562,7 @@ export default {
             loggedInUserx: {},
             taskActivityComment: {},
             availableActivities: [],
+            newavailableActivities: [],
             chosenFiles: [],
             numberOfUploadedFiles: 0,
             isFileChosen: false,
@@ -1813,7 +1814,6 @@ export default {
 
         // Handling File uploads
         uploadFileType(fileType) {
-            console.log('fileType', fileType)
             if (fileType === 'image') {
                 document.getElementById(this.uniqueComponentId + '_fileUploadForm').setAttribute('accept', 'image/*');
             } else {
@@ -2001,179 +2001,178 @@ export default {
             });
         },
 
-        sendEmailFromTemplate() {
-            const form = {
-                template: document.getElementById("ce_editor").innerText
-            };
+        // sendEmailFromTemplate() {
+        //     const form = {
+        //         template: document.getElementById("ce_editor").innerText
+        //     };
 
-            const post_url = './email/send-mail';
-            axios.post(process.env.VUE_APP_API_URL + post_url, form)
-                .then((dataResponse) => {
-                    console.log(dataResponse);
-                    // alert(dataResponse);
-                })
-                .catch(function (errorResponse) {
-                    console.log('ERROR MS - ', errorResponse);
-                    const exceptionMsg = errorResponse.response.data.exception;
-                    alert(errorResponse);
-                });
-        },
-        async sendToChatConversation(mentionedPeopleIds, activityInfo) {
+        //     const post_url = './email/send-mail';
+        //     axios.post(process.env.VUE_APP_API_URL + post_url, form)
+        //         .then((dataResponse) => {
+        //             console.log(dataResponse);
+        //             // alert(dataResponse);
+        //         })
+        //         .catch(function (errorResponse) {
+        //             console.log('ERROR MS - ', errorResponse);
+        //             const exceptionMsg = errorResponse.response.data.exception;
+        //             alert(errorResponse);
+        //         });
+        // },
+        // async sendToChatConversation(mentionedPeopleIds, activityInfo) {
 
-            for (const idx in mentionedPeopleIds) {
-                const mentionedPeopleId = mentionedPeopleIds[idx];
+        //     for (const idx in mentionedPeopleIds) {
+        //         const mentionedPeopleId = mentionedPeopleIds[idx];
 
-                const conversationId = await this.getOneToOneChatOrCreateNew(mentionedPeopleId);
-                // alert("conversationId for " + mentionedPeopleId + " is " + conversationId);
+        //         const conversationId = await this.getOneToOneChatOrCreateNew(mentionedPeopleId);
+        //         // alert("conversationId for " + mentionedPeopleId + " is " + conversationId);
 
-                const chatMsg = {
-                    messageType: "COMMENT_MENTIONED_CHAT_NOTIFICATION",
-                    extra: activityInfo.taskId, // Here we pass this task's ID as the extra parameter for reference purpose. This id will be used to load the task's comments from the chat screen.
-                    message: activityInfo.description,
-                    conversationId: conversationId,
-                    acknowledgementStatusId: new Date().getTime()
-                };
+        //         const chatMsg = {
+        //             messageType: "COMMENT_MENTIONED_CHAT_NOTIFICATION",
+        //             extra: activityInfo.taskId, // Here we pass this task's ID as the extra parameter for reference purpose. This id will be used to load the task's comments from the chat screen.
+        //             message: activityInfo.description,
+        //             conversationId: conversationId,
+        //             acknowledgementStatusId: new Date().getTime()
+        //         };
 
-                console.log(chatMsg, " with atttachment");
-                bus.emit('send-chat-msg-to-server', chatMsg);
-            };
+        //         console.log(chatMsg, " with atttachment");
+        //         bus.emit('send-chat-msg-to-server', chatMsg);
+        //     };
 
-        },
-        async saveActivityComment() {
+        // },
+        // async saveActivityComment() {
 
-            // setTimeout(() => {
-            //   this.closePostCommentModal(); // If opened.
-            // }, 2000);
-            // return false;
+        //     // setTimeout(() => {
+        //     //   this.closePostCommentModal(); // If opened.
+        //     // }, 2000);
+        //     // return false;
 
-            if (this.isFileChosen) {
-                console.log('File is uploading..');
-                await this.uploadFileBeforePostingComment();
-                console.log('File is uploaded.');
+        //     if (this.isFileChosen) {
+        //         console.log('File is uploading..');
+        //         await this.uploadFileBeforePostingComment();
+        //         console.log('File is uploaded.');
 
-                if (this.numberOfUploadedFiles < this.chosenFiles.length) {
-                    const numberOfFilesNotUploaded = parseInt(this.chosenFiles.length) - parseInt(this.numberOfUploadedFiles);
-                    alert(numberOfFilesNotUploaded + ' files were not uploaded. The comment will not be saved.');
-                    return false;
-                }
-            }
+        //         if (this.numberOfUploadedFiles < this.chosenFiles.length) {
+        //             const numberOfFilesNotUploaded = parseInt(this.chosenFiles.length) - parseInt(this.numberOfUploadedFiles);
+        //             alert(numberOfFilesNotUploaded + ' files were not uploaded. The comment will not be saved.');
+        //             return false;
+        //         }
+        //     }
 
-            console.log('Posting comment..');
-            let btnText = event.target.innerHTML;
+        //     console.log('Posting comment..');
+        //     let btnText = event.target.innerHTML;
+        //     const isNew = this.taskActivityComment.id == 'New';
+        //     const form = {
+        //         id: this.taskActivityComment.id,
+        //         orgId: this.organizationId,
+        //         description: this.taskActivityComment.description
+        //         // attachments to follow. (file docs etc..)
+        //     };
 
-            const isNew = this.taskActivityComment.id == 'New';
-            const form = {
-                id: this.taskActivityComment.id,
-                orgId: this.organizationId,
-                description: this.taskActivityComment.description
-                // attachments to follow. (file docs etc..)
-            };
+        //     console.log(form);
+        //     // return false;
 
-            console.log(form);
-            // return false;
+        //     // VueJS ajax call-1
+        //     axios.post('https://test.hotkup.com/crm/org-activities/save-comment', form)
+        //         .then((dataResponse) => {
+        //             this.loadTaskActivities();
+        //             console.log('Task Activity comment save Result : ');
+        //             console.log(dataResponse);
 
-            // VueJS ajax call-1
-            axios.post('https://test.hotkup.com/crm/org-activities/save-comment', form)
-                .then((dataResponse) => {
-                    this.loadTaskActivities();
-                    console.log('Task Activity comment save Result : ');
-                    console.log(dataResponse);
+        //             if (dataResponse.data.id !== null) {
+        //                 const item = dataResponse.data;
 
-                    if (dataResponse.data.id !== null) {
-                        const item = dataResponse.data;
+        //                 if (document.querySelector('#activity_reply_comment_textarea_' + activityId) !== null && document.querySelector('#activity_reply_comment_textarea_' + activityId) !== undefined) {
+        //                     document.querySelector('#activity_reply_comment_textarea_' + activityId).value = "";
+        //                 }
 
-                        if (document.querySelector('#activity_reply_comment_textarea_' + activityId) !== null && document.querySelector('#activity_reply_comment_textarea_' + activityId) !== undefined) {
-                            document.querySelector('#activity_reply_comment_textarea_' + activityId).value = "";
-                        }
+        //                 this.taskActivityComment = {
+        //                     id: 'New'
+        //                 };
+        //                 document.querySelector("#ce_editor").innerHTML = "";
 
-                        this.taskActivityComment = {
-                            id: 'New'
-                        };
-                        document.querySelector("#ce_editor").innerHTML = "";
+        //                 // Reset attachment parameters.
+        //                 this.uploadActivityFile = false;
+        //                 this.isFileChosen = false;
+        //                 this.chosenFileName = 'Not chosen';
+        //                 this.isFileUploading = false;
+        //                 this.chosenFiles = [];
+        //                 this.numberOfUploadedFiles = 0;
+        //                 this.currentlyUploadedFile = null;
 
-                        // Reset attachment parameters.
-                        this.uploadActivityFile = false;
-                        this.isFileChosen = false;
-                        this.chosenFileName = 'Not chosen';
-                        this.isFileUploading = false;
-                        this.chosenFiles = [];
-                        this.numberOfUploadedFiles = 0;
-                        this.currentlyUploadedFile = null;
+        //                 const notificationLabel = (isNew) ? 'New comment added.' : 'Comment updated.';
 
-                        const notificationLabel = (isNew) ? 'New comment added.' : 'Comment updated.';
+        //                 UIkit.notification(`<div class="taskone-notification">
+        //                                           <span uk-icon="icon: check;ratio:1"></span>
+        //                                           <div> ${notificationLabel} </div>
+        //                                       </div>`, {
+        //                     status: 'success',
+        //                     pos: 'bottom-left',
+        //                     timeout: 5000
+        //                 });
 
-                        UIkit.notification(`<div class="taskone-notification">
-                                                  <span uk-icon="icon: check;ratio:1"></span>
-                                                  <div> ${notificationLabel} </div>
-                                              </div>`, {
-                            status: 'success',
-                            pos: 'bottom-left',
-                            timeout: 5000
-                        });
+        //                 // Attach the mentioned people in this comment.
+        //                 if (this.mentionedPeopleIds !== null && this.mentionedPeopleIds.length > 0) {
+        //                     const msg = "";
+        //                     this.sendToChatConversation(this.mentionedPeopleIds, form);
+        //                     this.mentionedPeopleIds = [];
+        //                 }
 
-                        // Attach the mentioned people in this comment.
-                        if (this.mentionedPeopleIds !== null && this.mentionedPeopleIds.length > 0) {
-                            const msg = "";
-                            this.sendToChatConversation(this.mentionedPeopleIds, form);
-                            this.mentionedPeopleIds = [];
-                        }
+        //                 // this.closePostCommentModal(); // If opened.
+        //                 // this.closeActivityCommentBox(activityId);
+        //                 // this.$emit("refreshList",{});
+        //             } else {
 
-                        // this.closePostCommentModal(); // If opened.
-                        // this.closeActivityCommentBox(activityId);
-                        // this.$emit("refreshList",{});
-                    } else {
+        //                 const errorMsg = (dataResponse.data).message;
+        //                 UIkit.notification("<span uk-icon='icon: warning;ratio:1'></span>" + errorMsg, {
+        //                     status: 'danger',
+        //                     pos: 'bottom-left',
+        //                     timeout: 5000
+        //                 });
+        //                 return false;
+        //             }
+        //         })
+        //         .catch(function (errorResponse) {
+        //             console.log('ERROR MS - ', errorResponse);
+        //             const exceptionMsg = errorResponse.response.data.exception;
 
-                        const errorMsg = (dataResponse.data).message;
-                        UIkit.notification("<span uk-icon='icon: warning;ratio:1'></span>" + errorMsg, {
-                            status: 'danger',
-                            pos: 'bottom-left',
-                            timeout: 5000
-                        });
-                        return false;
-                    }
-                })
-                .catch(function (errorResponse) {
-                    console.log('ERROR MS - ', errorResponse);
-                    const exceptionMsg = errorResponse.response.data.exception;
+        //             UIkit.notification("<span uk-icon='icon: warning ;ratio:1'></span> " + exceptionMsg + '.', {
+        //                 status: 'danger',
+        //                 pos: 'bottom-left',
+        //                 timeout: 500000
+        //             });
 
-                    UIkit.notification("<span uk-icon='icon: warning ;ratio:1'></span> " + exceptionMsg + '.', {
-                        status: 'danger',
-                        pos: 'bottom-left',
-                        timeout: 500000
-                    });
+        //             event.target.innerHTML = btnText;
+        //             this.enableHTMLElement(event.target);
+        //             return false;
+        //         });
+        // },
+        // formatBytes(bytes, decimals = 2) {
 
-                    event.target.innerHTML = btnText;
-                    this.enableHTMLElement(event.target);
-                    return false;
-                });
-        },
-        formatBytes(bytes, decimals = 2) {
+        //     if (bytes === 0) return '0 Bytes';
 
-            if (bytes === 0) return '0 Bytes';
+        //     const k = 1024;
+        //     const dm = decimals < 0 ? 0 : decimals;
+        //     const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
 
-            const k = 1024;
-            const dm = decimals < 0 ? 0 : decimals;
-            const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+        //     const i = Math.floor(Math.log(bytes) / Math.log(k));
 
-            const i = Math.floor(Math.log(bytes) / Math.log(k));
+        //     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+        // },
 
-            return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
-        },
-
-        downloadFile(doc_id) {
-            if (true) // has file download permissions check
-            {
-                try {
-                    const url = '/file-uploads/get/' + doc_id + '/download';
-                    var div = document.createElement('div');
-                    div.setAttribute('style', 'height:0px;display:none');
-                    document.body.appendChild(div);
-                    div.innerHTML = "<iframe width='0' height='0' scrolling='no' frameborder='0' src='" + url + "'></iframe>";
-                } catch (e) {
-                    alert(e);
-                }
-            }
-        },
+        // downloadFile(doc_id) {
+        //     if (true) // has file download permissions check
+        //     {
+        //         try {
+        //             const url = '/file-uploads/get/' + doc_id + '/download';
+        //             var div = document.createElement('div');
+        //             div.setAttribute('style', 'height:0px;display:none');
+        //             document.body.appendChild(div);
+        //             div.innerHTML = "<iframe width='0' height='0' scrolling='no' frameborder='0' src='" + url + "'></iframe>";
+        //         } catch (e) {
+        //             alert(e);
+        //         }
+        //     }
+        // },
         loadTaskActivities() {
             try {
                 // document.querySelector("#" + this.embeddingComponentName + '_spinner').classList.remove('fade_reveal');
@@ -2186,7 +2185,9 @@ export default {
                     axios.get(url)
                         .then((dataResponse) => {
                             const arrayData = dataResponse.data.data;
-                            this.availableActivities = arrayData;
+                            // this.availableActivities = arrayData;
+                            this.newavailableActivities = arrayData;
+                            console.log('this.newavailableActivities', this.newavailableActivities);
                         })
                         .catch((error) => {
                             this.handleUnpaginatedListDataError(error);

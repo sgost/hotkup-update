@@ -773,11 +773,11 @@ export default {
         },
         showTaskInfoContainerDiv() {
             this.showTaskInfoContainer = true;
-            const addstreet = this.item.address.street
-            const addcity = this.item.address.city
-            const addprovince = this.item.address.province
-            const addzip = this.item.address.zip
-            const addcountry = this.item.address.country
+            const addstreet = this.item.address.street;
+            const addcity = this.item.address.city;
+            const addprovince = this.item.address.province;
+            const addzip = this.item.address.zip;
+            const addcountry = this.item.address.country;
             document.querySelector('body').addEventListener('click', this.handleBodyClickEvent, true);
             this.contactDetailsUpdateVariable = {
                 firstName: this.item.firstName,
@@ -791,8 +791,8 @@ export default {
                 province: addprovince,
                 zip: addzip,
                 country: addcountry
-            }
-            console.log('contactDetailsUpdateVariable', this.contactDetailsUpdateVariable)
+            };
+            console.log('contactDetailsUpdateVariable', this.contactDetailsUpdateVariable);
         },
         hideTaskInfoContainer() {
             this.showTaskInfoContainer = false;
@@ -1111,8 +1111,8 @@ export default {
             const callbackFunction = (dataResponse) => {
                 const reminders = dataResponse.data;
                 this.reminderList = reminders;
-                console.log("resss", reminders)
-                console.log('this.reminderList', this.reminderList)
+                console.log("resss", reminders);
+                console.log('this.reminderList', this.reminderList);
             };
             const callbackError = (error) => {
                 console.error('Error in task-view-ms.loadReminders()');

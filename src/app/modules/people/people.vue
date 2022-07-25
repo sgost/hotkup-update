@@ -75,7 +75,7 @@
 
                         <div class="adk_grid_list_content custom-scroll-bar" id="taskListIntersectionObserver">
                             <div class="task_inbox_list elastic_scroll_list">
-                            <p v-show="!myOrganizationContacts">No COntacts</p>
+                                <p v-show="myOrganizationContacts.length === 0">No Contacts...</p>
                                 <div v-for="(item, index) in myOrganizationContacts" :key="index" v-show="myOrganizationContacts">
                                     <div v-on:click="cardSetItem(index, item)" v-bind:style="cardActive === index && 'border-left: 2px solid rgb(37, 139, 255)'">
                                         <people-list-item v-bind:item="item" v-bind:myOrgName="myOrgName" v-bind:cardActive="cardActive" v-bind:catIndex="index" />
@@ -97,7 +97,7 @@
                     </div>
                 </div>
                 <div v-show="mySelectedContactDetail.name !== ''" style="display:flex;flex-grow: 1;grid-template-rows:1fr;overflow-y:hidden">
-                    <people-view-formate v-bind:item="mySelectedContactDetail" v-bind:myOrgName="myOrgName" v-bind:myContactCategories="myContactCategories"/>
+                    <people-view-formate v-bind:item="mySelectedContactDetail" v-bind:myOrgName="myOrgName" v-bind:myContactCategories="myContactCategories" />
                 </div>
             </div>
         </div>
@@ -375,7 +375,7 @@ export default {
         getContactCategories() {
             axios({
                     method: 'GET',
-                    url: `https://test.hotkup.com/crm/contact-categories/list/1/all`,
+                    url: `https://test.hotkup.com/crm/contact-categories/list/1/all`
                 })
                 .then((res) => {
                     console.log("res", res);

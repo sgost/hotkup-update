@@ -23,7 +23,7 @@
         <label class="form_label">Parent
             Organization</label>
         <select class="form_inputs" placeholder="Parent Organization" v-model="organisation">
-           <option v-for="(category, index) in  myOrganizationCategories" :key="index" v-bind:value="category.id">{{category.name}}</option>
+            <option v-for="(category, index) in  myOrganizationCategories" :key="index" v-bind:value="category.id">{{category.name}}</option>
         </select>
     </div>
 
@@ -58,7 +58,7 @@
 export default {
     name: "Table",
     props: ['categoryId', 'getOrgDetails', 'myOrganizationCategories'],
-    data () {
+    data() {
         return {
             name: "",
             email: "",
@@ -72,7 +72,7 @@ export default {
             pin: "",
             disColor: "",
             orgData: "",
-             AllparentOrg: [],
+            AllparentOrg: [],
 
             addClient: [],
             headers: {
@@ -82,7 +82,7 @@ export default {
     },
     methods: {
 
-        saveDis () {
+        saveDis() {
             let saveDisBtn;
             if (!this.name && !this.email && !this.phone && !this.website && !this.organisation && !this.provience && !this.address && !this.city && !this.country && !this.pin) {
                 saveDisBtn = false;
@@ -93,16 +93,15 @@ export default {
             }
             return saveDisBtn;
         },
-        
 
         // Add All organisation details
-        saveClient () {
+        saveClient() {
 
-            alert(this.organisation)
+            alert(this.organisation);
             const newObj = {
                 id: 'new',
                 tenantId: '61dfe560a4d68d08b821e08c',
-                categoryId: this.organisation ,
+                categoryId: this.organisation,
                 name: this.name,
                 address: {
                     street: this.address,
@@ -120,16 +119,16 @@ export default {
                     data: newObj
                 })
                 .then((res) => {
-                    this.name = "",
-                        this.email = "",
-                        this.phone = "",
-                        this.website = "",
-                        this.organisation = "",
-                        this.provience = "",
-                        this.address = "",
-                        this.city = "",
-                        this.country = "",
-                        this.pin = "";
+                    this.name = "";
+                    this.email = "";
+                    this.phone = "";
+                    this.website = "";
+                    this.organisation = "";
+                    this.provience = "";
+                    this.address = "";
+                    this.city = "";
+                    this.country = "";
+                    this.pin = "";
                     alert(`${res.data.data.name} added successfully`);
                     this.getOrgDetails();
                 })

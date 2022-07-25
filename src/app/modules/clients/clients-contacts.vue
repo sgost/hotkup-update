@@ -5,7 +5,7 @@
         Add Contact
     </button>
     <div class="contact_list first_column_scrollable custom-scroll-bar activities_list" style="border-top:0px solid gray;margin-top:10px;position:relative;flex-grow: 1; height: 380px; background: #f9f9f9">
-    <p v-show="contact.length === 0">No contacts under this Organization...</p>
+        <p v-show="contact.length === 0">No contacts under this Organization...</p>
         <p id="names" v-for="(kk, index) in contact" :key="index">
             {{kk?.firstName}} {{kk?.lastName}}<span id="minus">-</span>
             <span id="designation">Owner</span>
@@ -124,7 +124,7 @@ export default {
                 this.disColor = '';
             }
             return saveDisBtn;
-        },
+        }
 
         // Add contact to the Organization
         // addContact() {

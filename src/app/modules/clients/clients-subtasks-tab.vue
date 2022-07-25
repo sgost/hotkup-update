@@ -99,7 +99,7 @@ export default {
         utilsMixinLib,
         uiListMixinLib
     ],
-    props: ['item', ],
+    props: ['item'],
     data: function () {
         return {
             availableSubtasks: [],
