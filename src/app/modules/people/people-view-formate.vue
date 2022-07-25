@@ -845,7 +845,6 @@ export default {
         handlePotentialReminderMembers(dataResponse) {
             // Pass it to the availableAssignees prop to the dropdown.
             // console.log("Potential members to receive reminders relevant to the category: ", dataResponse);
-            alert(1);
             const mapFunction = (user) => {
                 return {
                     id: user.id,

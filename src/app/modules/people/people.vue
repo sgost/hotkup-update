@@ -28,12 +28,12 @@
                             </span>
                         </a>
                     </li>
-                    <li class="uk-parent" id="category-submenu">
+                    <li class="uk-parent" id="category-submenu" v-show="peopOpen">
                         <ul class="uk-nav-sub custom-scroll-bar" style="max-height: 300px;height: 300px;overflow-y: auto;">
                             <template v-for="(category, index) in myContactCategories" :key="index">
                                 <li class="menu-item" v-bind:id="clientFilter === category.id && 'activeClient'">
                                     <a v-on:click="loadTasksFromCategory(category.id, category.name)">{{category.name}}
-                                        <span class="counter-label" v-bind:id="'cat_count_'  + category.id">03</span>
+                                        <span class="counter-label" v-bind:id="'cat_count_'  + category.id">({{clientFilter === category.id? myOrganizationContacts.length : "03"}})</span>
                                     </a>
                                 </li>
                             </template>
@@ -60,7 +60,7 @@
                 </div>
                 <div style="display: grid; gap: 10px; grid-template-columns: auto auto; place-self: center end; text-align: right;">
                     <div style="display: flex;column-gap: 10px;">
-                        <div v-on:click="getContacts()" class="clickable-btn uk-button" style="cursor: pointer;padding: 0 0px;filter: grayscale(1);"><img src="resources/images/refresh.svg" style="pointer-events: none;height:15px;width:15px"></div>
+                        <div v-on:click="getContacts('')" class="clickable-btn uk-button" style="cursor: pointer;padding: 0 0px;filter: grayscale(1);"><img src="resources/images/refresh.svg" style="pointer-events: none;height:15px;width:15px"></div>
                     </div>
                 </div>
             </div>
@@ -336,7 +336,8 @@ export default {
             }, // getting one organization detail
 
             // Client Contact Details
-            myClientContacts: []
+            myClientContacts: [],
+            peopOpen: true
         };
     },
     methods: {
@@ -379,6 +380,7 @@ export default {
                 })
                 .then((res) => {
                     console.log("res", res);
+                    this.peopOpen = !this.peopOpen;
                     this.myContactCategories = res.data.data;
                 })
                 .error((res) => console.log(res));
@@ -388,7 +390,7 @@ export default {
         getContacts(id) {
             axios({
                 method: 'GET',
-                url: `https://test.hotkup.com/crm/contacts/list/${id}/1/all`,
+                url: `https://test.hotkup.com/crm/contacts/list/` + (id != '' ? `${id}/1/all` : `/1/all`),
                 headers: this.headers
             }).then((res) => {
                 console.log('res', res);
@@ -412,7 +414,9 @@ export default {
     },
     created: function () {},
     computed: {},
-    mounted: async function () {},
+    mounted: async function () {
+        this.getContacts('');
+    },
     unmounted: function () {},
     beforeUnmount() {
         bus.all.delete('connected-rsocket');

@@ -137,7 +137,6 @@ export default {
     created: function () {},
     computed: {},
     mounted: function () {
-        alert("ss");
     },
     watch: {}
 };

@@ -9,10 +9,10 @@ export default {
   },
   methods: {
 
-    showTaskFilterModal () {
+    showTaskFilterModal() {
       this.showTaskFilter = !this.showTaskFilter;
     },
-    filterTasks (data) {
+    filterTasks(data) {
       this.filter = data;
       console.log('Received filter data from search-modal ', this.filter);
 
@@ -28,7 +28,7 @@ export default {
       this.doComplexFilterSearch();
       this.showTaskFilter = !this.showTaskFilter;
     },
-    doComplexFilterSearch () {
+    doComplexFilterSearch() {
       // If all records are fetched, make no calls to the server again.
       if (this.allRecordsFetched) { return false; }
 
@@ -47,7 +47,7 @@ export default {
           }
         });
     },
-    initLoadMoreIntersectionObserverForComplexFilter () {
+    initLoadMoreIntersectionObserverForComplexFilter() {
       // console.log("bus = ", bus);
 
       this.observer = new IntersectionObserver((entries) => {
@@ -62,10 +62,10 @@ export default {
           this.doComplexFilterSearch();
         }
       },
-      {
-        root: null,
-        rootMargin: '0px'
-      });
+        {
+          root: null,
+          rootMargin: '0px'
+        });
 
       setTimeout(() => {
         this.observer.observe(document.getElementById(this.observerElement));

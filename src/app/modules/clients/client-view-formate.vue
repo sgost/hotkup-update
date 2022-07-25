@@ -210,7 +210,7 @@
         <!-- Client Edit -->
         <div v-show="showTaskInfoContainer" style="position:relative" class="task-info-container">
             <div class="first_column_scrollable custom-scroll-bar" style="font-size: 0.7rem;position: absolute;left: 35px;right: 35px;top: -1px;opacity: 1;z-index: 100;background: linear-gradient(rgb(254 254 254), rgb(255, 255, 255));border-width: 0px 1px 1px;border-top-style: initial;border-right-style: solid;border-bottom-style: solid;border-left-style: solid;border-top-color: initial;border-right-color: rgb(226, 226, 226);border-bottom-color: rgb(226, 226, 226);border-left-color: rgb(226, 226, 226);border-image: initial;box-shadow: rgba(0, 0, 0, 0.12) 0px 15px 12px 0px;border-radius: 0px 0px 5px 5px;">
-                <client-info-tab v-bind:taskInfo="taskObject" v-bind:item="item" />
+                <client-info-tab v-bind:item="item" />
             </div>
         </div>
         <div v-show="!showNewSubTaskForm" style="display: grid;grid-template-rows: auto 1fr;display: flex;flex-direction: column;flex-grow: 1;overflow-y: hidden;">
@@ -293,7 +293,7 @@
                     <div v-if="isRemindersTabInitialized" style="display: flex;padding: 20px;min-height: 300px;flex-direction: column;">
 
                         <div style="padding: 5px 0px;margin-right:20px;margin-bottom: 10px;display: grid;grid-template-rows: 1fr;place-items: flex-start;border-bottom: 1px solid #d0d0d0;">
-                            <button v-on:click="openAddReminderModal()" class="clickable-btn uk-button uk-button-danger uk-button-small uk-grid-margin uk-first-column end-call-button" style="background-color:#2196f3;border-radius: 3px;min-width: 100px;font-size: 0.65rem;line-height: 30px;font-weight: normal !important;display: inline-block;">
+                            <button v-on:click="loadReminders()" class="clickable-btn uk-button uk-button-danger uk-button-small uk-grid-margin uk-first-column end-call-button" style="background-color:#2196f3;border-radius: 3px;min-width: 100px;font-size: 0.65rem;line-height: 30px;font-weight: normal !important;display: inline-block;">
                                 <span uk-icon="icon:plus;ratio:0.65" class="uk-icon" style="">
                                     <svg width="13" height="13" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" data-svg="plus">
                                         <rect x="9" y="1" width="1" height="17"></rect>
@@ -1370,8 +1370,18 @@ export default {
                 console.log(';dataResponse', dataResponse);
                 // Pass it to the availableAssignees prop to the dropdown.
                 const reminders = dataResponse.data;
-                this.reminderList = reminders;
-                console.log("resss", reminders);
+                console.log('potentialMembersList', this.potentialMembersList);
+                reminders.map((item) => {
+                    const newObj = {
+                        id: item.id,
+                        orgId: item.orgId,
+                        title: item.title,
+                        type: item.type,
+                        userIds: item.userIds,
+                        reminderTime: item.reminderTime
+                    };
+                    this.reminderList.push(newObj);
+                });
                 console.log('this.reminderList', this.reminderList);
             };
             const callbackError = (error) => {
@@ -1409,10 +1419,6 @@ export default {
         handleUnpaginatedListData(listKey, data) {
             if (listKey === 'reminders') {
                 this.handleFetchedReminders(data);
-            } else if (listKey === 'timelogs') {
-                this.handleFetchedTimelogs(data);
-            } else if (listKey === 'task_transitions') {
-                this.handleFetchedTaskTransitions(data);
             }
         },
         handleUnpaginatedListDataError(error) {
@@ -1586,13 +1592,13 @@ export default {
             if (this.selectedTabKey === 'Contact') {
                 this.getOrgContacts();
                 this.isContactTabInitialized = true;
-            } 
+            }
             if (this.selectedTabKey === 'activity') {
                 this.isActivityTabInitialized = true;
-            } 
+            }
             if (this.selectedTabKey === 'tasks') {
                 this.isSubtasksTabInitialized = true;
-            } 
+            }
             if (this.selectedTabKey === 'reminders') {
                 this.loadReminders();
                 this.isRemindersTabInitialized = true;
@@ -1838,7 +1844,6 @@ export default {
                     url: `https://test.hotkup.com/crm/org-contact-link/list-contacts/${this.item.id}/1/all`
                 })
                 .then((res) => {
-                    alert(this.organizationId);
                     this.contact = res.data.data;
                 }).error((res) => console.log(res));
         }

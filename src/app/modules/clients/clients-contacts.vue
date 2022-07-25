@@ -1,172 +1,105 @@
 <template>
 <div id="main_container">
-    <button id="add_client" uk-toggle="target: #modal-center" v-on:click="getOrgContacts()" disabled>
+    <button id="add_client" type="button" v-on:click="showContacts()">
         <span id="add_client_span">+</span>
         Add Contact
     </button>
-    <div class="contact_list first_column_scrollable custom-scroll-bar activities_list" style="border-top:0px solid gray;margin-top:10px;position:relative;flex-grow: 1; height: 380px; background: #f9f9f9">
-        <p v-show="contact.length === 0">No contacts under this Organization...</p>
-        <p id="names" v-for="(kk, index) in contact" :key="index">
-            {{kk?.firstName}} {{kk?.lastName}}<span id="minus">-</span>
-            <span id="designation">Owner</span>
-            <span id="plus">+</span></p>
-    </div>
-</div>
-
-<!-- <div id="modal-center" class="uk-flex-top" uk-modal>
-    <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
-        <button class="uk-modal-close-default" type="button" uk-close></button>
-        <div id="main_container_form">
-            <div id="form_wrap_total">
-                <div class="form-main">
-                    <label class="form_label" v-bind:style="{'color': disColor}">First
-                        Name</label>
-                    <input class="form_inputs" placeholder="First Name" v-model="firstName" />
-
-                </div>
-                <div class="form-main">
-                    <label class="form_label" v-bind:style="{'color': disColor}">Last
-                        Name</label>
-                    <input class="form_inputs" placeholder="Last Name" v-model="lastName" />
-                </div>
-                <div class="form-main">
-                    <label class="form_label" v-bind:style="{'color': disColor}">Email</label>
-                    <input class="form_inputs" placeholder="user@gmail.com" v-model="email" />
-                </div>
-                <div class="form-main">
-                    <label class="form_label" v-bind:style="{'color': disColor}">Mobile</label>
-                    <input class="form_inputs" placeholder="Mobile" v-model="mobile" />
-                </div>
-                <div class="form_main_wrapper">
-                    <div class="form-main">
-                        <label class="form_label">Telephone</label>
-                        <input class="form_inputs" placeholder="Telephone" v-model="telePhone" />
-                    </div>
-                    <div class="form-main">
-                        <label class="form_label">Extension</label>
-                        <input class="form_inputs" placeholder="Extension" v-model="extension" />
-                    </div>
-                </div>
-                <div class="form-main">
-                    <label class="form_label">Contacts</label>
-                    <select class="form_inputs" placeholder="Parent Organization" v-model="organisation">
-                        <option v-for="(category, index) in  allContacts" :key="index" v-bind:value="category.id">{{category.firstName}}</option>
-                    </select>
-                </div>
-                <div class="form-main">
-                    <label class="form_label" v-bind:style="{'color': disColor}">Street
-                        Name</label>
-                    <input class="form_inputs" placeholder="Street Name" v-model="street" />
-                </div>
-                <div class="form-main">
-                    <label class="form_label" v-bind:style="{'color': disColor}">City</label>
-                    <input class="form_inputs" placeholder="City" v-model="city" />
-                </div>
-                <div class="form-main">
-                    <label class="form_label" v-bind:style="{'color': disColor}">Country</label>
-                    <input class="form_inputs" placeholder="City" v-model="country" />
-                </div>
-                <div class="form_main_wrapper">
-                    <div class="form-main">
-                        <label class="form_label" v-bind:style="{'color': disColor}">Provience</label>
-                        <input class="form_inputs" placeholder="Provience" v-model="provience" />
-                    </div>
-                    <div class="form-main">
-                        <label class="form_label">Pin</label>
-                        <input class="form_inputs" placeholder="Pin" v-model="name" />
-                    </div>
-                </div>
-                <div id="save_can_btns">
-                    <button class="save_btn" v-on:click="addContact()" v-bind:disabled="saveDis()">SAVE</button>
-                    <button class="can_btn uk-modal-close" type="button">CANCEL</button>
-                </div>
-            </div>
+    <div uk-dropdown="mode: click" id="contacts_main">
+        <div id="search_field">
+            <span uk-icon="search"></span>
+            <input type="search" placeholder="Search..." v-on:keyup="searchHooksSubmenu()" v-model="submenuSearchQuery" />
+        </div>
+        <hr />
+        <div id="contacts">
+            <span id="contacts_menu" v-show="allContacts.length === 0">No contacts Found...</span>
+            <span id="contacts_menu" v-for="(contacts, idx) in allContacts" :key="idx" v-show="allContacts.length > 0"><input type="checkbox" v-on:click="selectValFun(contacts.id)" :checked="organizationId === contacts.orgId && true">{{contacts.name}}</span>
         </div>
     </div>
-</div> -->
+
+    <div class="contact_list first_column_scrollable custom-scroll-bar activities_list" style="border-top:0px solid gray;margin-top:10px;position:relative;flex-grow: 1; height: 380px; background: #f9f9f9">
+        <p id="names" v-for="(item, index) in contact" :key="index">
+            {{item?.firstName}} {{item?.lastName}}<span id="minus">-</span>
+            <span id="designation">Owner</span>
+            <span id="plus" v-on:click="removeContact(item.id)">-</span></p>
+    </div>
+</div>
 </template>
 
 <script>
+import axios from 'axios';
 export default {
     name: "Table",
     props: ['organizationId', 'categoryId', 'contact', 'getOrgContacts'],
     data() {
         return {
-            firstName: "",
-            lastName: "",
-            email: "",
-            mobile: "",
-            telePhone: "",
-            extension: "",
-            website: "",
-            organisation: "",
-            address: "",
-            street: "",
-            city: "",
-            country: [],
-            provience: "",
-            pin: "",
-            disColor: "",
-            headers: {
-                Authorization: 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkaXNwbGF5TmFtZSI6IlZpZ25lc2hCaGFza2FyIiwiaXNzIjoiYXV0aDAiLCJyZXFBdXRoVG9rZW4iOiJ7XCJ6elwiOm51bGwsXCJsblwiOlwiQmhhc2thclwiLFwidFwiOlwiNWZkODVmNTViN2JiNjA1ODllM2E5M2RkXCIsXCJmblwiOlwiVmlnbmVzaFwiLFwiZW1cIjpcImNiaGFza2FyYXZpZ25lc2gub2ZmaWNlQGdtYWlsLmNvbVwiLFwicGlkc1wiOltudWxsLFwianZzYiRka2JqXCIsXCJqdnNiJG1hdGl1XCJdLFwidXVpZFwiOlwiNWZkODVmOTdiN2JiNjA1ODllM2E5M2RmXCIsXCJ0YlwiOm51bGx9IiwiZXhwIjoxNjU4MDUwNjA2LCJ1dWlkIjoiNWZkODVmOTdiN2JiNjA1ODllM2E5M2RmIn0.or3xlRbqVM_NeBWskWjsBFl7ZRQx4lHzh6mvMTt4a4E'
-            },
-            allContacts: []
+            allContacts: [],
+            selectCheckBoxId: '',
+            selectCheckBox: '',
+            submenuSearchQuery: ''
         };
     },
     methods: {
-        saveDis() {
-            let saveDisBtn;
-            if (!this.firstName && !this.lastName && !this.email && !this.mobile && !this.extension && !this.provience && !this.street && !this.city && !this.country) {
-                saveDisBtn = false;
-                this.disColor = 'red';
-            } else {
-                saveDisBtn = false;
-                this.disColor = '';
-            }
-            return saveDisBtn;
+        showContacts() {
+            axios({
+                method: 'GET',
+                url: 'https://test.hotkup.com/crm/contacts/list/1/all'
+            }).then((res) => {
+                const dataArr = res.data.data;
+                dataArr.map((item) => {
+                    this.allContacts.push({
+                        name: item.firstName + ' ' + item.lastName,
+                        id: item.id,
+                        orgId: item.organizationId
+                    });
+                });
+            });
+        },
+        searchHooksSubmenu() {
+            this.allContacts = [];
+            axios({
+                method: 'GET',
+                url: `https://test.hotkup.com/crm/contacts/list/1/${this.submenuSearchQuery}`
+            }).then((res) => {
+                const dataArr = res.data.data;
+                dataArr.map((item) => {
+                    this.allContacts.push({
+                        name: item.firstName + ' ' + item.lastName,
+                        id: item.id,
+                        orgId: item.organizationId
+                    });
+                });
+                console.log('this.allContacts', this.allContacts);
+            });
+        },
+        selectValFun(id) {
+            const form = {
+                id: "New",
+                orgId: this.organizationId,
+                contactId: id
+            };
+            axios({
+                method: 'POST',
+                data: form,
+                url: `https://test.hotkup.com/crm/org-contact-link/add-link`
+            }).then((res) => {
+                this.getOrgContacts();
+                alert('Contact added to this org');
+            });
+        },
+        removeContact(id) {
+            const form = {
+                orgId: this.organizationId,
+                contactId: id
+            };
+            axios({
+                method: 'POST',
+                data: form,
+                url: `https://test.hotkup.com/crm/org-contact-link/remove-link`
+            }).then((res) => {
+                this.getOrgContacts();
+                alert('Contact removed');
+            });
         }
-
-        // Add contact to the Organization
-        // addContact() {
-        //     // alert(this.categoryId);
-        //     const newObj = {
-        //         id: 'new',
-        //         tenantId: '61dfe560a4d68d08b821e08c',
-        //         categoryId: this.categoryId,
-        //         organizationId: this.organizationId,
-        //         firstName: this.firstName,
-        //         lastName: this.lastName,
-        //         email: this.email,
-        //         mobile: this.mobile,
-        //         address: {
-        //             street: this.street,
-        //             city: this.city,
-        //             province: this.provience,
-        //             zip: this.pin,
-        //             country: this.country
-        //         },
-        //         status: 'ACTIVE'
-        //     };
-        //     axios({
-        //         method: 'POST',
-        //         url: 'https://test.hotkup.com/crm/contacts/save',
-        //         data: newObj
-        //     }).then((res) => {
-        //         console.log("rescontact", res);
-        //     }).error((err) => console.log("error", err));
-        // },
-
-        // fetch contactDetails
-        // getOrgContacts() {
-        //     axios({
-        //             method: 'GET',
-        //             url: `https://test.hotkup.com/crm/org-contact-link/list-contacts/${this.organizationId}/1/all`,
-        //         })
-        //         .then((res) => {
-        //             console.log(res.data.data)
-        //             this.allContacts = res.data.data;
-        //         }).error((res) => console.log(res));
-        // }
     },
     mounted: async function () {}
 };
@@ -427,5 +360,43 @@ export default {
     padding: 10px;
     margin: 0 24px 0 0;
     font-size: 16px;
+}
+
+#search_field {
+    position: relative;
+    border: 1px solid rgb(187, 186, 186);
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+}
+
+#search_field input {
+    border: none;
+    outline: none;
+    margin: 0 0 0 0.3rem;
+}
+
+#contacts_main {
+    min-width: 200px;
+    font-size: .75rem;
+}
+
+#contacts_main #contacts {
+    height: 260px;
+    overflow: scroll;
+    overflow-x: hidden;
+    /* Hide horizontal scrollbar */
+}
+
+#contacts_main #contacts #contacts_menu {
+    display: flex;
+    padding-bottom: 0.5rem;
+}
+
+#contacts_main #contacts #contacts_menu input {
+    width: 15px;
+    height: 15px;
+    margin-right: 0.7rem;
 }
 </style>

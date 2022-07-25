@@ -28,12 +28,12 @@
                             </span>
                         </a>
                     </li>
-                    <li class="uk-parent" id="category-submenu">
+                    <li class="uk-parent" id="category-submenu" v-show="catOpen">
                         <ul class="uk-nav-sub custom-scroll-bar" style="max-height: 300px;height: 300px;overflow-y: auto;">
                             <template v-for="(category, index) in myOrganizationCategories" :key="index">
                                 <li class="menu-item" v-bind:id="clientFilter === category.id && 'activeClient'">
                                     <a v-on:click="loadTasksFromCategory(category.id, category.name)">{{category.name}}
-                                        <span class="counter-label" v-bind:id="'cat_count_'  + category.id">03</span>
+                                        <span class="counter-label" v-bind:id="'cat_count_'  + category.id">({{clientFilter === category.id? myCategorieOrganizations.length : "03"}})</span>
                                     </a>
                                 </li>
                             </template>
@@ -60,7 +60,7 @@
                 </div>
                 <div style="display: grid; gap: 10px; grid-template-columns: auto auto; place-self: center end; text-align: right;">
                     <div style="display: flex;column-gap: 10px;">
-                        <div v-on:click="getOrgDetails()" class="clickable-btn uk-button" style="cursor: pointer;padding: 0 0px;filter: grayscale(1);"><img src="resources/images/refresh.svg" style="pointer-events: none;height:15px;width:15px"></div>
+                        <div v-on:click="getOrgDetails('')" class="clickable-btn uk-button" style="cursor: pointer;padding: 0 0px;filter: grayscale(1);"><img src="resources/images/refresh.svg" style="pointer-events: none;height:15px;width:15px"></div>
                     </div>
                 </div>
             </div>
@@ -321,6 +321,8 @@ export default {
             chosenTaskCategory: null,
             isCategorySubmenuOpened: false,
 
+            selectedTabKey: '',
+
             // clients
             clientFilter: 0,
             cardActive: '',
@@ -331,12 +333,11 @@ export default {
             myOrganizationCategories: [],
             myCategorieOrganizations: [],
             myOrgName: '',
-            mySelectedOrgDetail: {
-                name: ''
-            }, // getting one organization detail
+            mySelectedOrgDetail: {}, // getting one organization detail
 
             // Client Contact Details
-            myClientContacts: []
+            myClientContacts: [],
+            catOpen: true
         };
     },
     methods: {
@@ -372,12 +373,12 @@ export default {
                 headers: this.headers
             }).then((res) => {
                 console.log('res', res);
+                this.catOpen = !this.catOpen;
                 this.myOrganizationCategories = res.data.data;
             });
         },
 
         loadTasksFromCategory(id, name) {
-            alert(id);
             this.clientFilter = id;
             this.categoryId = id;
             this.myOrgName = name;
@@ -388,7 +389,7 @@ export default {
         getOrgDetails(id) {
             axios({
                     method: 'GET',
-                    url: `https://test.hotkup.com/crm/organizations/list/${id}/1/all`
+                    url: `https://test.hotkup.com/crm/organizations/list/` + (id != '' ? `${id}/1/all` : `/1/all`)
                 })
                 .then((res) => {
                     console.log("res", res);
@@ -397,15 +398,35 @@ export default {
                 .error((res) => console.log(res));
         },
 
+        // Getting dynamic org details on selection
         cardSetItem(index, item) {
-            this.cardActive = index;
+            this.cardActive = index; // active tab selection
             axios({
                     method: 'GET',
                     url: `https://test.hotkup.com/crm/organizations/get/${item.id}`,
                     headers: this.headers
                 })
                 .then((res) => {
-                    this.mySelectedOrgDetail = res.data;
+                    const newData = res.data;
+                    const obId = newData.id;
+                    const objcate = newData.categoryId;
+                    const objname = newData.name;
+                    const objStreet = newData.address.street;
+                    const objcity = newData.address.city;
+                    const objprovince = newData.address.province;
+                    const objzip = newData.address.zip;
+                    const objcountry = newData.address.country;
+
+                    this.mySelectedOrgDetail = {
+                        id: obId,
+                        categoryId: objcate,
+                        name: objname,
+                        street: objStreet,
+                        city: objcity,
+                        province: objprovince,
+                        zip: objzip,
+                        country: objcountry
+                    };
                     console.log('this.mySelectedOrgDetail', this.mySelectedOrgDetail);
                 })
                 .error((res) => console.log(res));
@@ -415,6 +436,7 @@ export default {
     computed: {},
     mounted: async function () {
         this.getCategories(); // Fetching categories initaly
+        this.getOrgDetails('');
     },
     unmounted: function () {},
     beforeUnmount() {

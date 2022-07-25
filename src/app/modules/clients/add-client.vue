@@ -96,8 +96,6 @@ export default {
 
         // Add All organisation details
         saveClient() {
-
-            alert(this.organisation);
             const newObj = {
                 id: 'new',
                 tenantId: '61dfe560a4d68d08b821e08c',

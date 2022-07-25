@@ -43,7 +43,7 @@
         <div class="uk-width-1-3@s uk-grid-margin">
             <label class="uk-form-label" for="form-stacked-text">Provience *</label>
             <div style="position:relative">
-                <input v-model="item.provience" class="uk-input" type="text" placeholder="">
+                <input v-model="item.province" class="uk-input" type="text" placeholder="">
             </div>
         </div>
 
@@ -69,9 +69,9 @@
         </div>
 
         <div class="uk-width-1-3@s uk-grid-margin">
-            <label class="uk-form-label" for="form-stacked-text">Email *</label>
+            <label class="uk-form-label" for="form-stacked-text">Zip *</label>
             <div style="position:relative">
-                <input v-model="editClient.pin" class="uk-input" type="text" placeholder="">
+                <input v-model="item.zip" class="uk-input" type="text" placeholder="">
             </div>
         </div>
 
