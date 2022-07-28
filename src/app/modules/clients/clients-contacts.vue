@@ -12,7 +12,7 @@
         <hr />
         <div id="contacts">
             <span id="contacts_menu" v-show="allContacts.length === 0">No contacts Found...</span>
-            <span id="contacts_menu" v-for="(contacts, idx) in allContacts" :key="idx" v-show="allContacts.length > 0"><input type="checkbox" v-on:click="selectValFun(contacts.id)" :checked="organizationId === contacts.orgId && true">{{contacts.name}}</span>
+            <span id="contacts_menu" v-for="(contacts, idx) in allContacts" :key="idx" v-show="allContacts.length > 0"><input type="checkbox" v-on:click="addLinkCrm(contacts.id)" :checked="organizationId === contacts.orgId && true">{{contacts.name}}</span>
         </div>
     </div>
 
@@ -20,7 +20,7 @@
         <p id="names" v-for="(item, index) in contact" :key="index">
             {{item?.firstName}} {{item?.lastName}}<span id="minus">-</span>
             <span id="designation">Owner</span>
-            <span id="plus" v-on:click="removeContact(item.id)">-</span></p>
+            <span id="plus" v-on:click="removeContact(item.id)" style="cursor: pointer">-</span></p>
     </div>
 </div>
 </template>
@@ -71,7 +71,7 @@ export default {
                 console.log('this.allContacts', this.allContacts);
             });
         },
-        selectValFun(id) {
+        addLinkCrm(id) {
             const form = {
                 id: "New",
                 orgId: this.organizationId,
@@ -81,7 +81,7 @@ export default {
                 method: 'POST',
                 data: form,
                 url: `https://test.hotkup.com/crm/org-contact-link/add-link`
-            }).then((res) => {
+            }).then(() => {
                 this.getOrgContacts();
                 alert('Contact added to this org');
             });
@@ -98,6 +98,8 @@ export default {
             }).then((res) => {
                 this.getOrgContacts();
                 alert('Contact removed');
+            }).error(() => {
+                alert("Error while removing");
             });
         }
     },

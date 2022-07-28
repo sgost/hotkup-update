@@ -24,7 +24,7 @@
                         <a style="color: #333!important;font-weight: normal!important;" v-on:click="getCategories()">
                             Client Categories
                             <span class="counter-label">
-                                <span uk-icon="icon:chevron-down;ratio:0.85" id="category-menu-trigger" class="uk-icon" style="transition: 0.25s linear;color: #cdcdcd;"></span>
+                                <span v-bind:uk-icon="catOpen ? 'icon:chevron-down;ratio:0.85' : 'icon:chevron-up;ratio:0.85'" id="category-menu-trigger" class="uk-icon" style="transition: 0.25s linear;color: #cdcdcd;"></span>
                             </span>
                         </a>
                     </li>
@@ -60,7 +60,7 @@
                 </div>
                 <div style="display: grid; gap: 10px; grid-template-columns: auto auto; place-self: center end; text-align: right;">
                     <div style="display: flex;column-gap: 10px;">
-                        <div v-on:click="getOrgDetails('')" class="clickable-btn uk-button" style="cursor: pointer;padding: 0 0px;filter: grayscale(1);"><img src="resources/images/refresh.svg" style="pointer-events: none;height:15px;width:15px"></div>
+                        <div v-on:click="getOrgDetails(categoryId)" class="clickable-btn uk-button" style="cursor: pointer;padding: 0 0px;filter: grayscale(1);"><img src="resources/images/refresh.svg" style="pointer-events: none;height:15px;width:15px"></div>
                     </div>
                 </div>
             </div>
@@ -87,7 +87,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
         <div class="taskDetailContainer task-detail-container" style="width: 100%; background: rgb(246 246 246)">
             <div style="width: 100%">
@@ -102,150 +101,6 @@
             </div>
         </div>
     </div>
-
-    <div id="new-task-form-modal" class="uk-flex-top" uk-modal>
-        <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical" style="display: flex;min-width: 75%;max-width: 75% !important;width: auto;flex-direction: column;overflow-y: hidden;font-size: 0.65rem;padding: 0px;border: 0px solid rgba(0, 0, 0, 0.57);">
-            <div style="display: flex;font-size: 1rem;margin-bottom: 10px;background: rgb(243, 243, 243);margin-top: 0px;padding: 0px;flex-direction: row-reverse;">
-
-                <button v-on:click="closeNewTaskModal()" v-bind:uk-tooltip="'Close'" class="uk-button uk-button-danger uk-button-small uk-grid-margin uk-first-column end-call-button subtask-back-button" style="border-radius: 3px;align-self:flex-start">
-                    <svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                        <path fill="none" stroke="#000" stroke-width="1.06" d="M16,16 L4,4"></path>
-                        <path fill="none" stroke="#000" stroke-width="1.06" d="M16,4 L4,16"></path>
-                    </svg>
-                </button>
-                <div style="font-weight: bold;display: flex;align-items: center;flex-grow: 1;justify-content: center;">
-                    <span style="font-size: 0.75rem;">New Task &nbsp;</span>
-                    <span v-if="chosenTaskCategory!==null" style="font-size: 0.75rem;color: #a0a0a0;"> for &nbsp;{{chosenTaskCategory.name}}&nbsp; / &nbsp;</span>
-                    <span v-if="chosenTaskTemplate!==null" style="font-size: 0.75rem;color: #a0a0a0;"> &nbsp;{{chosenTaskTemplate.name}} &nbsp;</span>
-                </div>
-
-                <hr>
-
-            </div>
-            <div style="display: flex;justify-content: center;flex-grow: 1;padding: 0px 0px;">
-                <div v-show="modalFormKey === 'new_task'" style="display:grid;grid-template-rows:1fr;display:flex;flex-grow: 1;overflow-y:hidden">
-                    <new-task-form uniqueComponentId="newTaskForm" v-bind:possibleAssignees="possibleAssignees" v-bind:possibleFollowers="possibleFollowers" v-bind:taskFromChatMessageData="taskFromChatMessageData" v-on:refreshList="refreshPaneList()" v-on:signalCloseNewTaskModal="closeNewTaskModal()" v-bind:resetTime="resetTime" />
-                </div>
-
-                <div v-show="modalFormKey === 'new_template_task'" style="display:grid;grid-template-rows:1fr;display:flex;flex-grow: 1;overflow-y:hidden">
-                    <new-task-template-form uniqueComponentId="newTaskForm" v-bind:chosenTaskTemplate="chosenTaskTemplate" v-bind:chosenTaskCategory="chosenTaskCategory" v-on:refreshList="refreshPaneList()" v-on:signalCloseNewTaskModal="closeNewTaskModal()" v-bind:resetTime="resetTime" />
-                </div>
-            </div>
-
-        </div>
-    </div>
-    <div id="new-recurring-task-form-modal" class="uk-flex-top" uk-modal>
-        <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical" style="display: flex;min-width: 75%;max-width: 75% !important;width: auto;flex-direction: column;overflow-y: hidden;font-size: 0.65rem;padding: 0px;border: 0px solid rgba(0, 0, 0, 0.57);">
-            <div style="display: flex;font-size: 1rem;margin-bottom: 10px;background: rgb(243, 243, 243);margin-top: 0px;padding: 0px;flex-direction: row-reverse;">
-                <button v-on:click="closeNewTaskModal()" v-bind:uk-tooltip="'Close'" class="uk-button uk-button-danger uk-button-small uk-grid-margin uk-first-column end-call-button subtask-back-button" style="border-radius: 3px;align-self:flex-start">
-                    <svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                        <path fill="none" stroke="#000" stroke-width="1.06" d="M16,16 L4,4"></path>
-                        <path fill="none" stroke="#000" stroke-width="1.06" d="M16,4 L4,16"></path>
-                    </svg>
-                </button>
-                <div style="font-weight: bold;display: flex;align-items: center;flex-grow: 1;justify-content: center;">
-                    <span style="font-size: 0.75rem;">New Recurring Task &nbsp;</span>
-                    <span v-if="chosenTaskCategory!==null" style="font-size: 0.75rem;color: #a0a0a0;"> for &nbsp;{{chosenTaskCategory.name}}&nbsp; / &nbsp;</span>
-                    <span v-if="chosenTaskTemplate!==null" style="font-size: 0.75rem;color: #a0a0a0;"> &nbsp;{{chosenTaskTemplate.name}} &nbsp;</span>
-                </div>
-                <hr>
-            </div>
-            <div style="display: flex;justify-content: center;flex-grow: 1;padding: 0px 0px;">
-                <div v-show="modalFormKey === 'new_recurring_task'" style="display:grid;grid-template-rows:1fr;display:flex;flex-grow: 1;overflow-y:hidden">
-                    <new-recurring-task-form uniqueComponentId="newTaskForm" v-bind:possibleAssignees="possibleAssignees" v-bind:possibleFollowers="possibleFollowers" v-bind:taskFromChatMessageData="taskFromChatMessageData" v-on:refreshList="refreshPaneList()" v-on:signalCloseNewTaskModal="closeNewRecurringTaskModal()" v-bind:resetTime="resetTime" />
-                </div>
-
-                <div v-show="modalFormKey === 'new_recurring_task_from_template'" style="display:grid;grid-template-rows:1fr;display:flex;flex-grow: 1;overflow-y:hidden">
-                    <new-task-template-form uniqueComponentId="newTaskForm" v-bind:chosenTaskTemplate="chosenTaskTemplate" v-bind:chosenTaskCategory="chosenTaskCategory" v-on:refreshList="refreshPaneList()" v-on:signalCloseNewTaskModal="closeNewTaskModal()" v-bind:resetTime="resetTime" />
-                </div>
-            </div>
-
-        </div>
-    </div>
-    <div id="new-subtask-form-modal" class="uk-flex-top" uk-modal>
-        <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical" style="display: flex;min-width:75%;width:auto;flex-direction: column;;overflow-y: hidden;font-size: 0.65rem;padding: 0px;border: 0px solid rgba(0, 0, 0, 0.57);">
-
-            <div style="display: flex;font-size: 1rem;margin-bottom: 10px;background: rgb(243, 243, 243);margin-top: 0px;padding: 10px;flex-direction: row-reverse;">
-
-                <button v-on:click="closeNewTaskModal()" v-bind:uk-tooltip="'Close'" class="uk-button uk-button-danger uk-button-small uk-grid-margin uk-first-column end-call-button subtask-back-button" style="border-radius: 3px;align-self:flex-start">
-                    <svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                        <path fill="none" stroke="#000" stroke-width="1.06" d="M16,16 L4,4"></path>
-                        <path fill="none" stroke="#000" stroke-width="1.06" d="M16,4 L4,16"></path>
-                    </svg>
-                </button>
-                <div style="font-weight: bold;display: flex;align-items: center;flex-grow: 1;justify-content: center;">Create a new subtask for - <span style="color:#018fff">&nbsp; #Task{{selectedTaskForSubtaskCreation.sno}}</span></div>
-                <hr>
-
-            </div>
-            <div style="display: flex;justify-content: center;flex-grow: 1;padding: 0px 0px;">
-                <new-task-form uniqueComponentId="newSubTaskForm" v-bind:parentTask="selectedTaskForSubtaskCreation" v-on:refreshList="refreshPaneList()" v-on:signalCloseNewTaskModal="closeNewTaskModal()" v-bind:resetTime="resetTime" />
-            </div>
-
-        </div>
-    </div>
-    <div id="view-subtask-form-modal" class="uk-flex-top app-container-modal" data-theme="flutter" uk-modal="stack: true">
-        <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical" style="position:relative;display: flex;min-width:75%;width:auto;flex-direction: column;overflow-y: hidden;font-size: 0.65rem;padding: 0px;border: 0px solid rgba(0, 0, 0, 0.57);min-height: 100%;">
-
-            <button v-on:click="closeNewTaskModal()" v-bind:uk-tooltip="'Close'" class="uk-button uk-button-danger uk-button-small uk-grid-margin uk-first-column end-call-button subtask-back-button" style="position: absolute;right: 20px;top: 20px;border-radius: 25px;align-self: flex-start;z-index:5">
-                <svg width="15" height="15" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                    <path fill="none" stroke="#000" stroke-width="1.06" d="M16,16 L4,4"></path>
-                    <path fill="none" stroke="#000" stroke-width="1.06" d="M16,4 L4,16"></path>
-                </svg>
-            </button>
-
-            <div style="display: flex;justify-content: center;flex-grow: 1;padding: 10px;border: 10px solid #efefef;box-sizing: border-box;border-radius: 5px;">
-                <taskview-format-2 uniqueComponentId="viewSubTaskFormFromTaskInbox" embeddingViewName="view_subtask_modal" v-bind:loggedInUser="loggedInUser" v-bind:taskIdToBeViewed="selectedSubTaskId" v-bind:tabToDisplay="selectedSubTaskTabToDisplay" v-on:refreshList="refreshPaneList()" isModalViewed="true"></taskview-format-2>
-            </div>
-
-        </div>
-    </div>
-    <div id="view-rtask-form-modal" class="uk-flex-top app-container-modal" data-theme="flutter" uk-modal="stack: true">
-        <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical" style="position:relative;display: flex;min-width:75%;width:auto;flex-direction: column;overflow-y: hidden;font-size: 0.65rem;padding: 0px;border: 0px solid rgba(0, 0, 0, 0.57);min-height: 100%;">
-
-            <!--<button class="uk-modal-close-default" type="button" uk-close ></button>-->
-
-            <button v-on:click="closeRTaskViewModal()" v-bind:uk-tooltip="'Close'" class="uk-button uk-button-danger uk-button-small uk-grid-margin uk-first-column end-call-button subtask-back-button" style="position: absolute;right: 20px;top: 20px;border-radius: 25px;align-self: flex-start;z-index:5">
-                <svg width="15" height="15" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                    <path fill="none" stroke="#000" stroke-width="1.06" d="M16,16 L4,4"></path>
-                    <path fill="none" stroke="#000" stroke-width="1.06" d="M16,4 L4,16"></path>
-                </svg>
-            </button>
-
-            <div style="display: flex;justify-content: center;flex-grow: 1;padding: 10px;border: 10px solid #efefef;box-sizing: border-box;border-radius: 5px;">
-                <rtaskview-format-2 uniqueComponentId="viewRecurringTaskFormFromTaskInbox" embeddingViewName="view_rtask_modal" v-bind:loggedInUser="loggedInUser" v-bind:taskIdToBeViewed="selectedRTaskId" v-on:refreshList="refreshPaneList()" isModalViewed="true"></rtaskview-format-2>
-            </div>
-
-        </div>
-    </div>
-    <div id="task-from-template-modal" class="uk-flex-top" uk-modal>
-        <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical" style="display: flex;min-width:55%;width:auto;flex-direction: column;;overflow-y: hidden;font-size: 0.65rem;padding: 0px;border: 0px solid rgba(0, 0, 0, 0.57);">
-            <div style="display: flex;justify-content: center;flex-grow: 1;padding: 30px 10px;">
-                <form style="width: 90%;margin-top: 0px;padding-top: 0px;padding-right:0px;padding-left: 0px;margin-left: -15px;" class="uk-grid-small uk-grid ui-form" uk-grid onsubmit="return false;">
-                    <div class="uk-width-1-4@s" style="margin-top: 0px;">
-                        <label class="uk-form-label" for="form-stacked-text">Select Category</label>
-                        <select tabindex="7" v-model="newTaskFromTemplate.categoryId" class="uk-select" id="form-stacked-select" v-on:change="loadMatchingTaskTemplates()">
-                            <option v-for="cat in availableCategories" v-bind:value="cat.id + '#' + cat.name">{{cat.name}}</option>
-                        </select>
-                    </div>
-                    <div class="uk-width-1-2@s" style="margin-top: 0px;">
-                        <label class="uk-form-label" for="form-stacked-text">Select Template</label>
-                        <select tabindex="7" v-model="newTaskFromTemplate.taskTemplateInfo" class="uk-select" id="form-stacked-select">
-                            <option v-for="formTemplate in matchingTaskTemplates" v-bind:value="formTemplate.id + '#' + formTemplate.name">{{formTemplate.name}}</option>
-                        </select>
-                    </div>
-                    <div class="uk-width-1-4@s" style="margin-top: 0px;display: flex;align-items: flex-end;">
-                        <button tabindex="11" id="attachFormTemplateButton" v-on:click="pickTemplate()" class="clickable-btn uk-button uk-button-danger uk-button-small uk-grid-margin uk-first-column end-call-button" style="background-color: rgb(76, 175, 80);border-radius: 3px;min-width: 125px;height: 37px;font-size: 0.65rem;line-height: 30px;font-weight: normal !important;">
-                            <div style="display: grid;grid-template-columns: auto auto;">
-                                <div>&nbsp;&nbsp;&nbsp;Use Template</div>
-                            </div>
-                        </button>
-                    </div>
-                </form>
-            </div>
-
-        </div>
-    </div>
-
 </div>
 
 <!-- ADD client popup -->
@@ -333,11 +188,13 @@ export default {
             myOrganizationCategories: [],
             myCategorieOrganizations: [],
             myOrgName: '',
-            mySelectedOrgDetail: {}, // getting one organization detail
+            mySelectedOrgDetail: {
+                  name: ''
+            }, // getting one organization detail
 
             // Client Contact Details
             myClientContacts: [],
-            catOpen: true
+            catOpen: false
         };
     },
     methods: {
@@ -435,8 +292,6 @@ export default {
     created: function () {},
     computed: {},
     mounted: async function () {
-        this.getCategories(); // Fetching categories initaly
-        this.getOrgDetails('');
     },
     unmounted: function () {},
     beforeUnmount() {

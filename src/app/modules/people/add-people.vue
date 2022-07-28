@@ -56,8 +56,8 @@
             </div>
         </div>
         <div id="save_can_btns">
-            <button class="save_btn" v-on:click="saveClient">SAVE</button>
-            <button class="can_btn">CANCEL</button>
+            <button class="save_btn" v-on:click="savePeople">SAVE</button>
+            <button class="can_btn uk-modal-close">CANCEL</button>
         </div>
     </div>
 </div>
@@ -84,7 +84,7 @@ export default {
         };
     },
     methods: {
-        saveClient() {
+        savePeople() {
             const obj = {
                 id: "new",
                 tenantId: "61dfe560a4d68d08b821e08c",
@@ -107,25 +107,10 @@ export default {
                 url: 'https://test.hotkup.com/crm/contacts/save',
                 data: obj
             }).then((res) => {
-                if (res) {
-                    this.firstName = "";
-                    this.lastName = "";
-                    this.email = "";
-                    this.mobile = "";
-                    this.telephone = "";
-                    this.extension = "";
-                    this.category = "";
-                    this.street = "";
-                    this.city = "";
-                    this.provience = "";
-                    this.pin = "";
-                }
-
+                alert(`${res.data.data.firstName + " " + res.data.data.lastName} updated successfully`);
+            }).error((err) => {
+                console.log(err);
             });
-        },
-
-        conAlert() {
-            alert(this.organisation);
         }
     }
 };

@@ -4,20 +4,6 @@
 
         <div class="task_view_header">
 
-            <div v-show="showNewSubTaskForm" style="align-self: center;background: transparent;color: white;margin-left: 10px;padding-right:0px;border-radius: 3px;">
-                <div class="tab-bar" style="display: flex;column-gap: 12px;background: transparent;height: auto;border-bottom: none;">
-                    <button v-bind:uk-tooltip="'Go back to Parent Task - ' + parentTaskName" v-on:click="exitNewSubTaskView()" class="uk-button uk-button-danger uk-button-small uk-grid-margin uk-first-column end-call-button subtask-back-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
-                            <path fill="currentColor" d="M12 4l1.4 1.4L7.8 11H20v2H7.8l5.6 5.6L12 20l-8-8 8-8z"></path>
-                        </svg></button>
-                    <div href="#" style="display: flex;column-gap: 10px;font-size: 0.65rem;text-transform: uppercase;place-self: center start;place-items: center;color: white;background: #6eb2ff;padding: 10px;border-radius: 3px;">
-                        <span class="tab_icon">
-                            <ui-icon name="subtask" size="width:15px;height:15px" /></span><span class="tab_label">New <b>Sub Task</b> for</span>
-                    </div>
-                </div>
-                <div style="text-align: center;padding: 10px 20px 5px 20px;color: rgb(37, 139, 255);place-self: center;">
-                    <div style="font-size: .55rem;text-transform: uppercase;font-weight: bold;"> Task </div>
-                </div>
-            </div>
             <div v-show="viewSubTask" style="align-self: center;background: transparent;color: white;margin-left: 10px;padding-right:0px;border-radius: 3px;">
                 <div class="tab-bar" style="display: flex;column-gap: 12px;background: transparent;height: auto;border-bottom: none;">
                     <button v-bind:uk-tooltip="'Go back to Parent Task - ' + parentTaskName" v-on:click="exitSubTaskView()" class="uk-button uk-button-danger uk-button-small uk-grid-margin uk-first-column end-call-button subtask-back-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
@@ -184,7 +170,7 @@
                         <div style="color: rgb(129, 129, 129);font-weight: bold;font-size: 0.5rem;border-radius: 2px;letter-spacing: 1px;display: flex;align-items: center;border: 1px solid #e1e1e1;background-color: rgb(233, 233, 233);">
                             <div style="font-weight: normal;font-size: 0.56rem;text-transform: uppercase;letter-spacing: 1px;padding: 3px 5px 3px 10px;color: #6a6a6a;border-top-left-radius: 3px;border-bottom-left-radius:3px;background-color:rgb(233 233 233)">Category</div>
                             <div>
-                                <div style="font-weight: normal;font-size: 0.6rem;text-transform: capitalize;letter-spacing: 1px;padding: 3px 5px;background: rgb(239 239 239);color: #2196f3;;border-top-right-radius: 3px;border-bottom-right-radius:3px;" v-if="taskObject.category!==null && taskObject.category!==undefined">
+                                <div style="font-weight: normal;font-size: 0.6rem;text-transform: capitalize;letter-spacing: 1px;padding: 3px 5px;background: rgb(239 239 239);color: #2196f3;;border-top-right-radius: 3px;border-bottom-right-radius:3px;">
                                     <span> {{myOrgName}} </span>
                                 </div>
                             </div>
@@ -198,7 +184,7 @@
                         <div style="color: rgb(129, 129, 129);font-weight: bold;font-size: 0.5rem;border-radius: 2px;letter-spacing: 1px;display: flex;align-items: center;border: 1px solid #e1e1e1;background-color: rgb(233, 233, 233);">
                             <div style="font-weight: normal;font-size: 0.56rem;text-transform: uppercase;letter-spacing: 1px;padding: 3px 5px 3px 10px;color: #6a6a6a;border-top-left-radius: 3px;border-bottom-left-radius:3px;background-color:rgb(233 233 233)">Assignee</div>
                             <div>
-                                <div style="font-weight: normal;font-size: 0.6rem;text-transform: capitalize;letter-spacing: 1px;padding: 3px 5px;background: rgb(239 239 239);color: #2196f3;;border-top-right-radius: 3px;border-bottom-right-radius:3px;"> {{taskObject.assigneesString}} </div>
+                                <div style="font-weight: normal;font-size: 0.6rem;text-transform: capitalize;letter-spacing: 1px;padding: 3px 5px;background: rgb(239 239 239);color: #2196f3;;border-top-right-radius: 3px;border-bottom-right-radius:3px;"> Sabari Fidisys </div>
                             </div>
                         </div>
                     </div>
@@ -291,9 +277,8 @@
                 </div>
                 <div v-show="selectedTabKey === 'reminders'" style="display: flex;flex-direction: column;flex-grow: 1;overflow-y: hidden; position: relative;height: 100%;;background: #ffffffa1;">
                     <div v-if="isRemindersTabInitialized" style="display: flex;padding: 20px;min-height: 300px;flex-direction: column;">
-
                         <div style="padding: 5px 0px;margin-right:20px;margin-bottom: 10px;display: grid;grid-template-rows: 1fr;place-items: flex-start;border-bottom: 1px solid #d0d0d0;">
-                            <button v-on:click="loadReminders()" class="clickable-btn uk-button uk-button-danger uk-button-small uk-grid-margin uk-first-column end-call-button" style="background-color:#2196f3;border-radius: 3px;min-width: 100px;font-size: 0.65rem;line-height: 30px;font-weight: normal !important;display: inline-block;">
+                            <button v-on:click="openAddReminderModal()" class="clickable-btn uk-button uk-button-danger uk-button-small uk-grid-margin uk-first-column end-call-button" style="background-color:#2196f3;border-radius: 3px;min-width: 100px;font-size: 0.65rem;line-height: 30px;font-weight: normal !important;display: inline-block;">
                                 <span uk-icon="icon:plus;ratio:0.65" class="uk-icon" style="">
                                     <svg width="13" height="13" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" data-svg="plus">
                                         <rect x="9" y="1" width="1" height="17"></rect>
@@ -303,6 +288,7 @@
                                 <span style="padding-left: 10px;">Add Reminder</span>
                             </button>
                         </div>
+
                         <div v-if="isRemindersTabInitialized" class="custom-scroll-bar" style="position: relative;flex-grow: 1;">
                             <div v-show="reminderList.length==0" style="text-align:center;border-bottom: 0px;" v-on:click="loadPotentialMembersForReminders()"> No reminders added </div>
                             <div v-show="reminderList.length>0" style="border-radius: 5px;border: 1px solid rgba(128, 128, 128, 0.25);margin-right: 5px;margin-left: 0px;padding: 1px 1px;">
@@ -316,36 +302,23 @@
                                     <div style="flex:2;">Date/Time</div>
                                     <div style="flex:1;">Actions</div>
                                 </div>
-                                <template v-for="item,index in reminderList" :key="index">
-                                    <div style="position: relative;padding: 10px;min-height: 20px;justify-items: start;column-gap: 20px;background-color: rgb(255 255 255 / 75%);font-size: 0.65rem;display: flex;">
+                                <div class="contact_list first_column_scrollable custom-scroll-bar activities_list" style="max-height: 380px; height: fit-content; padding: 0; background-color: rgb(255 255 255 / 75%)">
+                                    <template v-for="item,index in reminderList" :key="index">
+                                        <div style="position: relative;padding: 10px;min-height: 20px;justify-items: start;column-gap: 20px;background-color: rgb(255 255 255 / 75%);font-size: 0.65rem;display: flex;">
 
-                                        <div style="flex:0.25;text-align:right">{{index+1}}</div>
+                                            <div style="flex:0.25;text-align:right">{{index+1}}</div>
 
-                                        <div style="flex:4;">
-                                            <div><span>{{item.title}}</span></div>
-                                            <div style="color: rgb(188 188 188); font-size: 0.55rem;">Reminder set for Sabari</div>
+                                            <div style="flex:4;">
+                                                <div><span>{{item.title}}</span></div>
+                                                <div style="color: rgb(188 188 188); font-size: 0.55rem;">Reminder set for Sabari</div>
+                                            </div>
+                                            <div style="flex:1;">{{item.type}}</div>
+                                            <div style="flex:2;">{{convertUTCDateFromServerToLocalDate(item.reminderTime)}}</div>
+                                            <div style="flex:1;text-align:center;" v-show="item.status !== 'CANCELLED'"><a v-on:click="cancelReminderItem(item)">Cancel</a></div>
+                                            <div style="flex:1;text-align:center;" v-show="item.status == 'CANCELLED'"><a>Cancelled</a></div>
                                         </div>
-                                        <!-- <div style="flex:4;" v-if="item.status!=='ELAPSED' && item.status!=='CANCELLED'">
-                                            <div>{{item.title}} &nbsp; &nbsp; &nbsp; &nbsp; </div>
-                                            <div style="color: rgb(188 188 188); font-size: 0.55rem;">Reminder set for {{item.usersString}}</div>
-                                        </div>
-                                        <div style="flex:4;filter: brightness(1.75);" v-if="item.status==='CANCELLED'">
-                                            <div>{{item.title}} &nbsp; &nbsp; &nbsp; &nbsp;</div>
-                                            <div style="color: rgb(101, 101, 101); font-size: 0.55rem;">Reminder set for {{item.usersString}}</div>
-                                        </div> -->
-
-                                        <div style="flex:1;">{{item.type}}</div>
-                                        <!-- <div style="flex:1;" v-if="item.status!=='ELAPSED' && item.status!=='CANCELLED'">{{item.type}}</div>
-                                        <div style="flex:1;filter: brightness(1.75);" v-if="item.status==='CANCELLED'">{{item.type}}</div> -->
-
-                                        <div style="flex:2;">{{item.reminderTime}}</div>
-                                        <!-- <div style="flex:2;" v-if="item.status!=='ELAPSED' && item.status!=='CANCELLED'">{{item.dateTimeFormatted}}</div>
-                                        <div style="flex:2;filter: brightness(1.75);" v-if="item.status==='CANCELLED'">{{item.dateTimeFormatted}}</div> -->
-
-                                        <!-- <div style="flex:1;" v-if="item.status!=='ELAPSED'"><a v-on:click="updateReminderItem(item)">Edit</a>  |  <a v-on:click="removeReminder(item)">Remove</a></div> Removing after Pawan said 'Cancel will do, no edits required' -->
-                                        <div style="flex:1;text-align:center;" v-if="item.status!=='ELAPSED' && item.status!=='CANCELLED'"><a v-on:click="cancelReminderItem(item)">Cancel</a></div>
-                                    </div>
-                                </template>
+                                    </template>
+                                </div>
                             </div>
                         </div>
 
@@ -536,266 +509,10 @@ export default {
             // Clear these fields before attaching a new form-template.
             this.reminderItem = {};
             UIkit.modal(document.querySelector('#' + this.uniqueComponentId + '_add_reminder_modal')).show();
+            this.loadPotentialMembersForReminders();
         },
         closeAddReminderModal() {
             UIkit.modal(document.querySelector('#' + this.uniqueComponentId + '_add_reminder_modal')).hide();
-        },
-        loadCustomerHooks() {
-            // Load customers from local-storage
-            this.customers = []; // Reset this otherwise, for every task viewed, the dropdown gets populated resulting in unstable duplicates.
-            console.log('Customers before localstorage ', this.customers);
-            const customers = JSON.parse(localStorage.getItem('customers'));
-
-            // Make a copy from the local-storage data inorder to prevent manipulating the global data.
-            // This data will differ for each selected task.
-            customers.forEach(customer => {
-                if (this.taskObject.customerHookIds !== null) {
-                    this.taskObject.customerHookIds.forEach(customerHookData => {
-                        if (customerHookData.split('#')[0] === customer.id) {
-                            customer.isSelected = true;
-                        }
-                    });
-                }
-
-                this.customers.push(customer);
-                this.customersUnfiltered.push(customer);
-            });
-
-            console.log('Customers after localstorage fetch ', this.customers);
-
-            const selectedCustomers = this.customers.filter(cust => cust.isSelected);
-            const numberOfSelectedCustomers = selectedCustomers.length;
-            if (numberOfSelectedCustomers > 0) {
-                document.getElementById('selectedHookCustomersBadge').innerHTML = '(' + numberOfSelectedCustomers + ' selected)';
-            }
-
-            this.customersNames = selectedCustomers.map(cust => cust.name).join(', ');
-        },
-        loadCustomerBranchesHooks() {
-            // Load customers from local-storage
-            this.customerBranches = []; // Reset this otherwise, for every task viewed, the dropdown gets populated resulting in unstable duplicates.
-            console.log('Customer Branches before localstorage ', this.customerBranches);
-            const customerBranches = JSON.parse(localStorage.getItem('customer_branches'));
-
-            // Make a copy from the local-storage data inorder to prevent manipulating the global data.
-            // This data will differ for each selected task.
-            customerBranches.forEach(branch => {
-                if (this.taskObject.customerBranchHookIds !== null) {
-                    this.taskObject.customerBranchHookIds.forEach(customerBranchHookData => {
-                        if (customerBranchHookData.split('#')[0] === branch.id) {
-                            branch.isSelected = true;
-                        }
-                    });
-                }
-
-                this.customerBranches.push(branch);
-                this.customerBranchesUnfiltered.push(branch);
-            });
-            console.log('Customer branches after localstorage fetch ', this.customerBranches);
-
-            // Update the selected badge
-            const selectedCustomerBranches = this.customerBranches.filter(custBranch => custBranch.isSelected);
-            const numberOfSelectedCustomerBranches = selectedCustomerBranches.length;
-            if (numberOfSelectedCustomerBranches > 0) {
-                document.getElementById('selectedHookCustomerBranchesBadge').innerHTML = '(' + numberOfSelectedCustomerBranches + ' selected)';
-            }
-
-            this.customerBranchesNames = selectedCustomerBranches.map(custBranch => custBranch.name).join(', ');
-        },
-        loadCustomerContactsHooks() {
-            // Load customers from local-storage
-            this.customerContacts = []; // Reset this otherwise, for every task viewed, the dropdown gets populated resulting in unstable duplicates.
-            console.log('Customer Contacts before localstorage ', this.customerContacts);
-            const customerContacts = JSON.parse(localStorage.getItem('customer-contacts'));
-
-            // Make a copy from the local-storage data inorder to prevent manipulating the global data.
-            // This data will differ for each selected task.
-            customerContacts.forEach(customerContact => {
-                if (this.taskObject.customerContactHookIds !== null) {
-                    this.taskObject.customerContactHookIds.forEach(customerContactHookData => {
-                        if (customerHookData.split('#')[0] === customerContact.id) {
-                            customerContact.isSelected = true;
-                        }
-                    });
-                }
-
-                this.customerContacts.push(customerContact);
-                this.customerContactsUnfiltered.push(customerContact);
-            });
-            console.log('Customer contacts after localstorage fetch ', this.customerContacts);
-
-            const numberOfSelectedCustomerContacts = this.customerContacts.filter(custContact => custContact.isSelected).length;
-            if (numberOfSelectedCustomerContacts > 0) {
-                document.getElementById('selectedHookCustomerContactsBadge').innerHTML = '(' + numberOfSelectedCustomerContacts + ' selected)';
-            }
-        },
-        searchHooksSubmenu() {
-            console.log('hooks submenu query for ' + this.hookSubmenuCurrentlySelected + ' is ' + this.hooksSubmenuSearchQuery);
-
-            if (this.hookSubmenuCurrentlySelected === 'isSubmenuCustomersSelected') {
-                if (this.hooksSubmenuSearchQuery.trim() !== '') {
-                    this.customers = this.customers.filter(customer => customer.name.toLowerCase().includes(this.hooksSubmenuSearchQuery.toLowerCase()));
-                } else {
-                    this.customers = this.customersUnfiltered;
-                }
-            } else if (this.hookSubmenuCurrentlySelected === 'isSubmenuCustomerBranchesSelected') {
-                if (this.hooksSubmenuSearchQuery.trim() !== '') {
-                    this.customerBranches = this.customerBranches.filter(customerBranch => customerBranch.name.toLowerCase().includes(this.hooksSubmenuSearchQuery.toLowerCase()));
-                } else {
-                    this.customerBranches = this.customerBranchesUnfiltered;
-                }
-            } else if (this.hookSubmenuCurrentlySelected === 'isSubmenuCustomerContactsSelected') {
-                if (this.hooksSubmenuSearchQuery.trim() !== '') {
-                    this.customerContacts = this.customerContacts.filter(customerContact => customerContact.name.toLowerCase().includes(this.hooksSubmenuSearchQuery.toLowerCase()));
-                } else {
-                    this.customerContacts = this.customerContactsUnfiltered;
-                }
-            }
-        },
-        updateCustomerHook(customer) {
-            const post_url = './tasks/update-customer-hook';
-            const action = customer.isSelected ? 'ADD' : 'REMOVE';
-
-            const form = {
-                taskId: this.taskId,
-                customerId: customer.id + '#' + customer.name,
-                action: action
-            };
-
-            console.log('Task CustomerHook Update Data : ', form);
-            // return false;
-
-            // VueJS ajax call-1
-            axios.post(process.env.VUE_APP_API_URL + post_url, form)
-                .then((dataResponse) => {
-                    console.log('Task CustomerHook Update Result : ');
-                    console.log(dataResponse);
-
-                    if (dataResponse.data.actionResult === 1) {
-                        this.newWorkgroupInfo = dataResponse.data.bean;
-
-                        const action = form.action === 'ADD' ? ' added ' : 'removed';
-
-                        UIkit.notification(`<div class="taskone-notification">
-                                                <span uk-icon="icon: check;ratio:1"></span>
-                                                <div>Customer Hook was ${action}.</div>
-                                            </div>`, {
-                            status: 'success',
-                            pos: 'bottom-left',
-                            timeout: 5000
-                        });
-
-                        const selectedCustomers = this.customers.filter(cust => cust.isSelected);
-                        const numberOfSelectedCustomers = selectedCustomers.length;
-                        if (numberOfSelectedCustomers > 0) {
-                            document.getElementById('selectedHookCustomersBadge').innerHTML = '(' + numberOfSelectedCustomers + ' selected)';
-                        } else {
-                            document.getElementById('selectedHookCustomersBadge').innerHTML = '';
-                        }
-
-                        this.customersNames = selectedCustomers.map(cust => cust.name).join(', ');
-
-                        // document.getElementById('saveButton').innerHTML = btnText;
-                        // this.enableHTMLElement(document.getElementById('saveButton'));
-
-                        this.$emit('refreshList', {});
-                    } else {
-                        const errorMsg = (dataResponse.data).message;
-                        UIkit.notification("<span uk-icon='icon: warning;ratio:1'></span>" + errorMsg, {
-                            status: 'danger',
-                            pos: 'bottom-left',
-                            timeout: 5000
-                        });
-
-                        // document.getElementById('saveButton').innerHTML = btnText;
-                        // this.enableHTMLElement(document.getElementById('saveButton'));
-                        return false;
-                    }
-                })
-                .catch(function (errorResponse) {
-                    console.log('ERROR MS - ', errorResponse);
-                    const exceptionMsg = errorResponse.data.exception;
-
-                    UIkit.notification("<span uk-icon='icon: warning ;ratio:1'></span> " + exceptionMsg + '.', {
-                        status: 'danger',
-                        pos: 'bottom-left',
-                        timeout: 500000
-                    });
-                    return false;
-                });
-        },
-        updateCustomerBranchHook(customerBranch) {
-            const post_url = './tasks/update-customer-branch-hook';
-            const action = customerBranch.isSelected ? 'ADD' : 'REMOVE';
-
-            const form = {
-                taskId: this.taskId,
-                customerId: customerBranch.customerId,
-                customerBranchId: customerBranch.id + '#' + customerBranch.name,
-                action: action
-            };
-
-            console.log('Task CustomerBranchHook Update Data : ', form);
-            // return false;
-
-            // VueJS ajax call-1
-            axios.post(process.env.VUE_APP_API_URL + post_url, form)
-                .then((dataResponse) => {
-                    console.log('Task CustomerBranchHook Update Result : ');
-                    console.log(dataResponse);
-
-                    if (dataResponse.data.actionResult === 1) {
-                        this.newWorkgroupInfo = dataResponse.data.bean;
-
-                        const action = form.action === 'ADD' ? ' added ' : 'removed';
-
-                        UIkit.notification(`<div class="taskone-notification">
-                                                <span uk-icon="icon: check;ratio:1"></span>
-                                                <div>Customer Branch Hook was ${action}.</div>
-                                            </div>`, {
-                            status: 'success',
-                            pos: 'bottom-left',
-                            timeout: 5000
-                        });
-
-                        // Update the selected badge
-                        const selectedCustomerBranches = this.customerBranches.filter(custBranch => custBranch.isSelected);
-                        const numberOfSelectedCustomerBranches = selectedCustomerBranches.length;
-                        if (numberOfSelectedCustomerBranches > 0) {
-                            document.getElementById('selectedHookCustomerBranchesBadge').innerHTML = '(' + numberOfSelectedCustomerBranches + ' selected)';
-                        } else {
-                            document.getElementById('selectedHookCustomerBranchesBadge').innerHTML = '';
-                        }
-
-                        this.customerBranchesNames = selectedCustomerBranches.map(custBranch => custBranch.name).join(', ');
-
-                        this.$emit('refreshList', {});
-                        // document.getElementById('saveButton').innerHTML = btnText;
-                        // this.enableHTMLElement(document.getElementById('saveButton'));
-                    } else {
-                        const errorMsg = (dataResponse.data).message;
-                        UIkit.notification("<span uk-icon='icon: warning;ratio:1'></span>" + errorMsg, {
-                            status: 'danger',
-                            pos: 'bottom-left',
-                            timeout: 5000
-                        });
-
-                        // document.getElementById('saveButton').innerHTML = btnText;
-                        // this.enableHTMLElement(document.getElementById('saveButton'));
-                        return false;
-                    }
-                })
-                .catch(function (errorResponse) {
-                    console.log('ERROR MS - ', errorResponse);
-                    const exceptionMsg = errorResponse.data.exception;
-
-                    UIkit.notification("<span uk-icon='icon: warning ;ratio:1'></span> " + exceptionMsg + '.', {
-                        status: 'danger',
-                        pos: 'bottom-left',
-                        timeout: 500000
-                    });
-                    return false;
-                });
         },
         showTaskInfoContainerDiv() {
             this.showTaskInfoContainer = true;
@@ -823,258 +540,6 @@ export default {
         },
         onSubmenuClick() {
             document.getElementById('menu_slider').style.left = '0%';
-        },
-        cancelChecklistItem(item) {
-            // this.checklistLabel = 'Update Item';
-            // this.checklistItem = item;
-            // this.checklistItem.actionType = 'UPDATE';
-            // this.checklistItem.previousActivityName = item.activityName; // This is the key to update
-
-            const post_url = './tasks/save-checklist-item';
-
-            const form = {
-                taskId: this.taskId,
-                actionType: 'UPDATE_STATUS',
-                activityName: item.activityName,
-                status: "CANCELLED"
-            };
-
-            // VueJS ajax call-1
-            axios.post(process.env.VUE_APP_API_URL + post_url, form)
-                .then((dataResponse) => {
-                    // console.log("Task Save Result : ");
-                    // console.log(dataResponse);
-
-                    if (dataResponse.data.actionResult === 1) {
-                        item.status = form.status;
-                        const notificationLabel = 'Checklist item was cancelled.';
-
-                        if (dataResponse.data.bean.first !== null) {
-                            const updatedItem = dataResponse.data.bean.first;
-
-                            this.taskObject.checklist.forEach(item => {
-                                if (item.activityName === updatedItem.label) {
-                                    item.status = updatedItem.status;
-                                    item.updatedBy = updatedItem.updatedBy;
-                                    if (item.updatedOn !== null) {
-                                        // item.updatedOn = this.convertUTCDateFromServerToLocalDate(item.updatedOn);
-                                        item.updatedOnFormatted = dayjs(item.updatedOn + "Z").format('DD/MM/YYYY HH:mm');
-                                        item.updatedOnAgo = dayjs(item.updatedOn + "Z").fromNow();
-                                        console.log('checklist-item.updatedOn = ', item.updatedOn);
-                                    }
-                                }
-                            });
-                        }
-
-                        UIkit.notification(`<div class="taskone-notification">
-                                                <span uk-icon="icon: check;ratio:1"></span>
-                                                <div> ${notificationLabel} </div>
-                                            </div>`, {
-                            status: 'success',
-                            pos: 'bottom-left',
-                            timeout: 5000
-                        });
-
-                        // this.$emit("refreshList",{});
-                    } else {
-                        const errorMsg = (dataResponse.data).message;
-                        UIkit.notification("<span uk-icon='icon: warning;ratio:1'></span>" + errorMsg, {
-                            status: 'danger',
-                            pos: 'bottom-left',
-                            timeout: 5000
-                        });
-                        return false;
-                    }
-                })
-                .catch(function (errorResponse) {
-                    console.log('ERROR MS - ', errorResponse);
-                    const exceptionMsg = errorResponse.response.data.exception;
-
-                    UIkit.notification("<span uk-icon='icon: warning ;ratio:1'></span> " + exceptionMsg + '.', {
-                        status: 'danger',
-                        pos: 'bottom-left',
-                        timeout: 5000
-                    });
-
-                    document.getElementById('saveButton').innerHTML = btnText;
-                    this.enableHTMLElement(document.getElementById('saveButton'));
-                    return false;
-                });
-        },
-        updateChecklistItemStatus(item, event) {
-            const post_url = './tasks/save-checklist-item';
-
-            const form = {
-                taskId: this.taskId,
-                actionType: 'UPDATE_STATUS',
-                activityName: item.activityName,
-                status: (item.status !== 'COMPLETED') ? 'COMPLETED' : 'PENDING'
-            };
-
-            // VueJS ajax call-1
-            axios.post(process.env.VUE_APP_API_URL + post_url, form)
-                .then((dataResponse) => {
-                    // console.log("Task Save Result : ");
-                    console.log("Checklist Item update : ", dataResponse);
-
-                    if (dataResponse.data.actionResult === 1) {
-                        item.status = form.status;
-                        this.displayTab(null, this.selectedTabKey);
-                        return false;
-                        const notificationLabel = 'Checklist item updated.';
-
-                        if (dataResponse.data.bean.first !== null) {
-                            const updatedItem = dataResponse.data.bean.first;
-
-                            this.taskObject.checklist.forEach(item => {
-                                if (item.activityName === updatedItem.label) {
-                                    item.status = updatedItem.status;
-                                    item.updatedBy = updatedItem.updatedBy;
-                                    if (item.updatedOn !== null) {
-                                        // item.updatedOn = this.convertUTCDateFromServerToLocalDate(item.updatedOn);
-                                        item.updatedOnFormatted = dayjs(item.updatedOn + "Z").format('DD/MM/YYYY HH:mm');
-                                        item.updatedOnAgo = dayjs(item.updatedOn + "Z").fromNow();
-                                        console.log('checklist-item.updatedOn = ', item.updatedOn);
-                                    }
-
-                                    setTimeout(() => {
-                                        event.target.parentElement
-                                            .querySelector(".scaleZero")
-                                            .classList.remove("scaleZero");
-                                    }, 100);
-
-                                }
-                            });
-                        }
-
-                        UIkit.notification(`<div class="taskone-notification">
-                                                <span uk-icon="icon: check;ratio:1"></span>
-                                                <div> ${notificationLabel} </div>
-                                            </div>`, {
-                            status: 'success',
-                            pos: 'bottom-left',
-                            timeout: 5000
-                        });
-
-                        // this.$emit("refreshList",{});
-                    } else {
-                        const errorMsg = (dataResponse.data).message;
-                        UIkit.notification("<span uk-icon='icon: warning;ratio:1'></span>" + errorMsg, {
-                            status: 'danger',
-                            pos: 'bottom-left',
-                            timeout: 5000
-                        });
-                        return false;
-                    }
-                })
-                .catch(function (errorResponse) {
-                    console.log('ERROR MS - ', errorResponse);
-                    const exceptionMsg = errorResponse.response.data.exception;
-
-                    UIkit.notification("<span uk-icon='icon: warning ;ratio:1'></span> " + exceptionMsg + '.', {
-                        status: 'danger',
-                        pos: 'bottom-left',
-                        timeout: 5000
-                    });
-
-                    document.getElementById('saveButton').innerHTML = btnText;
-                    this.enableHTMLElement(document.getElementById('saveButton'));
-                    return false;
-                });
-        },
-        saveChecklistItem() {
-            const post_url = './tasks/save-checklist-item';
-
-            const form = {
-                taskId: this.taskId,
-                actionType: this.checklistItem.actionType,
-                activityName: this.checklistItem.activityName,
-                previousActivityName: this.checklistItem.previousActivityName
-            };
-
-            if (this.checklistItem.activityName === undefined || this.checklistItem.activityName.trim() === "") {
-
-                const errorMsg = "&nbsp;Checklist activity cannot be empty.";
-                UIkit.notification("<span uk-icon='icon: warning;ratio:1'></span>" + errorMsg, {
-                    status: 'danger',
-                    pos: 'bottom-left',
-                    timeout: 5000
-                });
-                return false;
-            }
-
-            // VueJS ajax call-1
-            axios.post(process.env.VUE_APP_API_URL + post_url, form)
-                .then((dataResponse) => {
-                    console.log('Task Save Result : ');
-                    console.log(dataResponse);
-
-                    if (dataResponse.data.actionResult === 1) {
-                        if (dataResponse.data.bean.first !== null) {
-
-                            const addedItem = dataResponse.data.bean.first;
-
-                            // Get the current item from the existing list and update it, otherwise add new item.
-                            if (form.actionType === 'NEW') {
-                                if (this.taskObject.checklist === null) {
-                                    this.taskObject.checklist = [];
-                                }
-
-                                this.taskObject.checklist.push({
-                                    activityName: addedItem.label,
-                                    status: 'NEW'
-                                });
-                            } else if (form.actionType === 'UPDATE') {
-                                // Iterate through the existing items and change its value.
-                                this.taskObject.checklist.forEach((item) => {
-                                    if (form.previousActivityname === item.activityName) {
-                                        item.activityName = addedItem.label;
-                                    }
-                                });
-                            }
-                        }
-
-                        this.checklistItem = {
-                            actionType: 'NEW'
-                        };
-                        this.checklistLabel = 'Add Item';
-
-                        const notificationLabel = (this.checklistItem.actionType === 'UPDATE') ? 'Checklist item updated.' : 'Checklist item added.';
-
-                        UIkit.notification(`<div class="taskone-notification">
-                                                  <span uk-icon="icon: check;ratio:1"></span>
-                                                  <div> ${notificationLabel} </div>
-                                              </div>`, {
-                            status: 'success',
-                            pos: 'bottom-left',
-                            timeout: 5000
-                        });
-
-                        // this.$emit("refreshList",{});
-                    } else {
-                        const errorMsg = (dataResponse.data).message;
-                        UIkit.notification("<span uk-icon='icon: warning;ratio:1'></span>" + errorMsg, {
-                            status: 'danger',
-                            pos: 'bottom-left',
-                            timeout: 5000
-                        });
-                        return false;
-                    }
-                })
-                .catch(function (errorResponse) {
-                    console.log('ERROR MS - ', errorResponse);
-                    const exceptionMsg = errorResponse.response.data.exception;
-
-                    UIkit.notification("<span uk-icon='icon: warning ;ratio:1'></span> " + exceptionMsg + '.', {
-                        status: 'danger',
-                        pos: 'bottom-left',
-                        timeout: 5000
-                    });
-
-                    document.getElementById('saveButton').innerHTML = btnText;
-                    this.enableHTMLElement(document.getElementById('saveButton'));
-                    return false;
-                });
         },
 
         // Reminders codes
@@ -1230,7 +695,6 @@ export default {
                 });
         },
         saveReminder() {
-            alert("Add alert");
             const post_url = 'https://test.hotkup.com/crm/org-reminders/save';
 
             const isNew = this.reminderItem.id == 'New';
@@ -1307,14 +771,14 @@ export default {
         cancelReminderItem(item) {
             // this.reminderItem = item;
 
-            const post_url = 'https://test.hotkup.com/crm/organizations/save';
+            const post_url = 'https://test.hotkup.com/crm/org-reminders/cancel';
             const form = {
                 id: item.id,
-                status: "CANCELLED"
+                status: "CANCEL"
             };
 
             // VueJS ajax call-1
-            axios.post(process.env.VUE_APP_API_URL + post_url, form)
+            axios.post(post_url, form)
                 .then((dataResponse) => {
                     // console.log("Reminder save Result : ");
                     // console.log(dataResponse);
@@ -1370,19 +834,7 @@ export default {
                 console.log(';dataResponse', dataResponse);
                 // Pass it to the availableAssignees prop to the dropdown.
                 const reminders = dataResponse.data;
-                console.log('potentialMembersList', this.potentialMembersList);
-                reminders.map((item) => {
-                    const newObj = {
-                        id: item.id,
-                        orgId: item.orgId,
-                        title: item.title,
-                        type: item.type,
-                        userIds: item.userIds,
-                        reminderTime: item.reminderTime
-                    };
-                    this.reminderList.push(newObj);
-                });
-                console.log('this.reminderList', this.reminderList);
+                this.reminderList = reminders;
             };
             const callbackError = (error) => {
                 console.error('Error in task-view-ms.loadReminders()');
@@ -1420,91 +872,6 @@ export default {
             if (listKey === 'reminders') {
                 this.handleFetchedReminders(data);
             }
-        },
-        handleUnpaginatedListDataError(error) {
-            console.error('Unpaginated List data fetch error : ', error);
-        },
-        handleFetchedReminders(dataResponse) {
-
-        },
-        handleFetchedTimelogs(dataResponse) {
-            // Pass it to the availableAssignees prop to the dropdown.
-            // console.log("Potential transitions : ", dataResponse);
-
-            this.timelogList = [];
-            const timelogs = dataResponse.data.bean;
-
-            if (timelogs !== null) {
-                this.taskObject.timelogsCount = timelogs.length;
-            } else {
-                this.taskObject.timelogsCount = 0;
-            }
-
-            timelogs.forEach((item) => {
-                if (item.startDateTime !== null) {
-                    // item.startDateTimeFormatted = new Date(item.startDateTime).toLocaleString()
-                    //                                          .slice(0, 17)
-                    //                                          .replace(',', '')
-                    //                                          .replace('T',' ');
-
-                    // Added during "Fix-Date-UTC-Update"
-                    // item.startDateTimeFormatted = new Date(item.startDateTime.replace(',', '').replace('T',' ') + " UTC").toLocaleString();
-                    item.startDateTimeFormatted = this.convertUTCDateFromServerToLocalDate(item.startDateTime);
-                }
-
-                if (item.endDateTime !== null) {
-                    // item.endDateTimeFormatted = new Date(item.endDateTime).toLocaleString()
-                    //                                          .slice(0, 17)
-                    //                                          .replace(',', '')
-                    //                                          .replace('T',' ');
-
-                    // Added during "Fix-Date-UTC-Update"
-                    // item.endDateTimeFormatted = new Date(item.endDateTime.replace(',', '').replace('T',' ') + " UTC").toLocaleString();
-                    item.endDateTimeFormatted = this.convertUTCDateFromServerToLocalDate(item.endDateTime);
-                }
-
-                this.timelogList.push(item);
-            });
-        },
-
-        handleFetchedTaskTransitions(dataResponse) {
-            // Pass it to the availableAssignees prop to the dropdown.
-            // console.log("Potential transitions : ", dataResponse);
-
-            this.taskTransitionsList = [];
-            const taskTransitionsList = dataResponse.data.bean;
-
-            if (taskTransitionsList !== null) {
-                this.taskObject.transitionCount = taskTransitionsList.length;
-            } else {
-                this.taskObject.transitionCount = 0;
-            }
-
-            taskTransitionsList.forEach((item) => {
-                if (item.startDateTime !== null) {
-                    item.startDateTimeFormatted = this.convertUTCDateFromServerToLocalDate(item.startDateTime);
-                    // alert(item.startDateTime + " to " + item.startDateTimeFormatted);
-                    item.startDate = item.startDateTimeFormatted.split("T")[0];
-                    item.startTime = item.startDateTimeFormatted.split("T")[1].split(":")[0] + ":" + item.startDateTimeFormatted.split("T")[1].split(":")[1];
-                }
-
-                if (item.endDateTime !== null) {
-                    item.endDateTimeFormatted = this.convertUTCDateFromServerToLocalDate(item.endDateTime);
-                    item.endDate = item.endDateTimeFormatted.split("T")[0];
-                    item.endTime = item.endDateTimeFormatted.split("T")[1].split(":")[0] + ":" + item.endDateTimeFormatted.split("T")[1].split(":")[1];
-                }
-
-                if (item.durationUnit === 'MINUTES') {
-                    item.durationUnitFormatted = 'Hrs';
-                    item.durationInHours = parseFloat(item.duration / 60).toFixed(2);
-                }
-
-                this.taskTransitionsList.push(item);
-            });
-        },
-
-        someFunction(elem) {
-            console.log(elem);
         },
         goToHomePage() {
             this.$router.push({

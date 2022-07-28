@@ -33,7 +33,8 @@
         <div class="uk-width-2-3@s uk-first-column ">
             <label class="uk-form-label">Change category *</label>
             <div class="uk-form-controls">
-                <select class="uk-input" v-model="parentOrg" v-on:click="getAllParent()">
+                <select class="uk-input" v-model="parentOrg">
+                    <option selected value="kk">kk</option>
                     <option v-for="(item, i) in myContactCategories" :key="i" v-bind:value="item.id">{{item.name}}</option>
                 </select>
             </div>
@@ -78,7 +79,7 @@
             <div style="display:grid">
             </div>
             <div style="display: flex;width:100%;place-self:center;padding-right: 15px;">
-                <button v-on:click="fetchData()" tabindex="10" id="saveButton" class="task-update-btn clickable-btn uk-button uk-button-danger uk-button-small uk-grid-margin uk-first-column " style="background-color: rgb(37 139 254);border-radius: 20px;place-self: center;place-items: center;min-width: 125px;font-size: 0.65rem;line-height: 30px;font-weight: normal !important;margin-left: auto;">
+                <button v-on:click="updatePeople()" tabindex="10" id="saveButton" class="task-update-btn clickable-btn uk-button uk-button-danger uk-button-small uk-grid-margin uk-first-column " style="background-color: rgb(37 139 254);border-radius: 20px;place-self: center;place-items: center;min-width: 125px;font-size: 0.65rem;line-height: 30px;font-weight: normal !important;margin-left: auto;">
                     <div style="display: grid;grid-template-columns: auto auto;place-items: center;">
                         <div>&nbsp;&nbsp;&nbsp;Update Contact</div>
                     </div>
@@ -100,44 +101,44 @@ export default {
     props: ['taskInfo', 'hideUpdateButton', 'item', 'myContactCategories', 'contactDetailsUpdateVariable', 'myOrgName'],
     data: function () {
         return {
-          parentOrg: '',
-          AllparentOrg: [],
-            editClient: {
-                name: "COCO-COLA",
-                email: 'coco@gmail.com',
-                phone: '9494978552',
-                website: 'www.coco.com',
-                organisation: 'USA',
-                provience: 'XYZ provience',
-                address: 'XYZ, street, 2/93, XYZ location',
-                city: 'XYZ city',
-                country: 'XYZ country',
-                pin: '325468'
-            }
+            parentOrg: ''
         };
     },
     methods: {
-        fetchData () {
-            console.log('item', this.item);
-            console.log(this.editClient);
 
-            // API calls here
-            this.getCategory();
-        },
-
-        getContactCategories () {
-             axios({
-                    method: 'GET',
-                    url: `https://test.hotkup.com/crm/category/get/${this.item.categoryId}`
-                }).then((res) => {
-                  this.parentOrg = res.data.data.name;
-                });
+        updatePeople() {
+            const obj = {
+                id: this.contactDetailsUpdateVariable.id,
+                tenantId: "61dfe560a4d68d08b821e08c",
+                categoryId: this.parentOrg,
+                organizationId: this.contactDetailsUpdateVariable.organizationId,
+                firstName: this.contactDetailsUpdateVariable.firstName,
+                lastName: this.contactDetailsUpdateVariable.lastName,
+                email: this.contactDetailsUpdateVariable.email,
+                mobile: this.contactDetailsUpdateVariable.telephone,
+                address: {
+                    street: this.contactDetailsUpdateVariable.street,
+                    city: this.contactDetailsUpdateVariable.city,
+                    province: this.contactDetailsUpdateVariable.province,
+                    zip: this.contactDetailsUpdateVariable.zip,
+                    country: this.contactDetailsUpdateVariable.country
+                }
+            };
+            axios({
+                method: 'POST',
+                url: 'https://test.hotkup.com/crm/contacts/save',
+                data: obj
+            }).then((res) => {
+                alert(`${res.data.data.firstName + " " + res.data.data.lastName} updated successfully`);
+            }).error((err) => {
+                console.log(err);
+            });
         }
+
     },
     created: function () {},
     computed: {},
-    mounted: function () {
-    },
+    mounted: function () {},
     watch: {}
 };
 </script>

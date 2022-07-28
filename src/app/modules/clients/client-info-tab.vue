@@ -35,7 +35,7 @@
             <label class="uk-form-label">Parent Organization *</label>
             <div class="uk-form-controls">
                 <select class="uk-input" v-model="parentOrg" v-on:click="getAllParent()" v-bind:value="parentOrg">
-                    <option v-for="(item, i) in AllparentOrg" :key="i" v-bind:value="item.name">{{item.name}}</option>
+                    <option v-for="(item, i) in AllparentOrg" :key="i" v-bind:value="item.id">{{item.name}}</option>
                 </select>
             </div>
         </div>
@@ -50,7 +50,7 @@
         <div class="uk-width-2-3@s uk-first-column ">
             <label class="uk-form-label">Address *</label>
             <div class="uk-form-controls">
-                <input v-model="item" class="uk-input" type="text" placeholder="">
+                <input v-model="item.street" class="uk-input" type="text" placeholder="">
             </div>
         </div>
 
@@ -79,7 +79,7 @@
             <div style="display:grid">
             </div>
             <div style="display: flex;width:100%;place-self:center;padding-right: 15px;">
-                <button v-on:click="fetchData()" tabindex="10" id="saveButton" class="task-update-btn clickable-btn uk-button uk-button-danger uk-button-small uk-grid-margin uk-first-column " style="background-color: rgb(37 139 254);border-radius: 20px;place-self: center;place-items: center;min-width: 125px;font-size: 0.65rem;line-height: 30px;font-weight: normal !important;margin-left: auto;">
+                <button v-on:click="saveClient()" tabindex="10" id="saveButton" class="task-update-btn clickable-btn uk-button uk-button-danger uk-button-small uk-grid-margin uk-first-column " style="background-color: rgb(37 139 254);border-radius: 20px;place-self: center;place-items: center;min-width: 125px;font-size: 0.65rem;line-height: 30px;font-weight: normal !important;margin-left: auto;">
                     <div style="display: grid;grid-template-columns: auto auto;place-items: center;">
                         <div>&nbsp;&nbsp;&nbsp;Update Contact</div>
                     </div>
@@ -141,6 +141,34 @@ export default {
             }).then((res) => {
                 this.AllparentOrg = res.data.data;
             });
+        },
+             // Add All organisation details
+        saveClient() {
+            const newObj = {
+                id: this.item.id,
+                tenantId: '61dfe560a4d68d08b821e08c',
+                categoryId: this.parentOrg,
+                name: this.item.name,
+                address: {
+                    street: this.item.address,
+                    city: this.item.city,
+                    province: this.item.provience,
+                    zip: this.item.pin,
+                    country: this.item.country
+                },
+                status: 'ACTIVE'
+            };
+            axios({
+                    method: 'POST',
+                    url: 'https://test.hotkup.com/crm/organizations/save',
+                    headers: this.headers,
+                    data: newObj
+                })
+                .then((res) => {
+                    alert(`${res.data.data.name} updated successfully`);
+                    this.getOrgDetails();
+                })
+                .error((res) => console.log(res));
         }
     },
     created: function () {},
